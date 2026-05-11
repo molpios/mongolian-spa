@@ -1,0 +1,1146 @@
+:root {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  color: #22312b;
+  background: #eef3ef;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.govBanner {
+  background: #f5faf5;
+  border-bottom: 1px solid #d8e5d7;
+  color: #506058;
+  font-size: 13px;
+  padding: 8px 40px;
+}
+
+.fdcHeader {
+  background: linear-gradient(135deg, #245d43, #2f7357);
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 40px 24px;
+}
+
+.agency {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  opacity: 0.9;
+}
+
+.fdcHeader h1,
+.fdcHeader p,
+.foodDetails h2,
+.filterPanel h2,
+h3 {
+  margin-top: 0;
+}
+
+.fdcHeader h1 {
+  margin-bottom: 4px;
+  font-size: 36px;
+  line-height: 1.05;
+}
+
+.fdcHeader p {
+  max-width: 680px;
+  margin-bottom: 0;
+  color: #dceada;
+}
+
+.fdcHeader nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px 14px;
+  font-size: 14px;
+  max-width: 560px;
+}
+
+.fdcHeader a {
+  color: #ffffff;
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  padding: 8px 10px;
+  text-decoration: none;
+}
+
+.languageSelect {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  padding: 5px 6px 5px 10px;
+  max-width: 100%;
+}
+
+.languageSelect span {
+  color: #dceada;
+  font-size: 13px;
+}
+
+.languageSelect select {
+  background: #ffffff;
+  border: 1px solid rgb(255 255 255 / 0.6);
+  border-radius: 999px;
+  color: #183b25;
+  min-height: 32px;
+  padding: 0 10px;
+  max-width: 150px;
+}
+
+.searchHero {
+  background: #ffffff;
+  border: 1px solid #dce6db;
+  border-radius: 18px;
+  box-shadow: 0 16px 35px rgb(35 67 48 / 0.08);
+  margin: -18px 40px 22px;
+  padding: 20px;
+  position: relative;
+}
+
+.heroCopy {
+  margin-bottom: 14px;
+}
+
+.heroCopy h2 {
+  color: #1f4e39;
+  font-size: 24px;
+  margin: 0 0 4px;
+}
+
+.heroCopy p {
+  color: #66736c;
+  margin: 0;
+}
+
+.searchRow {
+  display: grid;
+  grid-template-columns: 180px minmax(220px, 1fr) 132px;
+  gap: 10px;
+}
+
+.searchHint {
+  color: #5d675d;
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.imageSearchRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.imageSearchButton {
+  background: #eef7f0;
+  border: 1px solid #c9decf;
+  border-radius: 999px;
+  color: #1f5e31;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 9px 13px;
+}
+
+.imageSearchButton input {
+  display: none;
+}
+
+.imageSearchRow span {
+  color: #66736c;
+  font-size: 13px;
+}
+
+.searchRow input,
+.searchRow select,
+.searchBox input {
+  border: 1px solid #c7d4c7;
+  border-radius: 12px;
+  min-height: 48px;
+  padding: 0 12px;
+  outline: none;
+}
+
+.searchRow input:focus,
+.searchRow select:focus,
+.searchBox input:focus {
+  border-color: #3b7a5b;
+  box-shadow: 0 0 0 3px rgb(59 122 91 / 0.14);
+}
+
+.searchRow button,
+.actionButtons button {
+  align-items: center;
+  background: #245d34;
+  border: 1px solid #1d4f31;
+  border-radius: 12px;
+  color: #ffffff;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 14px;
+}
+
+.fdcShell {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr) 300px;
+  gap: 20px;
+  padding: 0 40px 32px;
+}
+
+.foodOnlyShell {
+  grid-template-columns: minmax(0, 980px);
+  justify-content: center;
+}
+
+.filterPanel,
+.foodDetails,
+.summaryPanel {
+  background: #ffffff;
+  border: 1px solid #dce6db;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgb(35 67 48 / 0.07);
+  overflow: hidden;
+}
+
+.filterPanel,
+.summaryPanel {
+  padding: 18px;
+  align-self: start;
+}
+
+.filterPanel h2 {
+  align-items: center;
+  border-bottom: 1px solid #d9ddd5;
+  display: flex;
+  font-size: 19px;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+}
+
+section {
+  margin-top: 18px;
+}
+
+h3 {
+  align-items: center;
+  color: #263b22;
+  display: flex;
+  font-size: 17px;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.checkRow {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  line-height: 1.9;
+}
+
+.compactMap {
+  border: 1px solid #dce6db;
+  border-radius: 14px;
+  min-height: 190px;
+  margin-top: 0;
+  padding: 10px;
+}
+
+.countrySvgMap {
+  background: #f8faf6;
+  overflow: hidden;
+}
+
+.countrySvgMap svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.countrySvgMap [class*="sm_state_MN"] {
+  cursor: pointer;
+  fill: #7da783 !important;
+  stroke: #ffffff !important;
+  transition: fill 140ms ease, filter 140ms ease, stroke-width 140ms ease;
+}
+
+.countrySvgMap [class*="sm_state_MN"]:hover {
+  fill: #558966 !important;
+  filter: drop-shadow(0 3px 4px rgb(38 58 44 / 0.25));
+}
+
+.countrySvgMap .isSelected {
+  fill: #174f4b !important;
+  stroke-width: 3 !important;
+}
+
+.countrySvgMap.focusMode [class*="sm_state_MN"] {
+  opacity: 0.34 !important;
+}
+
+.countrySvgMap.focusMode .isSelected {
+  filter: drop-shadow(0 8px 8px rgb(23 79 75 / 0.32));
+  opacity: 1 !important;
+}
+
+.mapFocusHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.mapFocusHeader span {
+  color: #1f4e39;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mapFocusHeader button {
+  background: #eef7f0;
+  border: 1px solid #c9decf;
+  border-radius: 999px;
+  color: #1f5e31;
+  padding: 6px 9px;
+}
+
+.mongoliaSvg {
+  display: block;
+  width: 100%;
+}
+
+.countrySilhouette {
+  fill: #edf3e9;
+  stroke: #becbb8;
+  stroke-width: 1.5;
+}
+
+.svgRegion {
+  cursor: pointer;
+  outline: none;
+}
+
+.svgRegion path {
+  fill: #7da783;
+  stroke: #ffffff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.4;
+  transition: fill 140ms ease, filter 140ms ease, stroke-width 140ms ease;
+}
+
+.svgRegion:hover path,
+.svgRegion:focus-visible path {
+  fill: #558966;
+  filter: drop-shadow(0 3px 4px rgb(38 58 44 / 0.25));
+  stroke-width: 3;
+}
+
+.svgRegion.isSelected path {
+  fill: #174f4b;
+  stroke-width: 3;
+}
+
+.resultList {
+  display: grid;
+  gap: 10px;
+  max-height: 520px;
+  overflow: auto;
+  padding-right: 3px;
+}
+
+.resultList button {
+  align-items: center;
+  background: #fbfcfa;
+  border: 1px solid #dce4d8;
+  border-radius: 14px;
+  color: #1f2933;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 58px minmax(0, 1fr);
+  padding: 9px;
+  text-align: left;
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.resultList button:hover {
+  border-color: #93b69f;
+  box-shadow: 0 8px 18px rgb(35 67 48 / 0.1);
+  transform: translateY(-1px);
+}
+
+.resultList img {
+  aspect-ratio: 1;
+  background: #e8ede4;
+  border: 1px solid #d3dccd;
+  border-radius: 10px;
+  height: 58px;
+  object-fit: cover;
+  width: 58px;
+}
+
+.foodImagePlaceholder {
+  align-items: center;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #eef4ee, #f8faf6);
+  border: 1px dashed #bdcdbc;
+  border-radius: 10px;
+  color: #6c7a70;
+  display: flex;
+  font-size: 12px;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 58px;
+  padding: 8px;
+  text-align: center;
+}
+
+.resultList strong,
+.resultList small {
+  display: block;
+}
+
+.resultList small {
+  color: #647064;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.resultList .activeResult {
+  background: #f1f7f1;
+  border-color: #2f7357;
+  box-shadow: 0 0 0 3px rgb(47 115 87 / 0.12);
+}
+
+.emptySearch {
+  background: #fbfcfa;
+  border: 1px dashed #bcc8b7;
+  border-radius: 12px;
+  color: #657063;
+  padding: 12px;
+}
+
+.softFilter {
+  border-top: 1px solid #edf1eb;
+  padding-top: 14px;
+}
+
+.filterChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filterChips span {
+  background: #f2f7f2;
+  border: 1px solid #dbe6d9;
+  border-radius: 999px;
+  color: #52645a;
+  font-size: 12px;
+  padding: 7px 9px;
+}
+
+.foodDetails {
+  min-width: 0;
+  padding: 0;
+}
+
+.breadcrumb {
+  background: #f7faf6;
+  border-bottom: 1px solid #d7dbd2;
+  color: #5f6b5d;
+  font-size: 13px;
+  padding: 12px 18px;
+}
+
+.detailTop {
+  align-items: flex-start;
+  display: flex;
+  gap: 18px;
+  padding: 22px;
+}
+
+.foodHeroImage {
+  aspect-ratio: 4 / 3;
+  background: #e8ede4;
+  border: 1px solid #d5ded0;
+  border-radius: 16px;
+  flex: 0 0 190px;
+  max-width: 190px;
+  object-fit: cover;
+  width: 190px;
+}
+
+.foodImagePlaceholder.foodHeroImage {
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  flex: 0 0 190px;
+  max-width: 190px;
+  min-height: 142px;
+  width: 190px;
+}
+
+.dataBadge {
+  background: #e5f0df;
+  border-radius: 999px;
+  color: #214c27;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  padding: 5px 8px;
+}
+
+.foodDetails h2 {
+  color: #183b25;
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.metaLine {
+  color: #5d675d;
+  margin: 0;
+}
+
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.tabs {
+  border-bottom: 1px solid #cbd4c7;
+  border-top: 1px solid #d7dbd2;
+  display: flex;
+  padding: 0 22px;
+}
+
+.tabs button {
+  background: transparent;
+  border: 0;
+  border-bottom: 4px solid transparent;
+  color: #27402c;
+  font-weight: 700;
+  padding: 14px 18px 10px;
+}
+
+.tabs .activeTab {
+  border-bottom-color: #245d34;
+  color: #1f5e31;
+}
+
+.tableToolbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 22px 12px;
+}
+
+.tableToolbar h3 {
+  margin-bottom: 3px;
+}
+
+.tableToolbar span {
+  color: #667066;
+  font-size: 13px;
+}
+
+.tableToolbar .sourceNote {
+  color: #6b5b2a;
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 6px 0 0;
+  max-width: 620px;
+}
+
+.aiButton {
+  background: #3f6f30;
+  border: 1px solid #315724;
+  border-radius: 10px;
+  color: #ffffff;
+  min-height: 38px;
+  padding: 0 12px;
+}
+
+.aiButton:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.aiPanel {
+  background: #f4f8f0;
+  border: 1px solid #cbdcc0;
+  border-radius: 14px;
+  margin: 0 22px 16px;
+  padding: 14px;
+}
+
+.aiPanel h3 {
+  margin-bottom: 8px;
+}
+
+.aiPanel p {
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.55;
+}
+
+.aiError {
+  background: #fff5f2;
+  border-color: #e1b4a8;
+}
+
+.segmented {
+  border: 1px solid #aab7a6;
+  border-radius: 12px;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.segmented button {
+  background: #ffffff;
+  border: 0;
+  border-right: 1px solid #aab7a6;
+  min-width: 78px;
+  padding: 8px 10px;
+}
+
+.segmented button:last-child {
+  border-right: 0;
+}
+
+.segmented .activeSegment {
+  background: #245d34;
+  color: #ffffff;
+}
+
+.nutrientTable {
+  border-collapse: collapse;
+  margin: 0 22px 22px;
+  width: calc(100% - 44px);
+}
+
+.nutrientTable th,
+.nutrientTable td {
+  border-bottom: 1px solid #d6dcd2;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.nutrientTable th {
+  background: #f1f7f1;
+  color: #203c25;
+}
+
+.nutrientTable tr:nth-child(even) td {
+  background: #fbfcfa;
+}
+
+.nutrientTable a {
+  color: #245d34;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.detailsGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+}
+
+.detailsGrid div {
+  border: 1px solid #d6dcd2;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.foodProfile {
+  padding: 22px;
+}
+
+.profileBlock {
+  background: #fbfcfa;
+  border: 1px solid #dfe8dd;
+  border-radius: 16px;
+  margin-top: 14px;
+  padding: 16px;
+}
+
+.profileBlock:first-child {
+  margin-top: 0;
+}
+
+.profileBlock p {
+  color: #52645a;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+.pillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pillList span {
+  background: #eef7f0;
+  border: 1px solid #cfe1d0;
+  border-radius: 999px;
+  color: #2b543f;
+  padding: 8px 10px;
+}
+
+.stepsList {
+  color: #42524a;
+  line-height: 1.7;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.inlineLocalSection {
+  margin: 0 22px 22px;
+}
+
+.wideFoodGallery,
+.localFoodGallery {
+  display: grid;
+  gap: 12px;
+}
+
+.wideFoodGallery {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.localFoodGallery {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.wideFoodGallery button,
+.localFoodGallery button {
+  background: #fbfcfa;
+  border: 1px solid #dce4d8;
+  border-radius: 14px;
+  color: #22312b;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+}
+
+.wideFoodGallery img,
+.localFoodGallery img {
+  aspect-ratio: 4 / 3;
+  background: #e8ede4;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.wideFoodGallery .foodImagePlaceholder,
+.localFoodGallery .foodImagePlaceholder {
+  aspect-ratio: 4 / 3;
+  border-radius: 0;
+  min-height: 110px;
+  width: 100%;
+}
+
+.wideFoodGallery strong,
+.wideFoodGallery span,
+.localFoodGallery span {
+  display: block;
+  padding: 9px 10px;
+}
+
+.wideFoodGallery span {
+  color: #647064;
+  font-size: 13px;
+  line-height: 1.45;
+  padding-top: 0;
+}
+
+.localFoodGallery span {
+  font-weight: 700;
+}
+
+.videoSection {
+  background: #fbfcfa;
+  border: 1px solid #dfe8dd;
+  border-radius: 16px;
+  margin: 0 22px 22px;
+  padding: 16px;
+}
+
+.videoSection iframe,
+.profileVideo {
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 14px;
+  display: block;
+  width: 100%;
+}
+
+.videoSearchCard {
+  align-items: flex-start;
+  background: #f4f8f0;
+  border: 1px solid #cbdcc0;
+  border-radius: 14px;
+  color: #204d2d;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  min-height: 120px;
+  padding: 18px;
+  text-decoration: none;
+}
+
+.videoSearchCard span {
+  color: #687267;
+  font-size: 13px;
+}
+
+.videoSearchCard strong {
+  font-size: 17px;
+}
+
+.videoSection a,
+.youtubeLink {
+  background: #eef7f0;
+  border: 1px solid #c9decf;
+  border-radius: 999px;
+  color: #1f5e31;
+  display: inline-block;
+  font-weight: 700;
+  padding: 10px 14px;
+  text-decoration: none;
+}
+
+.videoSection .videoSearchCard {
+  border-radius: 14px;
+  display: flex;
+  padding: 18px;
+}
+
+.detailsGrid span,
+.selectedHeader p,
+.selectedHeader span {
+  color: #627064;
+  display: block;
+  font-size: 13px;
+}
+
+.detailsGrid strong {
+  display: block;
+  margin-top: 5px;
+}
+
+.selectedHeader {
+  align-items: flex-start;
+  border-bottom: 1px solid #dce2d8;
+  display: flex;
+  gap: 12px;
+  padding-bottom: 16px;
+}
+
+.selectedHeader h2 {
+  color: #183b25;
+  margin: 2px 0 4px;
+}
+
+.searchBox {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin: 18px;
+}
+
+.searchBox input {
+  width: 100%;
+}
+
+.chipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 18px 18px;
+}
+
+.chipList span {
+  background: #f6f8f3;
+  border: 1px solid #d6ddcf;
+  border-radius: 999px;
+  font-size: 14px;
+  padding: 7px 10px;
+}
+
+.coverageStats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 7px 10px;
+}
+
+.coverageStats strong {
+  color: #194f30;
+  font-size: 22px;
+}
+
+.coverageStats span {
+  align-self: center;
+  color: #5d675d;
+}
+
+.foodList {
+  line-height: 1.8;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.statsGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.statsGrid div {
+  background: #f6f8f3;
+  border: 1px solid #d8dfd2;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.statsGrid strong {
+  color: #194f30;
+  display: block;
+  font-size: 23px;
+}
+
+.statsGrid span {
+  color: #5b6860;
+  font-size: 13px;
+}
+
+@media (max-width: 1180px) {
+  .fdcShell {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  .summaryPanel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 820px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .fdcHeader,
+  .detailTop {
+    flex-direction: column;
+  }
+
+  .fdcHeader {
+    gap: 16px;
+  }
+
+  .fdcHeader h1 {
+    font-size: 30px;
+    line-height: 1.12;
+  }
+
+  .fdcHeader nav {
+    max-width: none;
+    width: 100%;
+  }
+
+  .fdcHeader a {
+    flex: 1 1 150px;
+    text-align: center;
+  }
+
+  .foodHeroImage {
+    flex-basis: auto;
+    max-width: none;
+    width: 100%;
+  }
+
+  .foodImagePlaceholder.foodHeroImage {
+    flex-basis: auto;
+    max-width: none;
+    width: 100%;
+  }
+
+  .fdcHeader nav,
+  .actionButtons {
+    justify-content: flex-start;
+  }
+
+  .languageSelect {
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  .languageSelect select {
+    flex: 1;
+    max-width: none;
+  }
+
+  .searchRow,
+  .fdcShell,
+  .detailsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .searchRow button,
+  .searchRow input,
+  .searchRow select {
+    width: 100%;
+  }
+
+  .govBanner,
+  .fdcHeader,
+  .fdcShell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .searchHero {
+    margin: -12px 14px 18px;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .tabs button {
+    flex: 0 0 auto;
+    min-width: max-content;
+  }
+
+  .tableToolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .segmented {
+    align-self: flex-start;
+  }
+
+  .nutrientTable {
+    font-size: 14px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .countrySvgMap {
+    min-height: 220px;
+  }
+
+  .videoSection iframe,
+  .profileVideo {
+    min-height: 220px;
+  }
+
+  .wideFoodGallery,
+  .localFoodGallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .govBanner {
+    font-size: 12px;
+  }
+
+  .fdcHeader h1 {
+    font-size: 25px;
+  }
+
+  .fdcHeader p,
+  .heroCopy p,
+  .imageSearchRow span,
+  .searchHint {
+    font-size: 12px;
+  }
+
+  .searchHero,
+  .filterPanel,
+  .summaryPanel {
+    border-radius: 12px;
+  }
+
+  .detailTop,
+  .tableToolbar,
+  .foodProfile .profileBlock {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .actionButtons {
+    width: 100%;
+  }
+
+  .actionButtons button {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .nutrientTable {
+    margin-left: 14px;
+    margin-right: 14px;
+    width: calc(100% - 28px);
+  }
+
+  .wideFoodGallery,
+  .localFoodGallery,
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .foodImagePlaceholder {
+    min-height: 120px;
+  }
+
+  .videoSection iframe,
+  .profileVideo {
+    min-height: 190px;
+  }
+}
