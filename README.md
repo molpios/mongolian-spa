@@ -30,7 +30,7 @@ npm run build
 
 Add these environment variables in Vercel:
 
-- `GEMINI_API_KEY`
-- `GEMINI_MODEL` optional, defaults to `gemini-2.5-flash`
+- `mazaalai_API_KEY`
+- `GEMINI_MODEL` optional, defaults to `mazaalai-2.5-flash`
 
-Vercel will build the Vite app and use `api/gemini.js` for `/api/gemini`.
+Vercel will build the Vite app and use `api/mazaalai.js` for `/api/mazaalai`.
