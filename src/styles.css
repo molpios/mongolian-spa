@@ -940,6 +940,13 @@ h3 {
   padding: 0 12px;
 }
 
+.ttsAudioPlayer {
+  display: block;
+  height: 38px;
+  max-width: 100%;
+  width: 100%;
+}
+
 .ttsErrorText {
   color: #9a3b25;
   font-size: 12px;

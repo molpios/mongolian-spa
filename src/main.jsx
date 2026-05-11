@@ -1018,7 +1018,23 @@ const ttsVoices = {
   ru: "ru-RU-SvetlanaNeural"
 };
 
-const ttsEndpoint = import.meta.env.VITE_TTS_ENDPOINT || "/api/tts";
+function resolveTtsEndpoint() {
+  const configuredEndpoint = import.meta.env.VITE_TTS_ENDPOINT || "";
+  if (!configuredEndpoint) {
+    return "/api/tts";
+  }
+  try {
+    const url = new URL(configuredEndpoint, window.location.href);
+    if (["localhost", "127.0.0.1", "::1"].includes(url.hostname)) {
+      return "/api/tts";
+    }
+    return configuredEndpoint;
+  } catch {
+    return "/api/tts";
+  }
+}
+
+const ttsEndpoint = resolveTtsEndpoint();
 
 function cleanSpeechText(text) {
   return String(text || "")
@@ -1114,19 +1130,6 @@ function speakWithBrowser(text, language, callbacks = {}) {
   return true;
 }
 
-function playAudioBlob(blob) {
-  return new Promise((resolve, reject) => {
-    if (!blob?.size) {
-      reject(new Error("Empty TTS audio."));
-      return;
-    }
-    const audio = new Audio(URL.createObjectURL(blob));
-    audio.onended = () => resolve();
-    audio.onerror = () => reject(new Error("Audio playback failed."));
-    audio.play().catch(reject);
-  });
-}
-
 async function fetchTtsBlob(text, voice, language) {
   const controller = new AbortController();
   const timeoutId = window.setTimeout(() => controller.abort(), 30000);
@@ -1160,16 +1163,21 @@ async function fetchTtsBlob(text, voice, language) {
   }
 }
 
-async function playLocalTts(text, voice, language) {
+async function createTtsAudioUrl(text, voice, language) {
   const useAppTts = ttsEndpoint.startsWith("/api/tts") || ttsEndpoint.startsWith(`${window.location.origin}/api/tts`);
   const chunks = splitSpeechText(text, useAppTts ? 800 : 1200);
   if (!chunks.length) {
     throw new Error("No TTS text.");
   }
+  const blobs = [];
   for (const chunk of chunks) {
     const blob = await fetchTtsBlob(chunk, voice, language);
-    await playAudioBlob(blob);
+    if (!blob?.size) {
+      throw new Error("Empty TTS audio.");
+    }
+    blobs.push(blob);
   }
+  return URL.createObjectURL(new Blob(blobs, { type: "audio/mpeg" }));
 }
 
 const recipeSourceUrls = {
@@ -1341,6 +1349,7 @@ function App() {
   const [aiStatus, setAiStatus] = useState("idle");
   const [imageStatus, setImageStatus] = useState("idle");
   const [ttsStatus, setTtsStatus] = useState("idle");
+  const [ttsAudioUrl, setTtsAudioUrl] = useState("");
   const [userHeight, setUserHeight] = useState("");
   const [userWeight, setUserWeight] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
@@ -1414,6 +1423,12 @@ function App() {
       .then(setCountrySvg)
       .catch(() => setCountrySvg(""));
   }, []);
+
+  useEffect(() => () => {
+    if (ttsAudioUrl) {
+      URL.revokeObjectURL(ttsAudioUrl);
+    }
+  }, [ttsAudioUrl]);
 
   function handleMapClick(event) {
     const regionNode = event.target.closest?.("[class*='sm_state_MN']");
@@ -1610,26 +1625,28 @@ function App() {
       return;
     }
     setTtsStatus("loading");
+    if (ttsAudioUrl) {
+      URL.revokeObjectURL(ttsAudioUrl);
+      setTtsAudioUrl("");
+    }
     try {
-      const formData = new FormData();
-      formData.append("text", aiText);
-      formData.append("voice", ttsVoices[language]);
-
-      const response = await fetch(ttsEndpoint, {
-        method: "POST",
-        body: formData
-      });
-      if (!response.ok) {
-        throw new Error(t.ttsError);
-      }
-      const blob = await response.blob();
-      const audio = new Audio(URL.createObjectURL(blob));
+      const audioUrl = await createTtsAudioUrl(aiText, ttsVoices[language], language);
+      setTtsAudioUrl(audioUrl);
+      const audio = new Audio(audioUrl);
       audio.onended = () => setTtsStatus("done");
-      audio.onerror = () => setTtsStatus("error");
-      await audio.play();
-      setTtsStatus("playing");
+      audio.onerror = () => setTtsStatus("done");
+      try {
+        await audio.play();
+        setTtsStatus("playing");
+      } catch {
+        setTtsStatus("done");
+      }
     } catch {
-      if (speakWithBrowser(aiText, language)) {
+      if (language !== "mn" && speakWithBrowser(aiText, language, {
+        onStart: () => setTtsStatus("playing"),
+        onEnd: () => setTtsStatus("done"),
+        onError: () => setTtsStatus("error")
+      })) {
         setTtsStatus("playing");
       } else {
         setTtsStatus("error");
@@ -1816,6 +1833,7 @@ function App() {
                       <button className="ttsButton" onClick={readAiText} disabled={!aiText || aiStatus === "loading" || ttsStatus === "loading"}>
                         {ttsStatus === "loading" || ttsStatus === "playing" ? t.readingAiText : t.readAiText}
                       </button>
+                      {ttsAudioUrl && <audio className="ttsAudioPlayer" controls src={ttsAudioUrl} />}
                       {ttsStatus === "error" && <span className="ttsErrorText">{t.ttsError}</span>}
                     </div>
                   </>
