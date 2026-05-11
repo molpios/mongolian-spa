@@ -1,5 +1,52 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
+import verifyCallbackHandler from "./api/verify-callback.js";
+import verifyPhoneHandler from "./api/verify-phone.js";
+import verifyStatusHandler from "./api/verify-status.js";
+
+function readJsonBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk;
+    });
+    req.on("end", () => {
+      if (!body) {
+        resolve({});
+        return;
+      }
+      try {
+        resolve(JSON.parse(body));
+      } catch (error) {
+        reject(error);
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+async function viteApiRoute(handler, req, res) {
+  const url = new URL(req.url, `http://${req.headers.host || "127.0.0.1"}`);
+  const body = req.method === "POST" ? await readJsonBody(req) : {};
+  const apiReq = {
+    method: req.method,
+    headers: req.headers,
+    body,
+    query: Object.fromEntries(url.searchParams.entries())
+  };
+  const apiRes = {
+    status(statusCode) {
+      return {
+        json(payload) {
+          res.statusCode = statusCode;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(payload));
+        }
+      };
+    }
+  };
+  await handler(apiReq, apiRes);
+}
 
 async function geminiProxy(req, res, apiKey, model) {
   if (!apiKey) {
@@ -75,6 +122,27 @@ export default defineConfig(({ mode }) => {
               return;
             }
             geminiProxy(req, res, apiKey, model);
+          });
+          server.middlewares.use("/api/verify-phone", (req, res) => {
+            viteApiRoute(verifyPhoneHandler, req, res).catch((error) => {
+              res.statusCode = 500;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: error.message }));
+            });
+          });
+          server.middlewares.use("/api/verify-status", (req, res) => {
+            viteApiRoute(verifyStatusHandler, req, res).catch((error) => {
+              res.statusCode = 500;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: error.message }));
+            });
+          });
+          server.middlewares.use("/api/verify-callback", (req, res) => {
+            viteApiRoute(verifyCallbackHandler, req, res).catch((error) => {
+              res.statusCode = 500;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: error.message }));
+            });
           });
         }
       }

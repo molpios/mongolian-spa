@@ -20,6 +20,7 @@ npm run dev
 
 Set `GEMINI_API_KEY` in `.env` for local AI features.
 Set `VITE_TTS_ENDPOINT` if your local TTS server is not running at `http://localhost:8000/tts`.
+Set `VERIFY_MN_API_KEY` and `VERIFY_MN_CALLBACK_URL` for phone login verification.
 
 ## Build
 
@@ -31,7 +32,10 @@ npm run build
 
 Add these environment variables in Vercel:
 
-- `mazaalai_API_KEY`
-- `MAZAALAI_MODEL` optional, defaults to `mazaalai-2.5-flash`
+- `GEMINI_API_KEY`
+- `GEMINI_MODEL` optional, defaults to `gemini-2.5-flash`
+- `VERIFY_MN_API_KEY`
+- `VERIFY_MN_CALLBACK_URL`, for example `https://your-domain.vercel.app/api/verify-callback`
+- `VITE_TTS_ENDPOINT` optional, only needed if using an external TTS service
 
-Vercel will build the Vite app and use `api/mazaalai.js` for `/api/mazaalai`.
+Vercel will build the Vite app and use `api/gemini.js` for `/api/gemini` plus verify.mn routes under `/api/verify-*`.

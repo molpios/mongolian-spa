@@ -176,6 +176,69 @@ h3 {
   font-size: 13px;
 }
 
+.loginPanel {
+  align-items: center;
+  background: #fbfcfa;
+  border: 1px solid #d8e5d7;
+  border-radius: 14px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  margin-top: 12px;
+  padding: 12px;
+}
+
+.loginPanel div:first-child,
+.loginPanel p {
+  min-width: 0;
+}
+
+.loginPanel strong,
+.loginPanel span {
+  display: block;
+}
+
+.loginPanel span,
+.loginPanel p {
+  color: #66736c;
+  font-size: 13px;
+  margin: 3px 0 0;
+}
+
+.loginPanel a {
+  color: #1f5e31;
+  font-weight: 700;
+}
+
+.verifiedLogin {
+  grid-template-columns: 1fr;
+}
+
+.loginControls {
+  display: flex;
+  gap: 8px;
+}
+
+.loginControls input {
+  border: 1px solid #c7d4c7;
+  border-radius: 12px;
+  min-height: 42px;
+  padding: 0 12px;
+}
+
+.loginControls button {
+  background: #245d34;
+  border: 1px solid #1d4f31;
+  border-radius: 12px;
+  color: #ffffff;
+  min-height: 42px;
+  padding: 0 14px;
+}
+
+.loginError {
+  color: #9a3b25 !important;
+}
+
 .searchRow input,
 .searchRow select,
 .searchBox input {
@@ -638,6 +701,16 @@ h3 {
   color: #263b22;
 }
 
+.lockedTools {
+  background: #fff8df;
+  border: 1px solid #e1cf89;
+  border-radius: 12px;
+  color: #6b5b2a;
+  line-height: 1.45;
+  max-width: 420px;
+  padding: 12px;
+}
+
 .metricInputs {
   display: grid;
   gap: 8px;
@@ -1091,14 +1164,21 @@ h3 {
 
   .searchRow,
   .fdcShell,
-  .detailsGrid {
+  .detailsGrid,
+  .loginPanel {
     grid-template-columns: 1fr;
   }
 
   .searchRow button,
   .searchRow input,
-  .searchRow select {
+  .searchRow select,
+  .loginControls input,
+  .loginControls button {
     width: 100%;
+  }
+
+  .loginControls {
+    flex-direction: column;
   }
 
   .govBanner,

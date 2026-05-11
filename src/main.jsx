@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Activity, Database, Download, Filter, Info, MapPin, Search, TableProperties, Utensils } from "lucide-react";
+import { verifyPhone } from "./verifyPhone.js";
 import "./styles.css";
 
 const translations = {
@@ -59,6 +60,15 @@ const translations = {
     weightKg: "Weight (kg)",
     personalFit: "Personal fit",
     personalFitHint: "Optional: add height and weight before asking Mazaalai AI.",
+    loginTitle: "Login for advanced tools",
+    loginHint: "Login unlocks Mazaalai AI, BMI guidance, image search, and text-to-speech.",
+    phonePlaceholder: "Phone number",
+    loginButton: "Verify phone",
+    loginChecking: "Waiting for SMS...",
+    loginSuccess: "Phone verified. Advanced tools are unlocked.",
+    loginFailed: "Phone verification failed or expired.",
+    openSms: "Open SMS app",
+    lockedFeature: "Login to use Mazaalai AI, BMI guidance, image search, and TTS.",
     imageUnverified: "Verified photo not available",
     nutrient: "Nutrient",
     amount: "Amount",
@@ -143,6 +153,15 @@ const translations = {
     weightKg: "Жин (кг)",
     personalFit: "Танд тохирох эсэх",
     personalFitHint: "Заавал биш: Mazaalai AI асуухаас өмнө өндөр, жингээ оруулна.",
+    loginTitle: "Нэмэлт боломж нээх",
+    loginHint: "Login хийснээр Mazaalai AI, биеийн жингийн индекс, зургаар хайх, TTS уншуулах эрх нээгдэнэ.",
+    phonePlaceholder: "Утасны дугаар",
+    loginButton: "Утсаар баталгаажуулах",
+    loginChecking: "SMS илгээхийг хүлээж байна...",
+    loginSuccess: "Утас баталгаажлаа. Нэмэлт боломжууд нээгдсэн.",
+    loginFailed: "Баталгаажуулалт амжилтгүй эсвэл хугацаа дууссан.",
+    openSms: "SMS app нээх",
+    lockedFeature: "Mazaalai AI, BMI, зургаар хайх, TTS ашиглахын тулд login хийнэ үү.",
     imageUnverified: "Баталгаатай зураг одоогоор байхгүй",
     nutrient: "Шим тэжээл",
     amount: "Хэмжээ",
@@ -227,6 +246,15 @@ const translations = {
     weightKg: "몸무게 (kg)",
     personalFit: "개인 적합성",
     personalFitHint: "선택 사항: Mazaalai AI에 묻기 전에 키와 몸무게를 입력하세요.",
+    loginTitle: "고급 도구 로그인",
+    loginHint: "로그인하면 Mazaalai AI, BMI 안내, 이미지 검색, TTS를 사용할 수 있습니다.",
+    phonePlaceholder: "전화번호",
+    loginButton: "전화 인증",
+    loginChecking: "SMS 대기 중...",
+    loginSuccess: "전화 인증 완료. 고급 도구가 열렸습니다.",
+    loginFailed: "전화 인증에 실패했거나 만료되었습니다.",
+    openSms: "SMS 앱 열기",
+    lockedFeature: "Mazaalai AI, BMI, 이미지 검색, TTS를 사용하려면 로그인하세요.",
     imageUnverified: "검증된 사진 없음",
     nutrient: "영양소",
     amount: "양",
@@ -311,6 +339,15 @@ const translations = {
     weightKg: "体重 (kg)",
     personalFit: "个人适配",
     personalFitHint: "可选：询问 Mazaalai AI 前输入身高和体重。",
+    loginTitle: "登录使用高级工具",
+    loginHint: "登录后可使用 Mazaalai AI、BMI 建议、图片搜索和语音朗读。",
+    phonePlaceholder: "手机号",
+    loginButton: "验证手机",
+    loginChecking: "等待短信...",
+    loginSuccess: "手机已验证。高级工具已解锁。",
+    loginFailed: "手机验证失败或已过期。",
+    openSms: "打开短信应用",
+    lockedFeature: "请登录以使用 Mazaalai AI、BMI、图片搜索和语音朗读。",
     imageUnverified: "暂无已验证照片",
     nutrient: "营养素",
     amount: "含量",
@@ -395,6 +432,15 @@ const translations = {
     weightKg: "Вес (кг)",
     personalFit: "Персональная оценка",
     personalFitHint: "Необязательно: укажите рост и вес перед запросом к Mazaalai AI.",
+    loginTitle: "Вход для расширенных функций",
+    loginHint: "После входа доступны Mazaalai AI, BMI, поиск по фото и озвучивание текста.",
+    phonePlaceholder: "Номер телефона",
+    loginButton: "Подтвердить телефон",
+    loginChecking: "Ожидание SMS...",
+    loginSuccess: "Телефон подтвержден. Расширенные функции открыты.",
+    loginFailed: "Подтверждение не удалось или истекло.",
+    openSms: "Открыть SMS",
+    lockedFeature: "Войдите, чтобы использовать Mazaalai AI, BMI, поиск по фото и TTS.",
     imageUnverified: "Проверенное фото недоступно",
     nutrient: "Нутриент",
     amount: "Количество",
@@ -936,6 +982,23 @@ const ttsVoices = {
 
 const ttsEndpoint = import.meta.env.VITE_TTS_ENDPOINT || "http://localhost:8000/tts";
 
+function speakWithBrowser(text, language) {
+  if (!("speechSynthesis" in window)) {
+    return false;
+  }
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  const langCodes = { mn: "mn-MN", en: "en-US", ko: "ko-KR", zh: "zh-CN", ru: "ru-RU" };
+  utterance.lang = langCodes[language] || "mn-MN";
+  const voices = window.speechSynthesis.getVoices();
+  const matchingVoice = voices.find((voice) => voice.lang?.toLowerCase().startsWith(utterance.lang.toLowerCase().slice(0, 2)));
+  if (matchingVoice) {
+    utterance.voice = matchingVoice;
+  }
+  window.speechSynthesis.speak(utterance);
+  return true;
+}
+
 const recipeSourceUrls = {
   Buuz: "https://www.mongolfood.info/en/recipes/buuz.html",
   Khuushuur: "https://www.mongolfood.info/en/recipes/khuushuur.html",
@@ -1107,6 +1170,11 @@ function App() {
   const [ttsStatus, setTtsStatus] = useState("idle");
   const [userHeight, setUserHeight] = useState("");
   const [userWeight, setUserWeight] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+  const [loginStatus, setLoginStatus] = useState("idle");
+  const [loginMessage, setLoginMessage] = useState("");
+  const [loginSession, setLoginSession] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [foodOnlyMode, setFoodOnlyMode] = useState(false);
   const [countrySvg, setCountrySvg] = useState("");
   const t = translations[language];
@@ -1198,6 +1266,28 @@ function App() {
     setAiStatus("idle");
   }
 
+  async function handleLogin(event) {
+    event.preventDefault();
+    setLoginStatus("loading");
+    setLoginMessage("");
+    setLoginSession(null);
+    try {
+      const verified = await verifyPhone(phoneInput, {
+        onSession: (session) => {
+          setLoginSession(session);
+          setLoginMessage(session.displayInstruction || t.loginChecking);
+        },
+        onStatus: () => {}
+      });
+      setIsLoggedIn(verified);
+      setLoginStatus(verified ? "done" : "error");
+      setLoginMessage(verified ? t.loginSuccess : t.loginFailed);
+    } catch (error) {
+      setLoginStatus("error");
+      setLoginMessage(error.message || t.loginFailed);
+    }
+  }
+
   function fileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -1211,6 +1301,11 @@ function App() {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) {
+      return;
+    }
+    if (!isLoggedIn) {
+      setAiText(t.lockedFeature);
+      setAiStatus("error");
       return;
     }
     setImageStatus("loading");
@@ -1264,6 +1359,11 @@ function App() {
   }
 
   async function requestAiFacts() {
+    if (!isLoggedIn) {
+      setAiText(t.lockedFeature);
+      setAiStatus("error");
+      return;
+    }
     setAiStatus("loading");
     setAiText("");
     const profile = profileForFood(selectedCatalogFood);
@@ -1329,6 +1429,10 @@ function App() {
   }
 
   async function readAiText() {
+    if (!isLoggedIn) {
+      setTtsStatus("error");
+      return;
+    }
     if (!aiText || aiStatus === "loading") {
       return;
     }
@@ -1352,7 +1456,11 @@ function App() {
       await audio.play();
       setTtsStatus("playing");
     } catch {
-      setTtsStatus("error");
+      if (speakWithBrowser(aiText, language)) {
+        setTtsStatus("playing");
+      } else {
+        setTtsStatus("error");
+      }
     }
   }
 
@@ -1392,13 +1500,29 @@ function App() {
           <input value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
           <button type="submit"><Search size={18} /> {t.search}</button>
         </form>
-        <div className="imageSearchRow">
-          <label className="imageSearchButton">
-            <input type="file" accept="image/*" onChange={handleImageSearch} />
-            {imageStatus === "loading" ? t.imageSearching : t.imageSearch}
-          </label>
-          <span>{t.imageSearchHint}</span>
-        </div>
+        <form className={`loginPanel ${isLoggedIn ? "verifiedLogin" : ""}`} onSubmit={handleLogin}>
+          <div>
+            <strong>{t.loginTitle}</strong>
+            <span>{isLoggedIn ? t.loginSuccess : t.loginHint}</span>
+          </div>
+          {!isLoggedIn && (
+            <div className="loginControls">
+              <input value={phoneInput} onChange={(event) => setPhoneInput(event.target.value)} placeholder={t.phonePlaceholder} inputMode="numeric" />
+              <button type="submit" disabled={loginStatus === "loading"}>{loginStatus === "loading" ? t.loginChecking : t.loginButton}</button>
+            </div>
+          )}
+          {loginMessage && <p className={loginStatus === "error" ? "loginError" : ""}>{loginMessage}</p>}
+          {loginSession?.smsUri && !isLoggedIn && <a href={loginSession.smsUri}>{t.openSms}</a>}
+        </form>
+        {isLoggedIn && (
+          <div className="imageSearchRow">
+            <label className="imageSearchButton">
+              <input type="file" accept="image/*" onChange={handleImageSearch} />
+              {imageStatus === "loading" ? t.imageSearching : t.imageSearch}
+            </label>
+            <span>{t.imageSearchHint}</span>
+          </div>
+        )}
         <p className="searchHint">{foodQuery ? t.searchHint(visibleFoods.length) : t.searchHintDefault}</p>
       </section>
 
@@ -1480,24 +1604,30 @@ function App() {
                   <span>{t.valuesShown(basis)}</span>
                   <p className="sourceNote">{t.sourceNote}</p>
                 </div>
-                <div className="personalFitBox">
-                  <strong>{t.personalFit}</strong>
-                  <span>{t.personalFitHint}</span>
-                  <div className="metricInputs">
-                    <input type="number" min="1" value={userHeight} onChange={(event) => setUserHeight(event.target.value)} placeholder={t.heightCm} />
-                    <input type="number" min="1" value={userWeight} onChange={(event) => setUserWeight(event.target.value)} placeholder={t.weightKg} />
-                  </div>
-                  {bmi && <span>BMI: {bmi}</span>}
-                </div>
-                <div className="aiActions">
-                  <button className="aiButton" onClick={requestAiFacts} disabled={aiStatus === "loading"}>
-                    {aiStatus === "loading" ? t.aiLoading : t.aiButton}
-                  </button>
-                  <button className="ttsButton" onClick={readAiText} disabled={!aiText || aiStatus === "loading" || ttsStatus === "loading"}>
-                    {ttsStatus === "loading" || ttsStatus === "playing" ? t.readingAiText : t.readAiText}
-                  </button>
-                  {ttsStatus === "error" && <span className="ttsErrorText">{t.ttsError}</span>}
-                </div>
+                {isLoggedIn ? (
+                  <>
+                    <div className="personalFitBox">
+                      <strong>{t.personalFit}</strong>
+                      <span>{t.personalFitHint}</span>
+                      <div className="metricInputs">
+                        <input type="number" min="1" value={userHeight} onChange={(event) => setUserHeight(event.target.value)} placeholder={t.heightCm} />
+                        <input type="number" min="1" value={userWeight} onChange={(event) => setUserWeight(event.target.value)} placeholder={t.weightKg} />
+                      </div>
+                      {bmi && <span>BMI: {bmi}</span>}
+                    </div>
+                    <div className="aiActions">
+                      <button className="aiButton" onClick={requestAiFacts} disabled={aiStatus === "loading"}>
+                        {aiStatus === "loading" ? t.aiLoading : t.aiButton}
+                      </button>
+                      <button className="ttsButton" onClick={readAiText} disabled={!aiText || aiStatus === "loading" || ttsStatus === "loading"}>
+                        {ttsStatus === "loading" || ttsStatus === "playing" ? t.readingAiText : t.readAiText}
+                      </button>
+                      {ttsStatus === "error" && <span className="ttsErrorText">{t.ttsError}</span>}
+                    </div>
+                  </>
+                ) : (
+                  <div className="lockedTools">{t.lockedFeature}</div>
+                )}
                 <div className="segmented">
                   <button className={basis === "100g" ? "activeSegment" : ""} onClick={() => setBasis("100g")}>100 g</button>
                   <button className={basis === "serving" ? "activeSegment" : ""} onClick={() => setBasis("serving")}>{t.serving}</button>

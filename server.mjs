@@ -2,6 +2,9 @@ import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import verifyCallbackHandler from "./api/verify-callback.js";
+import verifyPhoneHandler from "./api/verify-phone.js";
+import verifyStatusHandler from "./api/verify-status.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(__dirname, "dist");
@@ -62,6 +65,48 @@ async function handleGemini(req, res) {
   });
 }
 
+function readJsonBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk;
+    });
+    req.on("end", () => {
+      if (!body) {
+        resolve({});
+        return;
+      }
+      try {
+        resolve(JSON.parse(body));
+      } catch (error) {
+        reject(error);
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+async function handleApiRoute(handler, req, res) {
+  const url = new URL(req.url, `http://localhost:${port}`);
+  const body = req.method === "POST" ? await readJsonBody(req) : {};
+  const apiReq = {
+    method: req.method,
+    headers: req.headers,
+    body,
+    query: Object.fromEntries(url.searchParams.entries())
+  };
+  const apiRes = {
+    status(statusCode) {
+      return {
+        json(payload) {
+          sendJson(res, statusCode, payload);
+        }
+      };
+    }
+  };
+  await handler(apiReq, apiRes);
+}
+
 function serveStatic(req, res) {
   const requestPath = decodeURIComponent(new URL(req.url, `http://localhost:${port}`).pathname);
   const safePath = requestPath === "/" ? "/index.html" : requestPath;
@@ -89,6 +134,18 @@ http.createServer((req, res) => {
       return;
     }
     handleGemini(req, res);
+    return;
+  }
+  if (req.url?.startsWith("/api/verify-phone")) {
+    handleApiRoute(verifyPhoneHandler, req, res).catch((error) => sendJson(res, 500, { error: error.message }));
+    return;
+  }
+  if (req.url?.startsWith("/api/verify-status")) {
+    handleApiRoute(verifyStatusHandler, req, res).catch((error) => sendJson(res, 500, { error: error.message }));
+    return;
+  }
+  if (req.url?.startsWith("/api/verify-callback")) {
+    handleApiRoute(verifyCallbackHandler, req, res).catch((error) => sendJson(res, 500, { error: error.message }));
     return;
   }
   serveStatic(req, res);
