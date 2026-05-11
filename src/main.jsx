@@ -52,6 +52,13 @@ const translations = {
     backToAll: "Back to all foods",
     videoGuide: "Cooking video",
     videoSearch: "Find cooking videos on YouTube",
+    readAiText: "Read AI text",
+    readingAiText: "Reading...",
+    ttsError: "TTS service is unavailable. Start the local TTS server on port 8000.",
+    heightCm: "Height (cm)",
+    weightKg: "Weight (kg)",
+    personalFit: "Personal fit",
+    personalFitHint: "Optional: add height and weight before asking Mazaalai AI.",
     imageUnverified: "Verified photo not available",
     nutrient: "Nutrient",
     amount: "Amount",
@@ -129,6 +136,13 @@ const translations = {
     backToAll: "Бүх хоол руу буцах",
     videoGuide: "Хийх бичлэг",
     videoSearch: "YouTube дээр хийх бичлэг хайх",
+    readAiText: "AI текст унших",
+    readingAiText: "Уншиж байна...",
+    ttsError: "TTS service ажиллахгүй байна. Local TTS server-ийг 8000 port дээр асаана уу.",
+    heightCm: "Өндөр (см)",
+    weightKg: "Жин (кг)",
+    personalFit: "Танд тохирох эсэх",
+    personalFitHint: "Заавал биш: Mazaalai AI асуухаас өмнө өндөр, жингээ оруулна.",
     imageUnverified: "Баталгаатай зураг одоогоор байхгүй",
     nutrient: "Шим тэжээл",
     amount: "Хэмжээ",
@@ -206,6 +220,13 @@ const translations = {
     backToAll: "전체 식품으로 돌아가기",
     videoGuide: "조리 영상",
     videoSearch: "YouTube에서 조리 영상 찾기",
+    readAiText: "AI 텍스트 읽기",
+    readingAiText: "읽는 중...",
+    ttsError: "TTS 서비스를 사용할 수 없습니다. 로컬 TTS 서버를 8000 포트에서 실행하세요.",
+    heightCm: "키 (cm)",
+    weightKg: "몸무게 (kg)",
+    personalFit: "개인 적합성",
+    personalFitHint: "선택 사항: Mazaalai AI에 묻기 전에 키와 몸무게를 입력하세요.",
     imageUnverified: "검증된 사진 없음",
     nutrient: "영양소",
     amount: "양",
@@ -283,6 +304,13 @@ const translations = {
     backToAll: "返回所有食品",
     videoGuide: "制作视频",
     videoSearch: "在 YouTube 查找制作视频",
+    readAiText: "朗读 AI 文本",
+    readingAiText: "正在朗读...",
+    ttsError: "TTS 服务不可用。请在 8000 端口启动本地 TTS 服务。",
+    heightCm: "身高 (cm)",
+    weightKg: "体重 (kg)",
+    personalFit: "个人适配",
+    personalFitHint: "可选：询问 Mazaalai AI 前输入身高和体重。",
     imageUnverified: "暂无已验证照片",
     nutrient: "营养素",
     amount: "含量",
@@ -360,6 +388,13 @@ const translations = {
     backToAll: "Назад ко всем продуктам",
     videoGuide: "Видео приготовления",
     videoSearch: "Найти видео приготовления на YouTube",
+    readAiText: "Прочитать текст AI",
+    readingAiText: "Чтение...",
+    ttsError: "Сервис TTS недоступен. Запустите локальный TTS сервер на порту 8000.",
+    heightCm: "Рост (см)",
+    weightKg: "Вес (кг)",
+    personalFit: "Персональная оценка",
+    personalFitHint: "Необязательно: укажите рост и вес перед запросом к Mazaalai AI.",
     imageUnverified: "Проверенное фото недоступно",
     nutrient: "Нутриент",
     amount: "Количество",
@@ -884,8 +919,22 @@ const specificFoodImages = {
 };
 
 const youtubeVideos = {
-  Buuz: "XzzkGPDD_yw"
+  Buuz: "XzzkGPDD_yw",
+  Khuushuur: "2QpCDx4AAYU",
+  Tsuivan: "Ojoys4W2KK0",
+  "Suutei tsai": "5MxUhIFxZWk",
+  Aaruul: "uiiYJ3AXbAo"
 };
+
+const ttsVoices = {
+  mn: "mn-MN-YesuiNeural",
+  en: "en-US-JennyNeural",
+  ko: "ko-KR-SunHiNeural",
+  zh: "zh-CN-XiaoxiaoNeural",
+  ru: "ru-RU-SvetlanaNeural"
+};
+
+const ttsEndpoint = import.meta.env.VITE_TTS_ENDPOINT || "http://localhost:8000/tts";
 
 const recipeSourceUrls = {
   Buuz: "https://www.mongolfood.info/en/recipes/buuz.html",
@@ -1055,6 +1104,9 @@ function App() {
   const [aiText, setAiText] = useState("");
   const [aiStatus, setAiStatus] = useState("idle");
   const [imageStatus, setImageStatus] = useState("idle");
+  const [ttsStatus, setTtsStatus] = useState("idle");
+  const [userHeight, setUserHeight] = useState("");
+  const [userWeight, setUserWeight] = useState("");
   const [foodOnlyMode, setFoodOnlyMode] = useState(false);
   const [countrySvg, setCountrySvg] = useState("");
   const t = translations[language];
@@ -1079,6 +1131,10 @@ function App() {
   const rows = nutrientRows(selectedFood.description, selected, multiplier);
   const displayRows = localizedNutrientRows(rows, language);
   const selectedFoodSource = sourceForFood(selectedCatalogFood, language);
+  const heightNumber = Number(userHeight);
+  const weightNumber = Number(userWeight);
+  const hasPersonalMetrics = heightNumber > 0 && weightNumber > 0;
+  const bmi = hasPersonalMetrics ? Number((weightNumber / ((heightNumber / 100) ** 2)).toFixed(1)) : null;
   const searchedFoods = mongolianFoodCatalog.filter((food) => {
     const needle = normalizeSearch(foodQuery);
     if (!needle) {
@@ -1230,13 +1286,16 @@ function App() {
       `Known recipe profile in app: ingredients=${profile.ingredients.join(", ")}; steps=${profile.steps.join(" | ")}; notes=${profile.notes}`,
       `Regional food note: ${regionSpecialties[selected] || "No regional note available."}`,
       `Displayed nutrient table: ${JSON.stringify(rows)}`,
+      hasPersonalMetrics
+        ? `User personal metrics: height=${heightNumber} cm, weight=${weightNumber} kg, BMI=${bmi}. Include a practical suitability assessment for this food, portion cautions, and when to limit it. Do not diagnose disease.`
+        : "User personal metrics were not provided. Mention that personal suitability is general unless height and weight are added.",
       "Return the report with these sections:",
       "1) Overview: what the food is, how it fits Mongolian food culture, and where it is commonly eaten.",
       "2) Regional context: explain the selected aimag/city, relevant soums/districts, and why this food appears there. If the food is national, explain national use plus local variation.",
       "3) Ingredients and substitutions: list normal ingredients, optional ingredients, and what changes by household, season, livestock type, or market access.",
       "4) Detailed cooking method: step-by-step, including preparation, cooking order, approximate timing, doneness signs, texture, common mistakes, and how to serve.",
       "5) Nutrition interpretation: explain energy, protein, fat, carbohydrate, sodium, minerals, and vitamins using only the displayed table. Give practical meaning for a normal eater.",
-      "6) Suitability: note who may benefit, who should be cautious, and dietary considerations such as sodium, saturated fat, lactose, gluten, or high energy density when relevant.",
+      "6) Personal suitability: say whether this food is generally suitable for the user profile if height/weight were provided; otherwise give a general suitability note. Include portion guidance, activity context, and cautions without medical diagnosis.",
       "7) Storage and food safety: raw ingredient handling, cooking temperature logic, cooling, refrigeration, drying/fermentation risks, and safe leftovers.",
       "8) Comparison with related Mongolian foods: compare briefly with 2-4 nearby foods from the catalog.",
       "9) Data quality note: separate verified table values from cultural/recipe explanation and list what official Mongolian lab or USDA-style data should verify.",
@@ -1266,6 +1325,34 @@ function App() {
     } catch (error) {
       setAiText(error.message);
       setAiStatus("error");
+    }
+  }
+
+  async function readAiText() {
+    if (!aiText || aiStatus === "loading") {
+      return;
+    }
+    setTtsStatus("loading");
+    try {
+      const formData = new FormData();
+      formData.append("text", aiText);
+      formData.append("voice", ttsVoices[language]);
+
+      const response = await fetch(ttsEndpoint, {
+        method: "POST",
+        body: formData
+      });
+      if (!response.ok) {
+        throw new Error(t.ttsError);
+      }
+      const blob = await response.blob();
+      const audio = new Audio(URL.createObjectURL(blob));
+      audio.onended = () => setTtsStatus("done");
+      audio.onerror = () => setTtsStatus("error");
+      await audio.play();
+      setTtsStatus("playing");
+    } catch {
+      setTtsStatus("error");
     }
   }
 
@@ -1393,9 +1480,24 @@ function App() {
                   <span>{t.valuesShown(basis)}</span>
                   <p className="sourceNote">{t.sourceNote}</p>
                 </div>
-                <button className="aiButton" onClick={requestAiFacts} disabled={aiStatus === "loading"}>
-                  {aiStatus === "loading" ? t.aiLoading : t.aiButton}
-                </button>
+                <div className="personalFitBox">
+                  <strong>{t.personalFit}</strong>
+                  <span>{t.personalFitHint}</span>
+                  <div className="metricInputs">
+                    <input type="number" min="1" value={userHeight} onChange={(event) => setUserHeight(event.target.value)} placeholder={t.heightCm} />
+                    <input type="number" min="1" value={userWeight} onChange={(event) => setUserWeight(event.target.value)} placeholder={t.weightKg} />
+                  </div>
+                  {bmi && <span>BMI: {bmi}</span>}
+                </div>
+                <div className="aiActions">
+                  <button className="aiButton" onClick={requestAiFacts} disabled={aiStatus === "loading"}>
+                    {aiStatus === "loading" ? t.aiLoading : t.aiButton}
+                  </button>
+                  <button className="ttsButton" onClick={readAiText} disabled={!aiText || aiStatus === "loading" || ttsStatus === "loading"}>
+                    {ttsStatus === "loading" || ttsStatus === "playing" ? t.readingAiText : t.readAiText}
+                  </button>
+                  {ttsStatus === "error" && <span className="ttsErrorText">{t.ttsError}</span>}
+                </div>
                 <div className="segmented">
                   <button className={basis === "100g" ? "activeSegment" : ""} onClick={() => setBasis("100g")}>100 g</button>
                   <button className={basis === "serving" ? "activeSegment" : ""} onClick={() => setBasis("serving")}>{t.serving}</button>

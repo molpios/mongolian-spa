@@ -19,6 +19,7 @@ npm run dev
 ```
 
 Set `GEMINI_API_KEY` in `.env` for local AI features.
+Set `VITE_TTS_ENDPOINT` if your local TTS server is not running at `http://localhost:8000/tts`.
 
 ## Build
 
