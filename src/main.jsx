@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Activity,
-  CheckCircle2,
   Database,
   Download,
   Filter,
@@ -1012,30 +1011,165 @@ const youtubeVideos = {
 };
 
 const ttsVoices = {
-  mn: "mn-MN-YesuiNeural",
+  mn: "mn-MN-BataaNeural",
   en: "en-US-JennyNeural",
   ko: "ko-KR-SunHiNeural",
   zh: "zh-CN-XiaoxiaoNeural",
   ru: "ru-RU-SvetlanaNeural"
 };
 
-const ttsEndpoint = import.meta.env.VITE_TTS_ENDPOINT || "http://localhost:8000/tts";
+const ttsEndpoint = import.meta.env.VITE_TTS_ENDPOINT || "/api/tts";
 
-function speakWithBrowser(text, language) {
+function cleanSpeechText(text) {
+  return String(text || "")
+    .replace(/[`*_#>]+/g, " ")
+    .replace(/\[(.*?)\]\((.*?)\)/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function splitSpeechText(text, maxLength = 900) {
+  const cleaned = cleanSpeechText(text);
+  if (!cleaned) {
+    return [];
+  }
+  const sentences = cleaned.match(/[^.!?。！？\n]+[.!?。！？]?/g) || [cleaned];
+  const chunks = [];
+  let current = "";
+  sentences.forEach((sentence) => {
+    const next = sentence.trim();
+    if (!next) {
+      return;
+    }
+    if ((current + " " + next).trim().length > maxLength && current) {
+      chunks.push(current.trim());
+      current = next;
+    } else {
+      current = `${current} ${next}`.trim();
+    }
+  });
+  if (current) {
+    chunks.push(current.trim());
+  }
+  return chunks;
+}
+
+function voiceForBrowser(language, langCode) {
+  const voices = window.speechSynthesis.getVoices();
+  return voices.find((voice) => voice.lang?.toLowerCase() === langCode.toLowerCase())
+    || voices.find((voice) => voice.lang?.toLowerCase().startsWith(langCode.toLowerCase().slice(0, 2)))
+    || null;
+}
+
+function speakWithBrowser(text, language, callbacks = {}) {
   if (!("speechSynthesis" in window)) {
     return false;
   }
   window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
   const langCodes = { mn: "mn-MN", en: "en-US", ko: "ko-KR", zh: "zh-CN", ru: "ru-RU" };
-  utterance.lang = langCodes[language] || "mn-MN";
-  const voices = window.speechSynthesis.getVoices();
-  const matchingVoice = voices.find((voice) => voice.lang?.toLowerCase().startsWith(utterance.lang.toLowerCase().slice(0, 2)));
-  if (matchingVoice) {
-    utterance.voice = matchingVoice;
+  const langCode = langCodes[language] || "mn-MN";
+  const chunks = splitSpeechText(text, 700);
+  if (!chunks.length) {
+    return false;
   }
-  window.speechSynthesis.speak(utterance);
+  let index = 0;
+  let started = false;
+  const speakNext = () => {
+    if (index >= chunks.length) {
+      callbacks.onEnd?.();
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(chunks[index]);
+    utterance.lang = langCode;
+    const matchingVoice = voiceForBrowser(language, langCode);
+    if (matchingVoice) {
+      utterance.voice = matchingVoice;
+    } else if (language === "mn") {
+      callbacks.onError?.();
+      return;
+    }
+    utterance.onstart = () => {
+      if (!started) {
+        started = true;
+        callbacks.onStart?.();
+      }
+    };
+    utterance.onend = () => {
+      index += 1;
+      speakNext();
+    };
+    utterance.onerror = () => callbacks.onError?.();
+    window.speechSynthesis.speak(utterance);
+  };
+  if (!window.speechSynthesis.getVoices().length) {
+    window.speechSynthesis.onvoiceschanged = () => speakNext();
+    setTimeout(() => {
+      if (!started && !window.speechSynthesis.speaking) {
+        speakNext();
+      }
+    }, 250);
+  } else {
+    speakNext();
+  }
   return true;
+}
+
+function playAudioBlob(blob) {
+  return new Promise((resolve, reject) => {
+    if (!blob?.size) {
+      reject(new Error("Empty TTS audio."));
+      return;
+    }
+    const audio = new Audio(URL.createObjectURL(blob));
+    audio.onended = () => resolve();
+    audio.onerror = () => reject(new Error("Audio playback failed."));
+    audio.play().catch(reject);
+  });
+}
+
+async function fetchTtsBlob(text, voice, language) {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 30000);
+  try {
+    const useAppTts = ttsEndpoint.startsWith("/api/tts") || ttsEndpoint.startsWith(`${window.location.origin}/api/tts`);
+    const body = useAppTts
+      ? JSON.stringify({ text, voice, language })
+      : (() => {
+          const formData = new FormData();
+          formData.append("text", text);
+          formData.append("input", text);
+          formData.append("", text);
+          formData.append("voice", voice);
+          formData.append("language", language);
+          formData.append("lang", language);
+          return formData;
+        })();
+
+    const response = await fetch(ttsEndpoint, {
+      method: "POST",
+      headers: useAppTts ? { "Content-Type": "application/json" } : undefined,
+      body,
+      signal: controller.signal
+    });
+    if (!response.ok) {
+      throw new Error(`TTS request failed with status ${response.status}.`);
+    }
+    return response.blob();
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
+async function playLocalTts(text, voice, language) {
+  const useAppTts = ttsEndpoint.startsWith("/api/tts") || ttsEndpoint.startsWith(`${window.location.origin}/api/tts`);
+  const chunks = splitSpeechText(text, useAppTts ? 180 : 1200);
+  if (!chunks.length) {
+    throw new Error("No TTS text.");
+  }
+  for (const chunk of chunks) {
+    const blob = await fetchTtsBlob(chunk, voice, language);
+    await playAudioBlob(blob);
+  }
 }
 
 const recipeSourceUrls = {
@@ -1539,9 +1673,9 @@ function App() {
           <input value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
           <button type="submit"><Search size={18} /> {t.search}</button>
         </form>
-        <form className={`loginPanel ${isLoggedIn ? "verifiedLogin" : ""} ${loginStatus === "loading" ? "loadingLogin" : ""}`} onSubmit={handleLogin}>
-          <div className="loginCardGlow" aria-hidden="true" />
-          {!isLoggedIn ? (
+        {!isLoggedIn && (
+          <form className={`loginPanel ${loginStatus === "loading" ? "loadingLogin" : ""}`} onSubmit={handleLogin}>
+            <div className="loginCardGlow" aria-hidden="true" />
             <>
               <div className="loginIconBadge"><Smartphone size={26} /></div>
               <div className="loginIntro">
@@ -1572,14 +1706,8 @@ function App() {
                 </div>
               )}
             </>
-          ) : (
-            <div className="loginSuccessBox">
-              <div className="successCheck"><CheckCircle2 size={54} /></div>
-              <h3>{t.loginSuccessTitle}</h3>
-              <p>{t.loginSuccessCaption}</p>
-            </div>
-          )}
-        </form>
+          </form>
+        )}
         {isLoggedIn && (
           <div className="imageSearchRow">
             <label className="imageSearchButton">

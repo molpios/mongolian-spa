@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import verifyCallbackHandler from "./api/verify-callback.js";
 import verifyPhoneHandler from "./api/verify-phone.js";
 import verifyStatusHandler from "./api/verify-status.js";
+import ttsHandler from "./api/tts.js";
 
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
@@ -36,13 +37,19 @@ async function viteApiRoute(handler, req, res) {
   };
   const apiRes = {
     status(statusCode) {
-      return {
-        json(payload) {
-          res.statusCode = statusCode;
-          res.setHeader("Content-Type", "application/json");
-          res.end(JSON.stringify(payload));
-        }
-      };
+      res.statusCode = statusCode;
+      return apiRes;
+    },
+    setHeader(name, value) {
+      res.setHeader(name, value);
+      return apiRes;
+    },
+    json(payload) {
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(payload));
+    },
+    send(payload) {
+      res.end(payload);
     }
   };
   await handler(apiReq, apiRes);
@@ -139,6 +146,13 @@ export default defineConfig(({ mode }) => {
           });
           server.middlewares.use("/api/verify-callback", (req, res) => {
             viteApiRoute(verifyCallbackHandler, req, res).catch((error) => {
+              res.statusCode = 500;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: error.message }));
+            });
+          });
+          server.middlewares.use("/api/tts", (req, res) => {
+            viteApiRoute(ttsHandler, req, res).catch((error) => {
               res.statusCode = 500;
               res.setHeader("Content-Type", "application/json");
               res.end(JSON.stringify({ error: error.message }));

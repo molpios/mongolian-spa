@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import verifyCallbackHandler from "./api/verify-callback.js";
 import verifyPhoneHandler from "./api/verify-phone.js";
 import verifyStatusHandler from "./api/verify-status.js";
+import ttsHandler from "./api/tts.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(__dirname, "dist");
@@ -97,11 +98,18 @@ async function handleApiRoute(handler, req, res) {
   };
   const apiRes = {
     status(statusCode) {
-      return {
-        json(payload) {
-          sendJson(res, statusCode, payload);
-        }
-      };
+      res.statusCode = statusCode;
+      return apiRes;
+    },
+    setHeader(name, value) {
+      res.setHeader(name, value);
+      return apiRes;
+    },
+    json(payload) {
+      sendJson(res, res.statusCode || 200, payload);
+    },
+    send(payload) {
+      res.end(payload);
     }
   };
   await handler(apiReq, apiRes);
@@ -146,6 +154,10 @@ http.createServer((req, res) => {
   }
   if (req.url?.startsWith("/api/verify-callback")) {
     handleApiRoute(verifyCallbackHandler, req, res).catch((error) => sendJson(res, 500, { error: error.message }));
+    return;
+  }
+  if (req.url?.startsWith("/api/tts")) {
+    handleApiRoute(ttsHandler, req, res).catch((error) => sendJson(res, 500, { error: error.message }));
     return;
   }
   serveStatic(req, res);
