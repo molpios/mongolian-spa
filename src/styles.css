@@ -2,6 +2,17 @@
   font-family: Inter, Arial, Helvetica, sans-serif;
   color: #22312b;
   background: #eef3ef;
+  --green-900: #153d2b;
+  --green-800: #1d5439;
+  --green-700: #246844;
+  --green-600: #2f7d50;
+  --green-500: #47a261;
+  --green-100: #eef7f0;
+  --green-50: #f7fbf6;
+  --line: #dce6db;
+  --text-muted: #647064;
+  --shadow-sm: 0 8px 18px rgb(35 67 48 / 0.08);
+  --shadow-md: 0 16px 36px rgb(35 67 48 / 0.12);
 }
 
 * {
@@ -9,6 +20,9 @@
 }
 
 body {
+  background:
+    radial-gradient(circle at 12% 0%, rgb(72 148 92 / 0.13), transparent 32%),
+    linear-gradient(180deg, #eef3ef 0%, #f8faf6 44%, #eef3ef 100%);
   margin: 0;
 }
 
@@ -21,6 +35,21 @@ select {
 button {
   cursor: pointer;
   white-space: normal;
+}
+
+button,
+a,
+input,
+select {
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease, background 150ms ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgb(71 162 97 / 0.28);
+  outline-offset: 2px;
 }
 
 .govBanner {
@@ -121,10 +150,10 @@ h3 {
 .searchHero {
   background: #ffffff;
   border: 1px solid #dce6db;
-  border-radius: 18px;
-  box-shadow: 0 16px 35px rgb(35 67 48 / 0.08);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
   margin: -18px 40px 22px;
-  padding: 20px;
+  padding: 22px;
   position: relative;
 }
 
@@ -164,13 +193,22 @@ h3 {
 }
 
 .imageSearchButton {
-  background: #eef7f0;
+  align-items: center;
+  background: linear-gradient(180deg, #f7fbf6, #eaf5ec);
   border: 1px solid #c9decf;
-  border-radius: 999px;
+  border-radius: 14px;
+  box-shadow: 0 7px 16px rgb(35 67 48 / 0.07);
   color: #1f5e31;
   cursor: pointer;
+  display: inline-flex;
   font-weight: 700;
-  padding: 9px 13px;
+  min-height: 42px;
+  padding: 0 14px;
+}
+
+.imageSearchButton:hover {
+  border-color: #8fb89b;
+  transform: translateY(-1px);
 }
 
 .imageSearchButton input {
@@ -442,15 +480,24 @@ h3 {
 .searchRow button,
 .actionButtons button {
   align-items: center;
-  background: #245d34;
-  border: 1px solid #1d4f31;
-  border-radius: 12px;
+  background: linear-gradient(135deg, var(--green-700), var(--green-600));
+  border: 1px solid rgb(29 79 49 / 0.75);
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgb(36 93 52 / 0.16);
   color: #ffffff;
   display: inline-flex;
   gap: 8px;
   justify-content: center;
   min-height: 48px;
   padding: 0 14px;
+}
+
+.searchRow button:hover,
+.actionButtons button:hover,
+.aiButton:hover,
+.ttsButton:hover,
+.mapFocusHeader button:hover {
+  transform: translateY(-1px);
 }
 
 .fdcShell {
@@ -471,7 +518,7 @@ h3 {
   background: #ffffff;
   border: 1px solid #dce6db;
   border-radius: 18px;
-  box-shadow: 0 12px 28px rgb(35 67 48 / 0.07);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
@@ -516,11 +563,13 @@ h3 {
   border-radius: 14px;
   min-height: 190px;
   margin-top: 0;
-  padding: 10px;
+  padding: 12px;
 }
 
 .countrySvgMap {
-  background: #f8faf6;
+  background:
+    linear-gradient(180deg, #fbfdfa, #f4f8f2);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8);
   overflow: hidden;
 }
 
@@ -571,11 +620,12 @@ h3 {
 }
 
 .mapFocusHeader button {
-  background: #eef7f0;
+  background: linear-gradient(180deg, #ffffff, #edf6ef);
   border: 1px solid #c9decf;
-  border-radius: 999px;
+  border-radius: 12px;
   color: #1f5e31;
-  padding: 6px 9px;
+  font-weight: 700;
+  padding: 7px 10px;
 }
 
 .mongoliaSvg {
@@ -625,16 +675,15 @@ h3 {
 
 .resultList button {
   align-items: center;
-  background: #fbfcfa;
+  background: linear-gradient(180deg, #ffffff, #fbfdfb);
   border: 1px solid #dce4d8;
-  border-radius: 14px;
+  border-radius: 16px;
   color: #1f2933;
   display: grid;
   gap: 10px;
   grid-template-columns: 58px minmax(0, 1fr);
-  padding: 9px;
+  padding: 10px;
   text-align: left;
-  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
 }
 
 .resultList button:hover {
@@ -681,7 +730,7 @@ h3 {
 }
 
 .resultList .activeResult {
-  background: #f1f7f1;
+  background: linear-gradient(180deg, #f2faf3, #eaf5ec);
   border-color: #2f7357;
   box-shadow: 0 0 0 3px rgb(47 115 87 / 0.12);
 }
@@ -720,7 +769,7 @@ h3 {
 }
 
 .breadcrumb {
-  background: #f7faf6;
+  background: linear-gradient(180deg, #f8fbf7, #f2f7f1);
   border-bottom: 1px solid #d7dbd2;
   color: #5f6b5d;
   font-size: 13px;
@@ -760,7 +809,8 @@ h3 {
 }
 
 .dataBadge {
-  background: #e5f0df;
+  background: #eaf5ec;
+  border: 1px solid #cfe1d0;
   border-radius: 999px;
   color: #214c27;
   display: inline-block;
@@ -790,7 +840,12 @@ h3 {
   margin-left: auto;
 }
 
+.actionButtons button {
+  min-height: 42px;
+}
+
 .tabs {
+  background: #fbfdfb;
   border-bottom: 1px solid #cbd4c7;
   border-top: 1px solid #d7dbd2;
   display: flex;
@@ -800,10 +855,14 @@ h3 {
 .tabs button {
   background: transparent;
   border: 0;
-  border-bottom: 4px solid transparent;
+  border-bottom: 3px solid transparent;
   color: #27402c;
   font-weight: 700;
-  padding: 14px 18px 10px;
+  padding: 15px 18px 12px;
+}
+
+.tabs button:hover {
+  background: #eef7f0;
 }
 
 .tabs .activeTab {
@@ -843,11 +902,13 @@ h3 {
 }
 
 .aiButton {
-  background: #3f6f30;
-  border: 1px solid #315724;
-  border-radius: 10px;
+  background: linear-gradient(135deg, #3f7e37, #2b6f43);
+  border: 1px solid #2d5f30;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgb(45 111 67 / 0.15);
   color: #ffffff;
-  min-height: 38px;
+  font-weight: 800;
+  min-height: 40px;
   padding: 0 12px;
 }
 
@@ -870,12 +931,12 @@ h3 {
 }
 
 .ttsButton {
-  background: #eef7f0;
+  background: linear-gradient(180deg, #ffffff, #edf7ef);
   border: 1px solid #c9decf;
-  border-radius: 10px;
+  border-radius: 12px;
   color: #1f5e31;
   font-weight: 700;
-  min-height: 38px;
+  min-height: 40px;
   padding: 0 12px;
 }
 
@@ -886,11 +947,12 @@ h3 {
 }
 
 .personalFitBox {
-  background: #fbfcfa;
+  background: linear-gradient(180deg, #ffffff, #f7fbf6);
   border: 1px solid #dfe8dd;
-  border-radius: 12px;
+  border-radius: 14px;
   flex: 1 1 260px;
-  padding: 10px;
+  box-shadow: 0 8px 18px rgb(35 67 48 / 0.05);
+  padding: 12px;
   min-width: 230px;
 }
 
@@ -899,10 +961,10 @@ h3 {
 }
 
 .lockedTools {
-  background: #fff8df;
-  border: 1px solid #e1cf89;
-  border-radius: 12px;
-  color: #6b5b2a;
+  background: linear-gradient(180deg, #fffaf0, #fff4d8);
+  border: 1px solid #e7d294;
+  border-radius: 14px;
+  color: #6b5420;
   flex: 1 1 260px;
   line-height: 1.45;
   max-width: 420px;
@@ -917,16 +979,16 @@ h3 {
 
 .metricInputs input {
   border: 1px solid #c7d4c7;
-  border-radius: 10px;
+  border-radius: 12px;
   min-height: 38px;
   min-width: 0;
   padding: 0 10px;
 }
 
 .aiPanel {
-  background: #f4f8f0;
+  background: linear-gradient(180deg, #f8fcf7, #eef7f0);
   border: 1px solid #cbdcc0;
-  border-radius: 14px;
+  border-radius: 16px;
   margin: 0 22px 16px;
   padding: 14px;
 }
@@ -949,10 +1011,11 @@ h3 {
 .segmented {
   align-self: flex-start;
   border: 1px solid #aab7a6;
-  border-radius: 12px;
+  border-radius: 14px;
   display: inline-flex;
   flex: 0 0 auto;
   overflow: hidden;
+  box-shadow: 0 7px 14px rgb(35 67 48 / 0.06);
 }
 
 .segmented button {
@@ -961,6 +1024,10 @@ h3 {
   border-right: 1px solid #aab7a6;
   min-width: 78px;
   padding: 8px 10px;
+}
+
+.segmented button:hover {
+  background: #f0f7f0;
 }
 
 .segmented button:last-child {
@@ -1013,8 +1080,9 @@ h3 {
 }
 
 .detailsGrid div {
+  background: linear-gradient(180deg, #ffffff, #f8fbf7);
   border: 1px solid #d6dcd2;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 14px;
 }
 
@@ -1023,7 +1091,7 @@ h3 {
 }
 
 .profileBlock {
-  background: #fbfcfa;
+  background: linear-gradient(180deg, #ffffff, #f8fbf7);
   border: 1px solid #dfe8dd;
   border-radius: 16px;
   margin-top: 14px;
@@ -1081,13 +1149,22 @@ h3 {
 
 .wideFoodGallery button,
 .localFoodGallery button {
-  background: #fbfcfa;
+  background: linear-gradient(180deg, #ffffff, #fbfdfb);
   border: 1px solid #dce4d8;
-  border-radius: 14px;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgb(35 67 48 / 0.06);
   color: #22312b;
   overflow: hidden;
   padding: 0;
   text-align: left;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.wideFoodGallery button:hover,
+.localFoodGallery button:hover {
+  border-color: #93b69f;
+  box-shadow: 0 14px 28px rgb(35 67 48 / 0.11);
+  transform: translateY(-2px);
 }
 
 .wideFoodGallery img,
@@ -1126,9 +1203,9 @@ h3 {
 }
 
 .videoSection {
-  background: #fbfcfa;
+  background: linear-gradient(180deg, #ffffff, #f7fbf6);
   border: 1px solid #dfe8dd;
-  border-radius: 16px;
+  border-radius: 18px;
   margin: 0 22px 22px;
   padding: 16px;
 }
@@ -1144,9 +1221,12 @@ h3 {
 
 .videoSearchCard {
   align-items: flex-start;
-  background: #f4f8f0;
+  background:
+    radial-gradient(circle at 18% 0%, rgb(71 162 97 / 0.16), transparent 36%),
+    linear-gradient(180deg, #ffffff, #eef7f0);
   border: 1px solid #cbdcc0;
-  border-radius: 14px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgb(35 67 48 / 0.08);
   color: #204d2d;
   display: flex;
   flex-direction: column;
@@ -1179,8 +1259,14 @@ h3 {
 }
 
 .videoSection .videoSearchCard {
-  border-radius: 14px;
+  background:
+    radial-gradient(circle at 18% 0%, rgb(71 162 97 / 0.16), transparent 36%),
+    linear-gradient(180deg, #ffffff, #eef7f0);
+  border: 1px solid #cbdcc0;
+  border-radius: 16px;
+  color: #204d2d;
   display: flex;
+  font-weight: 700;
   padding: 18px;
 }
 
@@ -1265,9 +1351,9 @@ h3 {
 }
 
 .statsGrid div {
-  background: #f6f8f3;
+  background: linear-gradient(180deg, #ffffff, #f6f8f3);
   border: 1px solid #d8dfd2;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 12px;
 }
 
