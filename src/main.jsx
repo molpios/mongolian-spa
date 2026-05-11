@@ -1162,7 +1162,7 @@ async function fetchTtsBlob(text, voice, language) {
 
 async function playLocalTts(text, voice, language) {
   const useAppTts = ttsEndpoint.startsWith("/api/tts") || ttsEndpoint.startsWith(`${window.location.origin}/api/tts`);
-  const chunks = splitSpeechText(text, useAppTts ? 180 : 1200);
+  const chunks = splitSpeechText(text, useAppTts ? 800 : 1200);
   if (!chunks.length) {
     throw new Error("No TTS text.");
   }
