@@ -20,6 +20,7 @@ select {
 
 button {
   cursor: pointer;
+  white-space: normal;
 }
 
 .govBanner {
@@ -37,6 +38,10 @@ button {
   justify-content: space-between;
   gap: 24px;
   padding: 26px 40px 24px;
+}
+
+.fdcHeader > div:first-child {
+  min-width: 0;
 }
 
 .agency {
@@ -75,6 +80,7 @@ h3 {
   gap: 10px 14px;
   font-size: 14px;
   max-width: 560px;
+  min-width: 0;
 }
 
 .fdcHeader a {
@@ -177,66 +183,243 @@ h3 {
 }
 
 .loginPanel {
-  align-items: center;
-  background: #fbfcfa;
-  border: 1px solid #d8e5d7;
-  border-radius: 14px;
+  background:
+    radial-gradient(circle at 18% 0%, rgb(126 190 134 / 0.34), transparent 34%),
+    linear-gradient(135deg, #143f2c, #1d5b3d 58%, #16422d);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 26px;
+  box-shadow: 0 18px 42px rgb(25 68 47 / 0.24);
+  color: #ffffff;
   display: grid;
-  gap: 10px;
-  grid-template-columns: minmax(220px, 1fr) auto;
-  margin-top: 12px;
-  padding: 12px;
+  gap: 16px;
+  grid-template-columns: 58px minmax(220px, 1fr) minmax(240px, 340px);
+  margin: 18px auto 0;
+  max-width: 980px;
+  overflow: hidden;
+  padding: 24px;
+  position: relative;
 }
 
-.loginPanel div:first-child,
-.loginPanel p {
+.loginPanel > *:not(.loginCardGlow) {
+  position: relative;
+  z-index: 1;
+}
+
+.loginCardGlow {
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 22px;
+  bottom: 12px;
+  left: 12px;
+  pointer-events: none;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+
+.loginIconBadge,
+.successCheck {
+  align-items: center;
+  background: linear-gradient(135deg, #62b96d, #2e8f4e);
+  border: 1px solid rgb(255 255 255 / 0.24);
+  border-radius: 22px;
+  box-shadow: 0 14px 34px rgb(22 82 43 / 0.34);
+  display: flex;
+  justify-content: center;
+}
+
+.loginIconBadge {
+  height: 58px;
+  width: 58px;
+}
+
+.loginIntro {
   min-width: 0;
 }
 
-.loginPanel strong,
-.loginPanel span {
+.loginIntro strong {
   display: block;
+  font-size: 24px;
+  line-height: 1.15;
+  margin-bottom: 8px;
 }
 
-.loginPanel span,
-.loginPanel p {
-  color: #66736c;
-  font-size: 13px;
-  margin: 3px 0 0;
-}
-
-.loginPanel a {
-  color: #1f5e31;
-  font-weight: 700;
+.loginIntro span {
+  color: #d8ebdd;
+  display: block;
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 520px;
 }
 
 .verifiedLogin {
   grid-template-columns: 1fr;
+  max-width: 420px;
 }
 
 .loginControls {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 .loginControls input {
-  border: 1px solid #c7d4c7;
-  border-radius: 12px;
-  min-height: 42px;
-  padding: 0 12px;
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 18px;
+  color: #ffffff;
+  flex: 1 1 170px;
+  min-height: 52px;
+  min-width: 150px;
+  outline: none;
+  padding: 0 16px;
+}
+
+.loginControls input::placeholder {
+  color: #c9ddcf;
+}
+
+.loginControls input:focus {
+  border-color: rgb(170 226 178 / 0.9);
+  box-shadow: 0 0 0 4px rgb(98 185 109 / 0.18);
 }
 
 .loginControls button {
-  background: #245d34;
-  border: 1px solid #1d4f31;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #55b865, #2d874b);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: 18px;
+  box-shadow: 0 12px 24px rgb(20 73 37 / 0.26);
   color: #ffffff;
-  min-height: 42px;
-  padding: 0 14px;
+  flex: 0 0 auto;
+  font-weight: 800;
+  min-height: 52px;
+  padding: 0 18px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.loginControls button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.loginControls button:disabled {
+  cursor: wait;
+  opacity: 0.75;
+}
+
+.smsCodeBox,
+.loginInstruction,
+.loginLoaderBox {
+  background: rgb(255 255 255 / 0.09);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 18px;
+}
+
+.smsCodeBox {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  grid-column: 1 / -1;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.smsCodeBox span {
+  color: #cfe3d3;
+  font-size: 13px;
+}
+
+.smsCodeBox strong {
+  background: rgb(255 255 255 / 0.14);
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 28px;
+  letter-spacing: 4px;
+  line-height: 1;
+  padding: 10px 14px;
+}
+
+.loginInstruction {
+  grid-column: 1 / -1;
+  padding: 16px;
+}
+
+.loginInstruction small {
+  align-items: center;
+  color: #b7d5c0;
+  display: flex;
+  font-weight: 700;
+  gap: 6px;
+}
+
+.loginInstruction p {
+  color: #edf7ef;
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 10px 0 0;
+}
+
+.smsLaunchLink {
+  background: rgb(255 255 255 / 0.13);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  font-weight: 800;
+  margin-top: 12px;
+  padding: 9px 13px;
+  text-decoration: none;
+}
+
+.loginLoaderBox {
+  align-items: center;
+  color: #dceee1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  grid-column: 1 / -1;
+  justify-content: center;
+  padding: 18px;
+}
+
+.loginLoaderBox svg {
+  animation: spin 1s linear infinite;
+  color: #7ee08a;
+}
+
+.loginSuccessBox {
+  padding: 8px 6px 4px;
+  text-align: center;
+}
+
+.successCheck {
+  border-radius: 50%;
+  height: 96px;
+  margin: 0 auto 18px;
+  width: 96px;
+}
+
+.loginSuccessBox h3 {
+  color: #ffffff;
+  display: block;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.loginSuccessBox p {
+  color: #d8ebdd;
+  line-height: 1.55;
+  margin: 0;
 }
 
 .loginError {
   color: #9a3b25 !important;
+}
+
+.loginErrorBox {
+  background: rgb(255 232 222 / 0.16);
+  border-color: rgb(255 190 168 / 0.32);
 }
 
 .searchRow input,
@@ -551,6 +734,11 @@ h3 {
   padding: 22px;
 }
 
+.detailTop > div:nth-child(2) {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
 .foodHeroImage {
   aspect-ratio: 4 / 3;
   background: #e8ede4;
@@ -595,6 +783,7 @@ h3 {
 
 .actionButtons {
   display: flex;
+  flex: 0 0 auto;
   flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-end;
@@ -623,11 +812,17 @@ h3 {
 }
 
 .tableToolbar {
-  align-items: center;
+  align-items: stretch;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 14px;
+  justify-content: flex-start;
   padding: 18px 22px 12px;
+}
+
+.tableToolbar > div:first-child {
+  flex: 1 1 320px;
+  min-width: 0;
 }
 
 .tableToolbar h3 {
@@ -670,6 +865,7 @@ h3 {
 }
 
 .aiActions {
+  flex: 0 1 190px;
   min-width: 170px;
 }
 
@@ -693,6 +889,7 @@ h3 {
   background: #fbfcfa;
   border: 1px solid #dfe8dd;
   border-radius: 12px;
+  flex: 1 1 260px;
   padding: 10px;
   min-width: 230px;
 }
@@ -706,6 +903,7 @@ h3 {
   border: 1px solid #e1cf89;
   border-radius: 12px;
   color: #6b5b2a;
+  flex: 1 1 260px;
   line-height: 1.45;
   max-width: 420px;
   padding: 12px;
@@ -749,9 +947,11 @@ h3 {
 }
 
 .segmented {
+  align-self: flex-start;
   border: 1px solid #aab7a6;
   border-radius: 12px;
   display: inline-flex;
+  flex: 0 0 auto;
   overflow: hidden;
 }
 
@@ -1082,6 +1282,12 @@ h3 {
   font-size: 13px;
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 1180px) {
   .fdcShell {
     grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
@@ -1169,6 +1375,19 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .loginPanel {
+    max-width: 520px;
+    padding: 22px;
+  }
+
+  .loginIconBadge {
+    margin: 0 auto;
+  }
+
+  .loginIntro {
+    text-align: center;
+  }
+
   .searchRow button,
   .searchRow input,
   .searchRow select,
@@ -1179,6 +1398,7 @@ h3 {
 
   .loginControls {
     flex-direction: column;
+    justify-content: stretch;
   }
 
   .govBanner,
@@ -1286,6 +1506,15 @@ h3 {
     width: 100%;
   }
 
+  .segmented {
+    width: 100%;
+  }
+
+  .segmented button {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
   .nutrientTable {
     margin-left: 14px;
     margin-right: 14px;
@@ -1300,6 +1529,22 @@ h3 {
 
   .foodImagePlaceholder {
     min-height: 120px;
+  }
+
+  .loginPanel {
+    border-radius: 22px;
+    padding: 18px;
+  }
+
+  .smsCodeBox {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .smsCodeBox strong {
+    font-size: 26px;
+    text-align: center;
+    width: 100%;
   }
 
   .videoSection iframe,

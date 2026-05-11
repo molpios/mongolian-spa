@@ -27,6 +27,7 @@ export default async function handler(req, res) {
       sessionId: session.sessionId,
       phone: session.phone,
       shortcode: session.shortcode,
+      text: session.text,
       smsUri: session.smsUri,
       displayInstruction: session.displayInstruction,
       expiresAt: session.expiresAt

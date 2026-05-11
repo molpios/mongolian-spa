@@ -1,6 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Activity, Database, Download, Filter, Info, MapPin, Search, TableProperties, Utensils } from "lucide-react";
+import {
+  Activity,
+  CheckCircle2,
+  Database,
+  Download,
+  Filter,
+  Info,
+  LoaderCircle,
+  MapPin,
+  MessageCircle,
+  Search,
+  Smartphone,
+  TableProperties,
+  Utensils
+} from "lucide-react";
 import { verifyPhone } from "./verifyPhone.js";
 import "./styles.css";
 
@@ -66,8 +80,13 @@ const translations = {
     loginButton: "Verify phone",
     loginChecking: "Waiting for SMS...",
     loginSuccess: "Phone verified. Advanced tools are unlocked.",
+    loginSuccessTitle: "Verified",
+    loginSuccessCaption: "Your phone number is confirmed. Advanced tools are now active.",
     loginFailed: "Phone verification failed or expired.",
     openSms: "Open SMS app",
+    systemMessage: "System message",
+    smsCodeLabel: "SMS code to send",
+    verificationWaiting: "Confirming SMS...",
     lockedFeature: "Login to use Mazaalai AI, BMI guidance, image search, and TTS.",
     imageUnverified: "Verified photo not available",
     nutrient: "Nutrient",
@@ -159,8 +178,13 @@ const translations = {
     loginButton: "Утсаар баталгаажуулах",
     loginChecking: "SMS илгээхийг хүлээж байна...",
     loginSuccess: "Утас баталгаажлаа. Нэмэлт боломжууд нээгдсэн.",
+    loginSuccessTitle: "Амжилттай",
+    loginSuccessCaption: "Таны дугаар амжилттай баталгаажлаа. Нэмэлт боломжууд идэвхжлээ.",
     loginFailed: "Баталгаажуулалт амжилтгүй эсвэл хугацаа дууссан.",
     openSms: "SMS app нээх",
+    systemMessage: "Системийн заавар",
+    smsCodeLabel: "Илгээх SMS код",
+    verificationWaiting: "Баталгаажуулж байна...",
     lockedFeature: "Mazaalai AI, BMI, зургаар хайх, TTS ашиглахын тулд login хийнэ үү.",
     imageUnverified: "Баталгаатай зураг одоогоор байхгүй",
     nutrient: "Шим тэжээл",
@@ -252,8 +276,13 @@ const translations = {
     loginButton: "전화 인증",
     loginChecking: "SMS 대기 중...",
     loginSuccess: "전화 인증 완료. 고급 도구가 열렸습니다.",
+    loginSuccessTitle: "완료",
+    loginSuccessCaption: "전화번호가 확인되었습니다. 고급 도구를 사용할 수 있습니다.",
     loginFailed: "전화 인증에 실패했거나 만료되었습니다.",
     openSms: "SMS 앱 열기",
+    systemMessage: "시스템 안내",
+    smsCodeLabel: "보낼 SMS 코드",
+    verificationWaiting: "인증 확인 중...",
     lockedFeature: "Mazaalai AI, BMI, 이미지 검색, TTS를 사용하려면 로그인하세요.",
     imageUnverified: "검증된 사진 없음",
     nutrient: "영양소",
@@ -345,8 +374,13 @@ const translations = {
     loginButton: "验证手机",
     loginChecking: "等待短信...",
     loginSuccess: "手机已验证。高级工具已解锁。",
+    loginSuccessTitle: "验证成功",
+    loginSuccessCaption: "您的手机号已确认，高级工具已启用。",
     loginFailed: "手机验证失败或已过期。",
     openSms: "打开短信应用",
+    systemMessage: "系统提示",
+    smsCodeLabel: "要发送的短信验证码",
+    verificationWaiting: "正在确认短信...",
     lockedFeature: "请登录以使用 Mazaalai AI、BMI、图片搜索和语音朗读。",
     imageUnverified: "暂无已验证照片",
     nutrient: "营养素",
@@ -438,8 +472,13 @@ const translations = {
     loginButton: "Подтвердить телефон",
     loginChecking: "Ожидание SMS...",
     loginSuccess: "Телефон подтвержден. Расширенные функции открыты.",
+    loginSuccessTitle: "Успешно",
+    loginSuccessCaption: "Ваш номер подтвержден. Расширенные инструменты активированы.",
     loginFailed: "Подтверждение не удалось или истекло.",
     openSms: "Открыть SMS",
+    systemMessage: "Системное сообщение",
+    smsCodeLabel: "SMS-код для отправки",
+    verificationWaiting: "Подтверждаем SMS...",
     lockedFeature: "Войдите, чтобы использовать Mazaalai AI, BMI, поиск по фото и TTS.",
     imageUnverified: "Проверенное фото недоступно",
     nutrient: "Нутриент",
@@ -1500,19 +1539,46 @@ function App() {
           <input value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
           <button type="submit"><Search size={18} /> {t.search}</button>
         </form>
-        <form className={`loginPanel ${isLoggedIn ? "verifiedLogin" : ""}`} onSubmit={handleLogin}>
-          <div>
-            <strong>{t.loginTitle}</strong>
-            <span>{isLoggedIn ? t.loginSuccess : t.loginHint}</span>
-          </div>
-          {!isLoggedIn && (
-            <div className="loginControls">
-              <input value={phoneInput} onChange={(event) => setPhoneInput(event.target.value)} placeholder={t.phonePlaceholder} inputMode="numeric" />
-              <button type="submit" disabled={loginStatus === "loading"}>{loginStatus === "loading" ? t.loginChecking : t.loginButton}</button>
+        <form className={`loginPanel ${isLoggedIn ? "verifiedLogin" : ""} ${loginStatus === "loading" ? "loadingLogin" : ""}`} onSubmit={handleLogin}>
+          <div className="loginCardGlow" aria-hidden="true" />
+          {!isLoggedIn ? (
+            <>
+              <div className="loginIconBadge"><Smartphone size={26} /></div>
+              <div className="loginIntro">
+                <strong>{t.loginTitle}</strong>
+                <span>{t.loginHint}</span>
+              </div>
+              <div className="loginControls">
+                <input value={phoneInput} onChange={(event) => setPhoneInput(event.target.value)} placeholder={t.phonePlaceholder} inputMode="numeric" />
+                <button type="submit" disabled={loginStatus === "loading"}>{loginStatus === "loading" ? t.loginChecking : t.loginButton}</button>
+              </div>
+              {loginSession?.text && (
+                <div className="smsCodeBox">
+                  <span>{t.smsCodeLabel}</span>
+                  <strong>{loginSession.text}</strong>
+                </div>
+              )}
+              {loginMessage && (
+                <div className={`loginInstruction ${loginStatus === "error" ? "loginErrorBox" : ""}`}>
+                  <small><MessageCircle size={14} /> {t.systemMessage}</small>
+                  <p>{loginMessage}</p>
+                  {loginSession?.smsUri && <a className="smsLaunchLink" href={loginSession.smsUri}>{t.openSms}</a>}
+                </div>
+              )}
+              {loginStatus === "loading" && (
+                <div className="loginLoaderBox">
+                  <LoaderCircle size={42} />
+                  <span>{t.verificationWaiting}</span>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="loginSuccessBox">
+              <div className="successCheck"><CheckCircle2 size={54} /></div>
+              <h3>{t.loginSuccessTitle}</h3>
+              <p>{t.loginSuccessCaption}</p>
             </div>
           )}
-          {loginMessage && <p className={loginStatus === "error" ? "loginError" : ""}>{loginMessage}</p>}
-          {loginSession?.smsUri && !isLoggedIn && <a href={loginSession.smsUri}>{t.openSms}</a>}
         </form>
         {isLoggedIn && (
           <div className="imageSearchRow">
