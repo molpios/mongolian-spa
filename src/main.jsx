@@ -54,6 +54,7 @@ const translations = {
     download: "Download",
     cite: "Cite",
     nutrients: "Nutrients",
+    nutrientGraph: "Nutrient graph",
     foodDetails: "Food Details",
     districts: "Districts",
     soums: "Soums",
@@ -82,6 +83,7 @@ const translations = {
     weightKg: "Weight (kg)",
     personalFit: "Personal fit",
     personalFitHint: "Optional: add height and weight before asking Mazaalai AI.",
+    bmiLabel: "BMI",
     fitGoodTitle: "Suitable for you",
     fitCautionTitle: "Suitable in a small portion",
     fitNotTitle: "Use caution with this food",
@@ -164,6 +166,7 @@ const translations = {
     download: "Татах",
     cite: "Эшлэх",
     nutrients: "Шим тэжээл",
+    nutrientGraph: "Шим тэжээлийн график",
     foodDetails: "Хүнсний дэлгэрэнгүй",
     districts: "Дүүргүүд",
     soums: "Сумууд",
@@ -192,6 +195,7 @@ const translations = {
     weightKg: "Жин (кг)",
     personalFit: "Танд тохирох эсэх",
     personalFitHint: "Заавал биш: Mazaalai AI асуухаас өмнө өндөр, жингээ оруулна.",
+    bmiLabel: "BMI",
     fitGoodTitle: "Танд тохирч байна",
     fitCautionTitle: "Бага порцоор тохирно",
     fitNotTitle: "Тохиромж багатай",
@@ -274,6 +278,7 @@ const translations = {
     download: "다운로드",
     cite: "인용",
     nutrients: "영양소",
+    nutrientGraph: "영양 그래프",
     foodDetails: "식품 상세",
     districts: "구",
     soums: "솜",
@@ -302,6 +307,7 @@ const translations = {
     weightKg: "몸무게 (kg)",
     personalFit: "개인 적합성",
     personalFitHint: "선택 사항: Mazaalai AI에 묻기 전에 키와 몸무게를 입력하세요.",
+    bmiLabel: "BMI",
     fitGoodTitle: "잘 맞습니다",
     fitCautionTitle: "소량이면 적합합니다",
     fitNotTitle: "주의가 필요합니다",
@@ -384,6 +390,7 @@ const translations = {
     download: "下载",
     cite: "引用",
     nutrients: "营养素",
+    nutrientGraph: "营养图表",
     foodDetails: "食品详情",
     districts: "区",
     soums: "苏木",
@@ -412,6 +419,7 @@ const translations = {
     weightKg: "体重 (kg)",
     personalFit: "个人适配",
     personalFitHint: "可选：询问 Mazaalai AI 前输入身高和体重。",
+    bmiLabel: "BMI",
     fitGoodTitle: "适合你",
     fitCautionTitle: "少量食用较合适",
     fitNotTitle: "需要谨慎食用",
@@ -494,6 +502,7 @@ const translations = {
     download: "Скачать",
     cite: "Цитировать",
     nutrients: "Нутриенты",
+    nutrientGraph: "График нутриентов",
     foodDetails: "Детали продукта",
     districts: "Районы",
     soums: "Сумы",
@@ -522,6 +531,7 @@ const translations = {
     weightKg: "Вес (кг)",
     personalFit: "Персональная оценка",
     personalFitHint: "Необязательно: укажите рост и вес перед запросом к Mazaalai AI.",
+    bmiLabel: "BMI",
     fitGoodTitle: "Вам подходит",
     fitCautionTitle: "Подходит небольшой порцией",
     fitNotTitle: "Лучше употреблять осторожно",
@@ -895,6 +905,8 @@ const phraseLocales = {
   "Survey (FNDDS)": { mn: "Судалгааны өгөгдөл", ko: "조사 데이터", zh: "调查数据", ru: "Данные опроса" },
   "Regional Foods": { mn: "Бүс нутгийн хүнс", ko: "지역 식품", zh: "地区食品", ru: "Региональные продукты" },
   "Local Reference": { mn: "Орон нутгийн лавлагаа", ko: "지역 참고자료", zh: "本地参考", ru: "Местный справочник" },
+  "Calculated from regional food profile": { mn: "Бүс нутгийн хүнсний профайлаас тооцоолсон", ko: "지역 식품 프로필에서 계산", zh: "根据地区食品资料计算", ru: "Рассчитано по региональному профилю продукта" },
+  "Estimated local reference": { mn: "Орон нутгийн лавлагаагаар тооцоолсон", ko: "지역 참고값 추정", zh: "本地参考估算", ru: "Оценка по местному справочнику" },
   Dumplings: { mn: "Банш, бууз", ko: "만두류", zh: "饺子类", ru: "Пельменные изделия" },
   "Fried pastry": { mn: "Шарсан гурилан хоол", ko: "튀긴 반죽 음식", zh: "油炸面食", ru: "Жареная выпечка" },
   "Milk tea soup": { mn: "Сүүтэй цайтай шөл", ko: "밀크티 수프", zh: "奶茶汤", ru: "Суп с молочным чаем" },
@@ -1513,6 +1525,62 @@ function GuideVisual({ type }) {
       <span>한국어</span>
       <span>中文</span>
       <span>Русский</span>
+    </div>
+  );
+}
+
+function NutrientGraph({ rows, title, subtitle }) {
+  const maxAmount = Math.max(...rows.map((row) => Number(row.amount) || 0), 1);
+  return (
+    <section className="nutrientGraphPanel" aria-label={title}>
+      <div className="graphHeader">
+        <h3>{title}</h3>
+        <span>{subtitle}</span>
+      </div>
+      <div className="nutrientBars">
+        {rows.map((row) => {
+          const amount = Number(row.amount) || 0;
+          const width = Math.max(7, Math.min(100, (amount / maxAmount) * 100));
+          return (
+            <div className="nutrientBarRow" key={row.id}>
+              <div className="nutrientBarLabel">
+                <span>{row.name}</span>
+                <strong>{row.amount}{row.unit}</strong>
+              </div>
+              <div className="nutrientBarTrack">
+                <span style={{ "--barWidth": `${width}%` }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function BodyMetricIcon({ bmi, height, weight, t }) {
+  if (!bmi) {
+    return null;
+  }
+  const heightValue = Number(height);
+  const weightValue = Number(weight);
+  const bodyWidth = Math.max(18, Math.min(34, 18 + (bmi - 18.5) * 1.2));
+  const bodyHeight = Math.max(42, Math.min(68, 42 + (heightValue - 145) * 0.4));
+  return (
+    <div className="bodyMetricFigure" aria-label={`${t.bmiLabel} ${bmi}`}>
+      <svg viewBox="0 0 92 112" role="img" aria-hidden="true">
+        <line x1="16" y1="98" x2="76" y2="98" />
+        <circle cx="46" cy="17" r="11" />
+        <rect x={46 - bodyWidth / 2} y="32" width={bodyWidth} height={bodyHeight} rx={bodyWidth / 2} />
+        <path d={`M ${46 - bodyWidth / 2} 43 L 23 68`} />
+        <path d={`M ${46 + bodyWidth / 2} 43 L 69 68`} />
+        <path d={`M ${46 - bodyWidth / 3} ${32 + bodyHeight - 2} L 35 98`} />
+        <path d={`M ${46 + bodyWidth / 3} ${32 + bodyHeight - 2} L 57 98`} />
+      </svg>
+      <div>
+        <strong>{t.bmiLabel} {bmi}</strong>
+        <span>{heightValue} см · {weightValue} кг</span>
+      </div>
     </div>
   );
 }
@@ -2427,6 +2495,7 @@ function App() {
                         <input type="number" min="1" value={userHeight} onChange={(event) => setUserHeight(event.target.value)} placeholder={t.heightCm} />
                         <input type="number" min="1" value={userWeight} onChange={(event) => setUserWeight(event.target.value)} placeholder={t.weightKg} />
                       </div>
+                      <BodyMetricIcon bmi={bmi} height={userHeight} weight={userWeight} t={t} />
                       <div className={`fitAssessment fit-${fitAssessment.level}`}>
                         <strong>{fitAssessment.title}</strong>
                         <span>{fitAssessment.detail}</span>
@@ -2457,6 +2526,7 @@ function App() {
                   <p>{aiText}</p>
                 </div>
               )}
+              <NutrientGraph rows={displayRows} title={t.nutrientGraph} subtitle={t.valuesShown(basis)} />
               <table className="nutrientTable">
                 <thead>
                   <tr>

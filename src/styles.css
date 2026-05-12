@@ -1250,6 +1250,49 @@ h3 {
   color: #263b22;
 }
 
+.bodyMetricFigure {
+  align-items: center;
+  background: linear-gradient(180deg, #f8fffa, #edf9ef);
+  border: 1px solid #cce6d1;
+  border-radius: 14px;
+  display: flex;
+  gap: 10px;
+  padding: 9px;
+}
+
+.bodyMetricFigure svg {
+  flex: 0 0 54px;
+  height: 68px;
+  overflow: visible;
+  width: 54px;
+}
+
+.bodyMetricFigure circle,
+.bodyMetricFigure rect {
+  fill: #35a75b;
+  stroke: #176b3b;
+  stroke-width: 2;
+}
+
+.bodyMetricFigure path,
+.bodyMetricFigure line {
+  fill: none;
+  stroke: #176b3b;
+  stroke-linecap: round;
+  stroke-width: 5;
+}
+
+.bodyMetricFigure div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bodyMetricFigure span {
+  color: #55705c;
+  font-size: 12px;
+}
+
 .lockedTools {
   background: linear-gradient(180deg, #fffaf0, #fff4d8);
   border: 1px solid #e7d294;
@@ -1345,6 +1388,83 @@ h3 {
 .aiError {
   background: #fff5f2;
   border-color: #e1b4a8;
+}
+
+.nutrientGraphPanel {
+  background: linear-gradient(180deg, #ffffff, #f4fbf5);
+  border: 1px solid #cfe4d1;
+  border-radius: 18px;
+  box-shadow: 0 12px 26px rgb(28 84 48 / 0.08);
+  margin: 0 22px 16px;
+  padding: 16px;
+}
+
+.graphHeader {
+  align-items: baseline;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.graphHeader h3 {
+  color: #173e25;
+  margin: 0;
+}
+
+.graphHeader span {
+  color: #667066;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nutrientBars {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.nutrientBarRow {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.nutrientBarLabel {
+  align-items: baseline;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.nutrientBarLabel span {
+  color: #314936;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nutrientBarLabel strong {
+  color: #173e25;
+  flex: 0 0 auto;
+  font-size: 12px;
+}
+
+.nutrientBarTrack {
+  background: #e7f1e8;
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.nutrientBarTrack span {
+  background: linear-gradient(90deg, #176b3b, #48b86a);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+  width: var(--barWidth);
 }
 
 .segmented {
@@ -2230,6 +2350,15 @@ h3 {
   .personalFitBox {
     min-width: 0;
     width: 100%;
+  }
+
+  .nutrientBars {
+    grid-template-columns: 1fr;
+  }
+
+  .graphHeader {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .ttsButton,
