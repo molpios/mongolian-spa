@@ -1519,6 +1519,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [foodOnlyMode, setFoodOnlyMode] = useState(false);
   const [centerView, setCenterView] = useState("details");
+  const [regionMapOpen, setRegionMapOpen] = useState(false);
   const [countrySvg, setCountrySvg] = useState("");
   const searchInputRef = useRef(null);
   const dataTypeRef = useRef(null);
@@ -1606,14 +1607,16 @@ function App() {
     if (regionName) {
       setSelected(regionName);
       setCenterView("details");
+      setRegionMapOpen(false);
     }
   }
 
   function showRegionMap() {
     setFoodOnlyMode(false);
-    setCenterView("map");
+    setCenterView("details");
+    setRegionMapOpen(true);
     window.requestAnimationFrame(() => {
-      detailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.querySelector(".regionMapOpenPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
 
@@ -2056,6 +2059,27 @@ function App() {
         )}
         <p className="searchHint">{foodQuery ? t.searchHint(visibleFoods.length) : t.searchHintDefault}</p>
       </section>}
+
+      {activePage === "food" && regionMapOpen && (
+        <section className="regionMapOpenPanel">
+          <div className="mapOverviewPanel regionMapOpenInner">
+            <div className="mapOverviewHeader">
+              <div>
+                <p className="dataBadge">{t.regionMap}</p>
+                <h2>{t.showAllRegions}</h2>
+                <p className="metaLine">{t.aimagFocus}: {selected}</p>
+              </div>
+              <button type="button" onClick={() => setRegionMapOpen(false)}>{t.foodDetails}</button>
+            </div>
+            <div
+              className="countrySvgMap fullMap"
+              aria-label="Large interactive Mongolia SVG map"
+              onClick={handleMapClick}
+              dangerouslySetInnerHTML={{ __html: renderedCountrySvg }}
+            />
+          </div>
+        </section>
+      )}
 
       {activePage === "food" && <div className={`fdcShell ${foodOnlyMode ? "foodOnlyShell" : ""}`}>
         {!foodOnlyMode && <aside className="filterPanel">
