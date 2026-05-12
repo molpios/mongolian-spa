@@ -1425,6 +1425,27 @@ function GuideVisual({ type }) {
   );
 }
 
+const loadingMarks = [
+  { src: "/mazaalai-loader.svg", label: "Mazaalai AI" },
+  { src: "/muls-loader.svg", label: "Mongolian University of Life Sciences" },
+  { src: "/mongolia-flag-loader.svg", label: "Mongolia" }
+];
+
+function LoadingSplash() {
+  return (
+    <div className="loaderSplash" role="status" aria-live="polite" aria-label="Loading">
+      <div className="loaderMarks" aria-hidden="true">
+        {loadingMarks.map((mark, index) => (
+          <span className={`loaderMark loaderMark${index + 1}`} key={mark.src}>
+            <img src={mark.src} alt={mark.label} />
+          </span>
+        ))}
+      </div>
+      <p>Loading...</p>
+    </div>
+  );
+}
+
 function foodsForRegion(regionName) {
   return mongolianFoodCatalog.filter((food) => food.regions.includes("national") || food.regions.includes(regionName));
 }
@@ -1574,6 +1595,7 @@ function personalFitAssessment(food, bmi, rows, language, t) {
 }
 
 function App() {
+  const [bootLoading, setBootLoading] = useState(true);
   const [language, setLanguage] = useState("mn");
   const [activePage, setActivePage] = useState("food");
   const [searchMode, setSearchMode] = useState("food");
@@ -1653,6 +1675,11 @@ function App() {
         return `class="${className}${selectedClass}"`;
       });
   }, [countrySvg, selectedSvgId]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setBootLoading(false), 1700);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   useEffect(() => {
     const nextRegionFoods = foodsForRegion(selected);
@@ -2061,6 +2088,7 @@ function App() {
 
   return (
     <main>
+      {bootLoading && <LoadingSplash />}
       <div className="govBanner">
         <span>{t.official}</span>
         <strong><span aria-hidden="true">🇲🇳</span> {t.builtBySchool}</strong>

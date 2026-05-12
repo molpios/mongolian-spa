@@ -72,6 +72,89 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
+.loaderSplash {
+  align-content: center;
+  background:
+    radial-gradient(circle at 50% 48%, rgb(24 135 78 / 0.18), transparent 28%),
+    #000000;
+  color: #ffffff;
+  display: grid;
+  gap: 22px;
+  inset: 0;
+  justify-items: center;
+  min-height: 100dvh;
+  place-content: center;
+  position: fixed;
+  z-index: 9999;
+}
+
+.loaderMarks {
+  align-items: center;
+  display: flex;
+  gap: clamp(28px, 7vw, 72px);
+  justify-content: center;
+  min-height: 132px;
+}
+
+.loaderMark {
+  align-items: center;
+  animation: loaderBounce 980ms ease-in-out infinite;
+  background: rgb(8 17 12 / 0.9);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 999px;
+  box-shadow: 0 22px 56px rgb(0 0 0 / 0.52), 0 0 0 1px rgb(67 190 105 / 0.12);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.loaderMark img {
+  display: block;
+  height: 76%;
+  object-fit: contain;
+  width: 76%;
+}
+
+.loaderMark1 {
+  animation-delay: 0ms;
+  height: 58px;
+  width: 58px;
+}
+
+.loaderMark2 {
+  animation-delay: 140ms;
+  height: 78px;
+  width: 78px;
+}
+
+.loaderMark3 {
+  animation-delay: 280ms;
+  background: #ffffff;
+  height: 98px;
+  width: 98px;
+}
+
+.loaderSplash p {
+  color: #dff6e5;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+@keyframes loaderBounce {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-18px) scale(1.06);
+  }
+}
+
 .govBanner {
   align-items: center;
   background: #10251a;
@@ -2185,6 +2268,30 @@ h3 {
 }
 
 @media (max-width: 520px) {
+  .loaderMarks {
+    gap: 24px;
+    min-height: 104px;
+  }
+
+  .loaderMark1 {
+    height: 42px;
+    width: 42px;
+  }
+
+  .loaderMark2 {
+    height: 58px;
+    width: 58px;
+  }
+
+  .loaderMark3 {
+    height: 74px;
+    width: 74px;
+  }
+
+  .loaderSplash p {
+    font-size: 14px;
+  }
+
   .govBanner {
     font-size: 12px;
   }
@@ -2332,5 +2439,11 @@ h3 {
   .videoSection iframe,
   .profileVideo {
     min-height: 190px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loaderMark {
+    animation: none;
   }
 }

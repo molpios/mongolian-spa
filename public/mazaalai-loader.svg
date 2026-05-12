@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Mazaalai mark">
+  <defs>
+    <linearGradient id="gold" x1="48" y1="18" x2="92" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffe58a"/>
+      <stop offset="0.52" stop-color="#d59b2a"/>
+      <stop offset="1" stop-color="#7d5315"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="20" y1="18" x2="65" y2="102" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#26323a"/>
+      <stop offset="1" stop-color="#05090b"/>
+    </linearGradient>
+  </defs>
+  <path d="M24 36 43 24 60 35 77 24 96 36v23L85 70v19L60 104 35 89V70L24 59Z" fill="#10161a" stroke="#0a0e10" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M24 36 43 24 60 35v69L35 89V70L24 59Z" fill="url(#ink)"/>
+  <path d="M60 35 77 24 96 36v23L85 70v19L60 104Z" fill="url(#gold)"/>
+  <path d="M43 24 24 36v12l16-10 20 15V35Z" fill="#3a4650"/>
+  <path d="M77 24 60 35v18l20-15 16 10V36Z" fill="#ffdc72"/>
+  <path d="M40 54 53 47l12 9-12 9Z" fill="#24313b" stroke="#0a0e10" stroke-width="3"/>
+  <path d="M68 56 82 47l12 9-12 9Z" fill="#f4c64b" stroke="#6a4510" stroke-width="3"/>
+  <path d="M47 57 53 53l7 5-7 5Z" fill="#ffc447"/>
+  <path d="M75 57 82 52l7 5-7 5Z" fill="#ff7de0"/>
+  <path d="M47 84 60 76l13 8-13 13Z" fill="#05090b"/>
+  <path d="M60 35v69" stroke="#0a0e10" stroke-width="3"/>
+</svg>
