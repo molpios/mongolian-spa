@@ -624,6 +624,81 @@ const capitals = {
   Arkhangai: "Tsetserleg", "Bayan-Ölgii": "Ölgii", Bayankhongor: "Bayankhongor", Bulgan: "Bulgan", "Darkhan-Uul": "Darkhan", Dornod: "Choibalsan", Dornogovi: "Sainshand", Dundgovi: "Mandalgovi", "Govi-Altai": "Altai", Govisümber: "Choir", Khentii: "Chinggis", Khovd: "Khovd", Khövsgöl: "Mörön", Ömnögovi: "Dalanzadgad", Orkhon: "Erdenet", Övörkhangai: "Arvaikheer", Selenge: "Sükhbaatar", Sükhbaatar: "Baruun-Urt", Töv: "Zuunmod", Uvs: "Ulaangom", Zavkhan: "Uliastai", Ulaanbaatar: "Ulaanbaatar"
 };
 
+const regionNamesMn = {
+  Arkhangai: "Архангай",
+  "Bayan-Ölgii": "Баян-Өлгий",
+  Bayankhongor: "Баянхонгор",
+  Bulgan: "Булган",
+  "Darkhan-Uul": "Дархан-Уул",
+  Dornod: "Дорнод",
+  Dornogovi: "Дорноговь",
+  Dundgovi: "Дундговь",
+  "Govi-Altai": "Говь-Алтай",
+  Govisümber: "Говьсүмбэр",
+  Khentii: "Хэнтий",
+  Khovd: "Ховд",
+  Khövsgöl: "Хөвсгөл",
+  Ömnögovi: "Өмнөговь",
+  Orkhon: "Орхон",
+  Övörkhangai: "Өвөрхангай",
+  Selenge: "Сэлэнгэ",
+  Sükhbaatar: "Сүхбаатар",
+  Töv: "Төв",
+  Uvs: "Увс",
+  Zavkhan: "Завхан",
+  Ulaanbaatar: "Улаанбаатар"
+};
+
+const capitalNamesMn = {
+  Arkhangai: "Цэцэрлэг",
+  "Bayan-Ölgii": "Өлгий",
+  Bayankhongor: "Баянхонгор",
+  Bulgan: "Булган",
+  "Darkhan-Uul": "Дархан",
+  Dornod: "Чойбалсан",
+  Dornogovi: "Сайншанд",
+  Dundgovi: "Мандалговь",
+  "Govi-Altai": "Алтай",
+  Govisümber: "Чойр",
+  Khentii: "Чингис",
+  Khovd: "Ховд",
+  Khövsgöl: "Мөрөн",
+  Ömnögovi: "Даланзадгад",
+  Orkhon: "Эрдэнэт",
+  Övörkhangai: "Арвайхээр",
+  Selenge: "Сүхбаатар",
+  Sükhbaatar: "Баруун-Урт",
+  Töv: "Зуунмод",
+  Uvs: "Улаангом",
+  Zavkhan: "Улиастай",
+  Ulaanbaatar: "Улаанбаатар"
+};
+
+const subdivisionNamesMn = {
+  Arkhangai: ["Батцэнгэл", "Булган", "Чулуут", "Эрдэнэбулган", "Эрдэнэмандал", "Их-Тамир", "Жаргалант", "Хангай", "Хашаат", "Хайрхан", "Хотонт", "Өгийнуур", "Өлзийт", "Өндөр-Улаан", "Тариат", "Цахир", "Цэнхэр", "Цэцэрлэг", "Төвшрүүлэх"],
+  "Bayan-Ölgii": ["Алтанцөгц", "Алтай", "Баяннуур", "Бугат", "Булган", "Буянт", "Дэлүүн", "Ногооннуур", "Өлгий", "Сагсай", "Толбо", "Цагааннуур", "Цэнгэл", "Улаанхус"],
+  Bayankhongor: ["Баацагаан", "Баян-Өндөр", "Баян-Овоо", "Баянбулаг", "Баянговь", "Баянхонгор", "Баянлиг", "Баянцагаан", "Богд", "Бөмбөгөр", "Бууцагаан", "Эрдэнэцогт", "Галуут", "Гурванбулаг", "Жаргалант", "Жинст", "Хүрээмарал", "Өлзийт", "Шинэжинст", "Заг"],
+  Bulgan: ["Баян-Агт", "Баяннуур", "Бугат", "Булган", "Бүрэгхангай", "Дашинчилэн", "Гурванбулаг", "Хангал", "Хишиг-Өндөр", "Хутаг-Өндөр", "Могод", "Орхон", "Рашаант", "Сайхан", "Сэлэнгэ", "Тэшиг"],
+  "Darkhan-Uul": ["Дархан", "Хонгор", "Орхон", "Шарын гол"],
+  Dornod: ["Баян-Уул", "Баяндун", "Баянтүмэн", "Булган", "Чойбалсан", "Чулуунхороот", "Дашбалбар", "Гурванзагал", "Халхгол", "Хэрлэн", "Хөлөнбуйр", "Матад", "Сэргэлэн", "Цагаан-Овоо"],
+  Dornogovi: ["Алтанширээ", "Айраг", "Даланжаргалан", "Дэлгэрэх", "Эрдэнэ", "Хатанбулаг", "Хөвсгөл", "Иххэт", "Мандах", "Өргөн", "Сайхандулаан", "Сайншанд", "Улаанбадрах", "Замын-Үүд"],
+  Dundgovi: ["Адаацаг", "Баянжаргалан", "Дэлгэрхангай", "Дэлгэрцогт", "Дэрэн", "Эрдэнэдалай", "Говь-Угтаал", "Гурвансайхан", "Хулд", "Луус", "Өлзийт", "Өндөршил", "Сайхан-Овоо", "Сайнцагаан", "Цагаандэлгэр"],
+  "Govi-Altai": ["Алтай", "Баян-Уул", "Бигэр", "Бугат", "Чандмань", "Дарви", "Дэлгэр", "Эрдэнэ", "Халиун", "Хөхморьт", "Жаргалан", "Шарга", "Тайшир", "Төгрөг", "Тонхил", "Цээл", "Цогт", "Есөнбулаг"],
+  Govisümber: ["Баянтал", "Шивээговь", "Сүмбэр"],
+  Khentii: ["Батноров", "Баян-Адарга", "Баянхутаг", "Баянмөнх", "Баян-Овоо", "Биндэр", "Дадал", "Дархан", "Дэлгэрхаан", "Ег", "Галшар", "Хэрлэн", "Жаргалтхаан", "Мөрөн", "Норовлин", "Өмнөдэлгэр", "Цэнхэрмандал"],
+  Khovd: ["Алтай", "Булган", "Буянт", "Чандмань", "Дарви", "Дөргөн", "Дуут", "Эрдэнэбүрэн", "Жаргалант", "Ховд", "Манхан", "Мөнххайрхан", "Мөст", "Мянгад", "Цэцэг", "Үенч", "Зэрэг"],
+  Khövsgöl: ["Алаг-Эрдэнэ", "Арбулаг", "Баянзүрх", "Бүрэнтогтох", "Чандмань-Өндөр", "Эрдэнэбулган", "Галт", "Ханх", "Их-Уул", "Жаргалант", "Мөрөн", "Рашаант", "Рэнчинлхүмбэ", "Шинэ-Идэр", "Тариалан", "Төмөрбулаг", "Тосонцэнгэл", "Цагаан-Уул", "Цагааннуур", "Цагаан-Үүр", "Цэцэрлэг", "Түнэл", "Улаан-Уул"],
+  Ömnögovi: ["Баян-Овоо", "Баяндалай", "Булган", "Даланзадгад", "Гурвантэс", "Ханбогд", "Ханхонгор", "Хүрмэн", "Мандал-Овоо", "Манлай", "Номгон", "Ноён", "Сэврэй", "Цогт-Овоо", "Цогтцэций"],
+  Orkhon: ["Баян-Өндөр", "Жаргалант"],
+  Övörkhangai: ["Арвайхээр", "Баруунбаян-Улаан", "Бат-Өлзий", "Баян-Өндөр", "Баянгол", "Богд", "Бүрд", "Гучин-Ус", "Хархорин", "Хайрхандулаан", "Хужирт", "Нарийнтээл", "Өлзийт", "Сант", "Тарагт", "Төгрөг", "Уянга", "Есөнзүйл", "Зүүнбаян-Улаан"],
+  Selenge: ["Алтанбулаг", "Баруунбүрэн", "Баянгол", "Жавхлант", "Хүдэр", "Хушаат", "Мандал", "Орхон", "Орхонтуул", "Сант", "Сайхан", "Шаамар", "Сүхбаатар", "Цагааннуур", "Түшиг", "Ерөө", "Зүүнбүрэн"],
+  Sükhbaatar: ["Асгат", "Баруун-Урт", "Баяндэлгэр", "Дарьганга", "Эрдэнэцагаан", "Халзан", "Мөнххаан", "Наран", "Онгон", "Сүхбаатар", "Түвшинширээ", "Түмэнцогт", "Уулбаян"],
+  Töv: ["Алтанбулаг", "Аргалант", "Архуст", "Батсүмбэр", "Баян", "Баян-Өнжүүл", "Баянчандмань", "Баяндэлгэр", "Баянжаргалан", "Баянхангай", "Баянцагаан", "Баянцогт", "Борнуур", "Бүрэн", "Дэлгэрхаан", "Эрдэнэ", "Эрдэнэсант", "Жаргалант", "Лүн", "Мөнгөнморьт", "Өндөрширээт", "Сэргэлэн", "Сүмбэр", "Цээл", "Угтаал", "Заамар", "Зуунмод"],
+  Uvs: ["Баруунтуруун", "Бөхмөрөн", "Давст", "Ховд", "Хяргас", "Малчин", "Наранбулаг", "Өлгий", "Өмнөговь", "Өндөрхангай", "Сагил", "Тариалан", "Тэс", "Цагаанхайрхан", "Түргэн", "Улаангом", "Завхан", "Зүүнговь", "Зүүнхангай"],
+  Zavkhan: ["Алдархаан", "Асгат", "Баянхайрхан", "Баянтэс", "Дөрвөлжин", "Эрдэнэхайрхан", "Идэр", "Их-Уул", "Нөмрөг", "Отгон", "Сантмаргац", "Шилүүстэй", "Сонгино", "Тэлмэн", "Тэс", "Тосонцэнгэл", "Цагаанчулуут", "Цагаанхайрхан", "Цэцэн-Уул", "Түдэвтэй", "Улиастай", "Ургамал", "Яруу", "Завханмандал"],
+  Ulaanbaatar: ["Багануур", "Багахангай", "Баянгол", "Баянзүрх", "Налайх", "Сонгинохайрхан", "Сүхбаатар", "Хан-Уул", "Чингэлтэй"]
+};
+
 const svgRegions = [
   { id: "MN061", svgName: "Dornod", name: "Dornod", x: 799.5, y: 165.5, w: 170, h: 120 },
   { id: "MN071", svgName: "Bayan-Ölgiy", name: "Bayan-Ölgii", x: 106, y: 170.2, w: 135, h: 145 },
@@ -890,16 +965,33 @@ function typeLabel(food, language) {
   return localPhrase(food.type, language);
 }
 
+function regionLabel(region, language) {
+  return language === "mn" ? regionNamesMn[region] || region : region;
+}
+
+function capitalLabel(region, language) {
+  return language === "mn" ? capitalNamesMn[region] || capitals[region] : capitals[region];
+}
+
+function subdivisionLabel(region, subdivision, language) {
+  if (language !== "mn") {
+    return subdivision;
+  }
+  const index = provinceSoums[region]?.indexOf(subdivision) ?? -1;
+  return index >= 0 ? subdivisionNamesMn[region]?.[index] || subdivision : subdivision;
+}
+
 function regionsLabel(food, language, t) {
   if (food.regions.includes("national")) {
     return t.national;
   }
-  return food.regions.filter((region) => region !== "national").join(", ");
+  return food.regions.filter((region) => region !== "national").map((region) => regionLabel(region, language)).join(", ");
 }
 
 function foodSearchText(food) {
   const locale = foodLocales[food.name] || {};
-  return [food.name, food.category, food.type, ...food.regions, locale.mn, locale.ko, locale.zh, locale.ru, ...(locale.aliases || [])]
+  const regionAliases = food.regions.map((region) => regionNamesMn[region]).filter(Boolean);
+  return [food.name, food.category, food.type, ...food.regions, ...regionAliases, locale.mn, locale.ko, locale.zh, locale.ru, ...(locale.aliases || [])]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
@@ -1455,6 +1547,10 @@ function normalizeSearch(value) {
   return value.trim().toLowerCase();
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function primaryRegionForFood(food, fallbackRegion) {
   const regionalMatch = food.regions.find((region) => region !== "national" && provinceSoums[region]);
   return regionalMatch || fallbackRegion;
@@ -1630,7 +1726,11 @@ function App() {
   const t = translations[language];
   const stats = nutritionFor(selected);
   const subdivisions = provinceSoums[selected];
-  const filteredSubdivisions = subdivisions.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
+  const selectedRegionLabel = regionLabel(selected, language);
+  const selectedCapitalLabel = capitalLabel(selected, language);
+  const filteredSubdivisions = subdivisions.filter((item) => (
+    `${item} ${subdivisionLabel(selected, item, language)}`.toLowerCase().includes(query.toLowerCase())
+  ));
   const totalSoums = useMemo(() => provinceNames.reduce((sum, name) => sum + provinceSoums[name].length, 0) - provinceSoums.Ulaanbaatar.length, []);
   const multiplier = basis === "serving" ? 1.5 : 1;
   const regionFoods = foodsForRegion(selected);
@@ -1668,14 +1768,20 @@ function App() {
     if (!countrySvg) {
       return "";
     }
-    return countrySvg
+    let svg = countrySvg
       .replace(/<\?xml[^>]*>/g, "")
       .replace(/<script[\s\S]*?<\/script>/gi, "")
       .replace(/class="([^"]*sm_state_(MN\d+)[^"]*)"/g, (match, className, id) => {
         const selectedClass = id === selectedSvgId ? " isSelected" : "";
         return `class="${className}${selectedClass}"`;
       });
-  }, [countrySvg, selectedSvgId]);
+    if (language === "mn") {
+      svgRegions.forEach((region) => {
+        svg = svg.replace(new RegExp(`>${escapeRegExp(region.svgName)}<`, "g"), `>${regionLabel(region.name, language)}<`);
+      });
+    }
+    return svg;
+  }, [countrySvg, selectedSvgId, language]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => setBootLoading(false), 1700);
@@ -1946,7 +2052,7 @@ function App() {
         foodLocales[food.name]?.mn || food.name,
         food.category,
         food.type,
-        food.regions.join("; ")
+        food.regions.map((region) => regionLabel(region, language)).join("; ")
       ])
     ]);
   }
@@ -1956,7 +2062,7 @@ function App() {
       ["food", "region", "nutrient", "amount", "unit", "derivation", "source"],
       ...rows.map((row) => [
         foodLabel(selectedCatalogFood, language),
-        selected,
+        selectedRegionLabel,
         localPhrase(row.name, language),
         row.amount,
         row.unit,
@@ -1967,7 +2073,7 @@ function App() {
   }
 
   async function citeSelectedFood() {
-    const citation = `FoodData Mongolia. ${foodLabel(selectedCatalogFood, language)} nutrient profile, ${selected}. Accessed ${new Date().toISOString().slice(0, 10)}. Source: ${selectedFoodSource.url}`;
+    const citation = `FoodData Mongolia. ${foodLabel(selectedCatalogFood, language)} nutrient profile, ${selectedRegionLabel}. Accessed ${new Date().toISOString().slice(0, 10)}. Source: ${selectedFoodSource.url}`;
     try {
       await navigator.clipboard.writeText(citation);
       setAiText(citation);
@@ -1988,7 +2094,7 @@ function App() {
     setAiStatus("loading");
     setAiText("");
     const profile = profileForFood(selectedCatalogFood);
-    const localSoums = provinceSoums[selected] || [];
+    const localSoums = (provinceSoums[selected] || []).map((item) => subdivisionLabel(selected, item, language));
     const localFoods = localFoodsForRegion(selected).map((food) => foodLabel(food, language)).join(", ");
     const prompt = [
       "You are Mazaalai AI, a careful food composition and Mongolian food culture assistant for a Mongolia nutrition app.",
@@ -2000,7 +2106,7 @@ function App() {
       "When giving a recipe, provide concrete steps, timing cues, texture cues, and safety cues.",
       `Food: ${foodLabel(selectedCatalogFood, language)} / ${foodLabel(selectedCatalogFood, "en")}`,
       `Short app description: ${selectedFood.description}`,
-      `Region: ${selected}`,
+      `Region: ${selectedRegionLabel}`,
       `Relevant soums/districts in selected region: ${localSoums.join(", ") || "No soum/district list available"}`,
       `Other local foods shown for this region: ${localFoods}`,
       `Food type/category: ${selectedCatalogFood.type} / ${selectedCatalogFood.category}`,
@@ -2201,7 +2307,7 @@ function App() {
               <div>
                 <p className="dataBadge">{t.regionMap}</p>
                 <h2>{t.showAllRegions}</h2>
-                <p className="metaLine">{t.aimagFocus}: {selected}</p>
+                <p className="metaLine">{t.aimagFocus}: {selectedRegionLabel}</p>
               </div>
               <button type="button" onClick={() => setRegionMapOpen(false)}>{t.foodDetails}</button>
             </div>
@@ -2220,7 +2326,7 @@ function App() {
           <section>
             <h3>{t.regionMap}</h3>
             <div className="mapFocusHeader">
-              <span>{t.aimagFocus}: {selected}</span>
+              <span>{t.aimagFocus}: {selectedRegionLabel}</span>
               <button type="button" onClick={showRegionMap}>{t.showAllRegions}</button>
             </div>
             <div
@@ -2232,7 +2338,7 @@ function App() {
           </section>
 
           <section>
-            <h3>{foodQuery ? t.searchResults : t.foodsIn(selected)}</h3>
+            <h3>{foodQuery ? t.searchResults : t.foodsIn(selectedRegionLabel)}</h3>
             <div className="resultList">
               {visibleFoods.length === 0 && (
                 <div className="emptySearch">{t.noResults}</div>
@@ -2266,7 +2372,7 @@ function App() {
                 <div>
                   <p className="dataBadge">{t.regionMap}</p>
                   <h2>{t.showAllRegions}</h2>
-                  <p className="metaLine">{t.aimagFocus}: {selected}</p>
+                  <p className="metaLine">{t.aimagFocus}: {selectedRegionLabel}</p>
                 </div>
                 <button type="button" onClick={() => setCenterView("details")}>{t.foodDetails}</button>
               </div>
@@ -2279,7 +2385,7 @@ function App() {
             </div>
           ) : (
           <>
-          <div className="breadcrumb">{t.breadcrumb(selected)}</div>
+          <div className="breadcrumb">{t.breadcrumb(selectedRegionLabel)}</div>
           <div className="detailTop">
             <FoodPhoto food={selectedCatalogFood} className="foodHeroImage" label={t.imageUnverified} />
             <div>
@@ -2388,8 +2494,8 @@ function App() {
                 <div className="detailsGrid">
                   <div><span>{t.description}</span><strong>{foodLabel(selectedCatalogFood, language)}</strong></div>
                   <div><span>{t.publicationDate}</span><strong>{selectedFood.publicationDate}</strong></div>
-                  <div><span>{t.region}</span><strong>{selected}</strong></div>
-                  <div><span>{t.center}</span><strong>{capitals[selected]}</strong></div>
+                  <div><span>{t.region}</span><strong>{selectedRegionLabel}</strong></div>
+                  <div><span>{t.center}</span><strong>{selectedCapitalLabel}</strong></div>
                   <div><span>{t.totalLocalFoods}</span><strong>{selectedRegionLocalFoods.length}</strong></div>
                   <div><span>{t.totalAdminUnits}</span><strong>{subdivisions.length}</strong></div>
                 </div>
@@ -2412,7 +2518,7 @@ function App() {
               <section className="profileBlock">
                 <h3>{t.regionalFeatures}</h3>
                 <p>{language === "en" ? regionSpecialties[selected] : selectedDisplayProfile.notes}</p>
-                <p><strong>{t.commonInSoums}:</strong> {subdivisions.slice(0, 8).join(", ")}{subdivisions.length > 8 ? "..." : ""}</p>
+                <p><strong>{t.commonInSoums}:</strong> {subdivisions.slice(0, 8).map((item) => subdivisionLabel(selected, item, language)).join(", ")}{subdivisions.length > 8 ? "..." : ""}</p>
               </section>
 
               <section className="profileBlock">
@@ -2429,7 +2535,7 @@ function App() {
                 <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={selected === "Ulaanbaatar" ? t.searchDistricts : t.searchSoums} />
               </div>
               <div className="chipList">
-                {filteredSubdivisions.map((item) => <span key={item}>{item}</span>)}
+                {filteredSubdivisions.map((item) => <span key={item}>{subdivisionLabel(selected, item, language)}</span>)}
               </div>
             </div>
           )}
@@ -2442,8 +2548,8 @@ function App() {
             <MapPin size={22} />
             <div>
               <p>{selected === "Ulaanbaatar" ? t.capitalCity : t.aimag}</p>
-              <h2>{selected}</h2>
-              <span>{t.center}: {capitals[selected]}</span>
+              <h2>{selectedRegionLabel}</h2>
+              <span>{t.center}: {selectedCapitalLabel}</span>
             </div>
           </div>
 
