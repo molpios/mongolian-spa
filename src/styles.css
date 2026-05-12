@@ -1425,6 +1425,10 @@ h3 {
   padding: 0 40px 42px;
 }
 
+.aboutPage {
+  padding-top: 28px;
+}
+
 .aboutInner {
   background:
     radial-gradient(circle at 8% 0%, rgb(159 230 179 / 0.28), transparent 30%),
@@ -1436,6 +1440,33 @@ h3 {
   margin: 0 auto;
   max-width: 1180px;
   padding: 28px;
+}
+
+.aboutTopline {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.aboutTopline span {
+  color: #52745d;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.aboutTopline button {
+  background: linear-gradient(135deg, #145f35, #34a853);
+  border: 1px solid rgb(29 79 49 / 0.75);
+  border-radius: 999px;
+  box-shadow: 0 12px 24px rgb(36 126 69 / 0.18);
+  color: #ffffff;
+  font-weight: 800;
+  min-height: 40px;
+  padding: 0 14px;
 }
 
 .aboutInner h2 {
@@ -1719,6 +1750,11 @@ h3 {
   .aboutInner {
     border-radius: 16px;
     padding: 18px;
+  }
+
+  .aboutTopline {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .aboutInner h2 {

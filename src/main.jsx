@@ -1367,6 +1367,7 @@ function nutritionFor(name) {
 
 function App() {
   const [language, setLanguage] = useState("mn");
+  const [activePage, setActivePage] = useState("food");
   const [searchMode, setSearchMode] = useState("food");
   const [selected, setSelected] = useState("Ulaanbaatar");
   const [query, setQuery] = useState("");
@@ -1391,7 +1392,6 @@ function App() {
   const searchInputRef = useRef(null);
   const dataTypeRef = useRef(null);
   const detailsRef = useRef(null);
-  const aboutRef = useRef(null);
   const t = translations[language];
   const stats = nutritionFor(selected);
   const subdivisions = provinceSoums[selected];
@@ -1581,6 +1581,7 @@ function App() {
   }
 
   function focusSearch(mode) {
+    setActivePage("food");
     setSearchMode(mode);
     setFoodOnlyMode(false);
     window.requestAnimationFrame(() => {
@@ -1590,6 +1591,7 @@ function App() {
   }
 
   function showDataTypes() {
+    setActivePage("food");
     setFoodOnlyMode(false);
     window.requestAnimationFrame(() => {
       dataTypeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1597,7 +1599,10 @@ function App() {
   }
 
   function showAbout() {
-    aboutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setActivePage("about");
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }
 
   function csvEscape(value) {
@@ -1794,7 +1799,7 @@ function App() {
         </nav>
       </header>
 
-      <section className="searchHero">
+      {activePage === "food" && <section className="searchHero">
         <div className="heroCopy">
           <h2>{t.navFood}</h2>
           <p>{t.searchHintDefault}</p>
@@ -1852,9 +1857,9 @@ function App() {
           </div>
         )}
         <p className="searchHint">{foodQuery ? t.searchHint(visibleFoods.length) : t.searchHintDefault}</p>
-      </section>
+      </section>}
 
-      <div className={`fdcShell ${foodOnlyMode ? "foodOnlyShell" : ""}`}>
+      {activePage === "food" && <div className={`fdcShell ${foodOnlyMode ? "foodOnlyShell" : ""}`}>
         {!foodOnlyMode && <aside className="filterPanel">
           <section>
             <h3>{t.regionMap}</h3>
@@ -2093,10 +2098,14 @@ function App() {
             </div>
           </section>
         </aside>}
-      </div>
+      </div>}
 
-      <section className="aboutSection" ref={aboutRef}>
+      {activePage === "about" && <section className="aboutSection aboutPage">
         <div className="aboutInner">
+          <div className="aboutTopline">
+            <span>{t.agency}</span>
+            <button type="button" onClick={() => focusSearch("food")}>{t.navFood}</button>
+          </div>
           <h2>Бидний тухай</h2>
           <p>Мазаалай хиймэл оюун бол Монгол улсын хүнс, хөдөө аж ахуйн салбарт инноваци нэвтрүүлж буй хиймэл оюунд суурилсан дата систем юм. Бид эх орныхоо хөрсөнд ургасан шим тэжээлт хүнс, түүний гарал үүсэл, чанар стандарт болон хөдөө аж ахуйн үйлдвэрлэлийн цогц өгөгдлийг нэгтгэн боловсруулдаг.</p>
 
@@ -2113,7 +2122,7 @@ function App() {
 
           <p><strong>Бидний зорилго:</strong> Технологийн дэвшлийг ашиглан Монгол хүний эрүүл мэнд, хүнсний аюулгүй байдлыг хангах, салбарын мэргэжилтнүүдийг үнэн зөв мэдээллээр хангах явдал юм.</p>
         </div>
-      </section>
+      </section>}
     </main>
   );
 }
