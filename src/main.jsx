@@ -27,6 +27,7 @@ const translations = {
     navComponent: "Component Search",
     navDocs: "Data Type Documentation",
     navDownload: "Download Data",
+    navAbout: "About Us",
     searchTypeFood: "Food Search",
     searchTypeComponent: "Component Search",
     searchPlaceholder: "Search foods, e.g. airag, buuz, camel milk",
@@ -125,6 +126,7 @@ const translations = {
     navComponent: "Бүрэлдэхүүн хайх",
     navDocs: "Өгөгдлийн төрөл",
     navDownload: "Өгөгдөл татах",
+    navAbout: "Бидний тухай",
     searchTypeFood: "Хүнс хайх",
     searchTypeComponent: "Бүрэлдэхүүн хайх",
     searchPlaceholder: "Хоол хайх: airag, buuz, camel milk гэх мэт",
@@ -223,6 +225,7 @@ const translations = {
     navComponent: "성분 검색",
     navDocs: "데이터 유형 문서",
     navDownload: "데이터 다운로드",
+    navAbout: "소개",
     searchTypeFood: "식품 검색",
     searchTypeComponent: "성분 검색",
     searchPlaceholder: "식품 검색: airag, buuz, camel milk",
@@ -321,6 +324,7 @@ const translations = {
     navComponent: "成分搜索",
     navDocs: "数据类型文档",
     navDownload: "下载数据",
+    navAbout: "关于我们",
     searchTypeFood: "食品搜索",
     searchTypeComponent: "成分搜索",
     searchPlaceholder: "搜索食品，例如 airag、buuz、camel milk",
@@ -419,6 +423,7 @@ const translations = {
     navComponent: "Поиск компонентов",
     navDocs: "Типы данных",
     navDownload: "Скачать данные",
+    navAbout: "О нас",
     searchTypeFood: "Поиск продуктов",
     searchTypeComponent: "Поиск компонентов",
     searchPlaceholder: "Искать: airag, buuz, camel milk",
@@ -517,6 +522,7 @@ const languageOptions = [
   ["zh", "中文"],
   ["ru", "Русский"]
 ];
+const mulsLogoUrl = "https://www.muls.edu.mn/img/logo_muls.png";
 
 const languageNames = {
   en: "English",
@@ -831,6 +837,24 @@ function regionsLabel(food, language, t) {
 function foodSearchText(food) {
   const locale = foodLocales[food.name] || {};
   return [food.name, food.category, food.type, ...food.regions, locale.mn, locale.ko, locale.zh, locale.ru, ...(locale.aliases || [])]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+function componentSearchText(food) {
+  const profile = profileForFood(food);
+  const regionName = primaryRegionForFood(food, "Ulaanbaatar");
+  const nutrients = nutrientRows(food.name, regionName, 1).map((row) => row.name);
+  return [
+    foodSearchText(food),
+    ...profile.ingredients,
+    ...profile.steps,
+    profile.notes,
+    ...nutrients,
+    ...nutrients.map((item) => localPhrase(item, "mn")),
+    ...nutrients.map((item) => localPhrase(item, "en"))
+  ]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
@@ -1343,6 +1367,7 @@ function nutritionFor(name) {
 
 function App() {
   const [language, setLanguage] = useState("mn");
+  const [searchMode, setSearchMode] = useState("food");
   const [selected, setSelected] = useState("Ulaanbaatar");
   const [query, setQuery] = useState("");
   const [foodQuery, setFoodQuery] = useState("");
@@ -1363,6 +1388,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [foodOnlyMode, setFoodOnlyMode] = useState(false);
   const [countrySvg, setCountrySvg] = useState("");
+  const searchInputRef = useRef(null);
+  const dataTypeRef = useRef(null);
+  const detailsRef = useRef(null);
+  const aboutRef = useRef(null);
   const t = translations[language];
   const stats = nutritionFor(selected);
   const subdivisions = provinceSoums[selected];
@@ -1394,7 +1423,8 @@ function App() {
     if (!needle) {
       return false;
     }
-    return foodSearchText(food).includes(needle);
+    const haystack = searchMode === "component" ? componentSearchText(food) : foodSearchText(food);
+    return haystack.includes(needle);
   });
   const visibleFoods = foodQuery ? searchedFoods : regionFoods;
   const selectedSvgId = svgRegions.find((region) => region.name === selected)?.id;
@@ -1550,6 +1580,85 @@ function App() {
     }
   }
 
+  function focusSearch(mode) {
+    setSearchMode(mode);
+    setFoodOnlyMode(false);
+    window.requestAnimationFrame(() => {
+      searchInputRef.current?.focus();
+      searchInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
+  function showDataTypes() {
+    setFoodOnlyMode(false);
+    window.requestAnimationFrame(() => {
+      dataTypeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
+  function showAbout() {
+    aboutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function csvEscape(value) {
+    const text = String(value ?? "");
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  }
+
+  function downloadCsv(filename, rows) {
+    const csv = rows.map((row) => row.map(csvEscape).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function downloadCatalogData() {
+    downloadCsv("fooddata-mongolia-catalog.csv", [
+      ["name", "mongolian", "category", "type", "regions"],
+      ...mongolianFoodCatalog.map((food) => [
+        food.name,
+        foodLocales[food.name]?.mn || food.name,
+        food.category,
+        food.type,
+        food.regions.join("; ")
+      ])
+    ]);
+  }
+
+  function downloadSelectedFoodData() {
+    downloadCsv(`${selectedCatalogFood.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-nutrients.csv`, [
+      ["food", "region", "nutrient", "amount", "unit", "derivation", "source"],
+      ...rows.map((row) => [
+        foodLabel(selectedCatalogFood, language),
+        selected,
+        localPhrase(row.name, language),
+        row.amount,
+        row.unit,
+        localPhrase(row.derivation, language),
+        selectedFoodSource.url
+      ])
+    ]);
+  }
+
+  async function citeSelectedFood() {
+    const citation = `FoodData Mongolia. ${foodLabel(selectedCatalogFood, language)} nutrient profile, ${selected}. Accessed ${new Date().toISOString().slice(0, 10)}. Source: ${selectedFoodSource.url}`;
+    try {
+      await navigator.clipboard.writeText(citation);
+      setAiText(citation);
+      setAiStatus("done");
+    } catch {
+      setAiText(citation);
+      setAiStatus("done");
+    }
+    detailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   async function requestAiFacts() {
     if (!isLoggedIn) {
       setAiText(t.lockedFeature);
@@ -1662,16 +1771,20 @@ function App() {
     <main>
       <div className="govBanner">{t.official}</div>
       <header className="fdcHeader">
-        <div>
-          <span className="agency">{t.agency}</span>
-          <h1>{t.title}</h1>
-          <p>{t.subtitle}</p>
+        <div className="brandLockup">
+          <img className="brandLogo" src={mulsLogoUrl} alt="MULS logo" />
+          <div>
+            <span className="agency">{t.agency}</span>
+            <h1>{t.title}</h1>
+            <p>{t.subtitle}</p>
+          </div>
         </div>
         <nav>
-          <a>{t.navFood}</a>
-          <a>{t.navComponent}</a>
-          <a>{t.navDocs}</a>
-          <a>{t.navDownload}</a>
+          <button type="button" onClick={() => focusSearch("food")}>{t.navFood}</button>
+          <button type="button" onClick={() => focusSearch("component")}>{t.navComponent}</button>
+          <button type="button" onClick={showDataTypes}>{t.navDocs}</button>
+          <button type="button" onClick={downloadCatalogData}>{t.navDownload}</button>
+          <button type="button" onClick={showAbout}>{t.navAbout}</button>
           <label className="languageSelect">
             <span>{t.language}</span>
             <select value={language} onChange={(event) => setLanguage(event.target.value)} aria-label="Language">
@@ -1687,11 +1800,11 @@ function App() {
           <p>{t.searchHintDefault}</p>
         </div>
         <form className="searchRow" onSubmit={handleFoodSearch}>
-          <select aria-label="Search type">
-            <option>{t.searchTypeFood}</option>
-            <option>{t.searchTypeComponent}</option>
+          <select aria-label="Search type" value={searchMode} onChange={(event) => setSearchMode(event.target.value)}>
+            <option value="food">{t.searchTypeFood}</option>
+            <option value="component">{t.searchTypeComponent}</option>
           </select>
-          <input value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
+          <input ref={searchInputRef} value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
           <button type="submit"><Search size={18} /> {t.search}</button>
         </form>
         {!isLoggedIn && (
@@ -1775,7 +1888,7 @@ function App() {
             </div>
           </section>
 
-          <section className="softFilter">
+          <section className="softFilter" ref={dataTypeRef}>
             <h3><Filter size={17} /> {t.dataType}</h3>
             <div className="filterChips">
               {["Foundation Foods", "Survey (FNDDS)", "Regional Foods", "Local Reference"].map((item) => (
@@ -1785,7 +1898,7 @@ function App() {
           </section>
         </aside>}
 
-        <section className="foodDetails">
+        <section className="foodDetails" ref={detailsRef}>
           <div className="breadcrumb">{t.breadcrumb(selected)}</div>
           <div className="detailTop">
             <FoodPhoto food={selectedCatalogFood} className="foodHeroImage" label={t.imageUnverified} />
@@ -1796,8 +1909,8 @@ function App() {
             </div>
             <div className="actionButtons">
               {foodOnlyMode && <button type="button" onClick={() => setFoodOnlyMode(false)}>{t.backToAll}</button>}
-              <button><Download size={17} /> {t.download}</button>
-              <button><Info size={17} /> {t.cite}</button>
+              <button type="button" onClick={downloadSelectedFoodData}><Download size={17} /> {t.download}</button>
+              <button type="button" onClick={citeSelectedFood}><Info size={17} /> {t.cite}</button>
             </div>
           </div>
 
@@ -1981,6 +2094,26 @@ function App() {
           </section>
         </aside>}
       </div>
+
+      <section className="aboutSection" ref={aboutRef}>
+        <div className="aboutInner">
+          <h2>Бидний тухай</h2>
+          <p>Мазаалай бол Монгол улсын хүнс, хөдөө аж ахуйн салбарт инноваци нэвтрүүлж буй хиймэл оюунд суурилсан дата систем юм. Бид эх орныхоо хөрсөнд ургасан шим тэжээлт хүнс, түүний гарал үүсэл, чанар стандарт болон хөдөө аж ахуйн үйлдвэрлэлийн цогц өгөгдлийг нэгтгэн боловсруулдаг.</p>
+
+          <h3>Үүсгэн байгуулагч ба Хөгжүүлэлтийн түүх</h3>
+          <p>Энэхүү системийг Баянмөнх овогтой Адъяасүрэн санаачлан хөгжүүлсэн билээ. Анх хөдөө аж ахуйн салбарт, тэр дундаа газар тариалангийн арга зүйд суурилсан хиймэл оюуны алгоритмуудыг боловсруулж эхэлсэн нь өнөөдрийн хүчирхэг дата системийн суурь болсон юм.</p>
+
+          <h3>Бидний алсын хараа</h3>
+          <p>Өдгөө бид үйл ажиллагаагаа өргөжүүлж, зөвхөн тариалангийн талбайгаас гадна хүнсний үйлдвэрлэлийн салбарыг бүхэлд нь хамарсан ухаалаг шийдлүүдийг нэвтрүүлж байна. "Мазаалай" систем нь:</p>
+          <ul>
+            <li>Хөдөө аж ахуйн нарийн өгөгдөлд дүн шинжилгээ хийх;</li>
+            <li>Хүнсний бүтээгдэхүүний чанар, аюулгүй байдлыг датагаар баталгаажуулах;</li>
+            <li>Үйлдвэрлэлийн процессыг хиймэл оюуны тусламжтайгаар оновчтой болгох чиглэлээр тасралтгүй хөгжиж байна.</li>
+          </ul>
+
+          <p><strong>Бидний зорилго:</strong> Технологийн дэвшлийг ашиглан Монгол хүний эрүүл мэнд, хүнсний аюулгүй байдлыг хангах, салбарын мэргэжилтнүүдийг үнэн зөв мэдээллээр хангах явдал юм.</p>
+        </div>
+      </section>
     </main>
   );
 }
