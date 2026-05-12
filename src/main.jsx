@@ -1716,7 +1716,11 @@ function App() {
       for (let index = event.resultIndex; index < event.results.length; index += 1) {
         transcript += event.results[index][0].transcript;
       }
-      setFoodQuery(transcript.trim());
+      const nextTranscript = transcript.trim();
+      setFoodQuery(nextTranscript);
+      if (nextTranscript) {
+        setSpeechStatus("idle");
+      }
     };
     recognition.onerror = () => {
       recognitionFailed = true;
@@ -1961,6 +1965,7 @@ function App() {
           </select>
           <div className="searchInputWrap">
             <input ref={searchInputRef} value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
+            {speechStatus === "listening" && !foodQuery && <span className="inlineSpeechStatus">{t.listening}</span>}
             <button
               type="button"
               className={`voiceSearchButton ${speechStatus === "listening" ? "isListening" : ""}`}
@@ -1973,9 +1978,9 @@ function App() {
           </div>
           <button type="submit"><Search size={18} /> {t.search}</button>
         </form>
-        {speechStatus !== "idle" && (
+        {speechStatus === "unsupported" && (
           <p className={`speechStatus ${speechStatus === "unsupported" ? "speechError" : ""}`}>
-            {speechStatus === "listening" ? t.listening : t.speechUnsupported}
+            {t.speechUnsupported}
           </p>
         )}
         {!isLoggedIn && (

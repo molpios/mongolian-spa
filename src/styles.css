@@ -529,8 +529,28 @@ h3 {
 }
 
 .searchInputWrap input {
-  padding-right: 58px;
+  padding-right: 156px;
   width: 100%;
+}
+
+.inlineSpeechStatus {
+  background: #ecfaef;
+  border: 1px solid #bfe5c7;
+  border-radius: 999px;
+  color: #176b3b;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  max-width: 96px;
+  overflow: hidden;
+  padding: 7px 10px;
+  position: absolute;
+  right: 52px;
+  text-overflow: ellipsis;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  z-index: 2;
 }
 
 .searchRow input:focus,
@@ -566,14 +586,19 @@ h3 {
 .voiceSearchButton {
   border-radius: 12px;
   box-shadow: none;
-  height: 38px;
-  min-height: 38px;
+  height: 36px;
+  min-height: 36px;
   padding: 0;
   position: absolute;
-  right: 5px;
-  top: 5px;
-  width: 42px;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
   z-index: 2;
+}
+
+.voiceSearchButton:hover {
+  transform: translateY(-50%);
 }
 
 .voiceSearchButton.isListening {
