@@ -96,6 +96,16 @@ select:focus-visible {
   min-height: 132px;
 }
 
+.loaderKicker {
+  color: #163623;
+  font-size: clamp(17px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+  max-width: min(620px, calc(100vw - 40px));
+  text-align: center;
+}
+
 .loaderMark {
   align-items: center;
   animation: loaderBounce 980ms ease-in-out infinite;
@@ -2275,6 +2285,11 @@ h3 {
 
   .loaderSplash p {
     font-size: 14px;
+  }
+
+  .loaderKicker {
+    font-size: 16px;
+    max-width: calc(100vw - 28px);
   }
 
   .govBanner {

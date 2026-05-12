@@ -1434,6 +1434,7 @@ const loadingMarks = [
 function LoadingSplash() {
   return (
     <div className="loaderSplash" role="status" aria-live="polite" aria-label="Loading">
+      <strong className="loaderKicker">Хөдөө аж ахуйн их сургуульд бүтээв</strong>
       <div className="loaderMarks" aria-hidden="true">
         {loadingMarks.map((mark, index) => (
           <span className={`loaderMark loaderMark${index + 1}`} key={mark.src}>
