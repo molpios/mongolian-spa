@@ -9,6 +9,7 @@ import {
   LoaderCircle,
   MapPin,
   MessageCircle,
+  Mic,
   Search,
   Smartphone,
   TableProperties,
@@ -32,6 +33,9 @@ const translations = {
     searchTypeComponent: "Component Search",
     searchPlaceholder: "Search foods, e.g. airag, buuz, camel milk",
     search: "Search",
+    voiceSearch: "Voice search",
+    listening: "Listening...",
+    speechUnsupported: "Speech recognition is not supported in this browser. Use Chrome.",
     language: "Language",
     serving: "Serving",
     searchHintDefault: "Search across all foods, vegetables, dairy, meat, and grains.",
@@ -135,6 +139,9 @@ const translations = {
     searchTypeComponent: "Бүрэлдэхүүн хайх",
     searchPlaceholder: "Хоол хайх: airag, buuz, camel milk гэх мэт",
     search: "Хайх",
+    voiceSearch: "Дуугаар хайх",
+    listening: "Сонсож байна...",
+    speechUnsupported: "Таны хөтөч яриа танихгүй байна. Chrome ашиглана уу.",
     language: "Хэл",
     serving: "Порц",
     searchHintDefault: "Бүх хоол, ногоо, сүү цагаан идээ, мах, үр тариа дундаас хайна.",
@@ -238,6 +245,9 @@ const translations = {
     searchTypeComponent: "성분 검색",
     searchPlaceholder: "식품 검색: airag, buuz, camel milk",
     search: "검색",
+    voiceSearch: "음성 검색",
+    listening: "듣는 중...",
+    speechUnsupported: "이 브라우저는 음성 인식을 지원하지 않습니다. Chrome을 사용하세요.",
     language: "언어",
     serving: "1회 제공량",
     searchHintDefault: "모든 식품, 채소, 유제품, 육류, 곡물에서 검색합니다.",
@@ -341,6 +351,9 @@ const translations = {
     searchTypeComponent: "成分搜索",
     searchPlaceholder: "搜索食品，例如 airag、buuz、camel milk",
     search: "搜索",
+    voiceSearch: "语音搜索",
+    listening: "正在聆听...",
+    speechUnsupported: "此浏览器不支持语音识别。请使用 Chrome。",
     language: "语言",
     serving: "每份",
     searchHintDefault: "在所有食品、蔬菜、乳制品、肉类和谷物中搜索。",
@@ -444,6 +457,9 @@ const translations = {
     searchTypeComponent: "Поиск компонентов",
     searchPlaceholder: "Искать: airag, buuz, camel milk",
     search: "Поиск",
+    voiceSearch: "Голосовой поиск",
+    listening: "Слушаю...",
+    speechUnsupported: "Этот браузер не поддерживает распознавание речи. Используйте Chrome.",
     language: "Язык",
     serving: "Порция",
     searchHintDefault: "Поиск по всем продуктам, овощам, молочным продуктам, мясу и зерновым.",
@@ -550,6 +566,13 @@ const languageNames = {
   ko: "Korean",
   zh: "Chinese",
   ru: "Russian"
+};
+const speechLanguageCodes = {
+  mn: "mn-MN",
+  en: "en-US",
+  ko: "ko-KR",
+  zh: "zh-CN",
+  ru: "ru-RU"
 };
 
 export const provinceSoums = {
@@ -1469,6 +1492,7 @@ function App() {
   const [aiText, setAiText] = useState("");
   const [aiStatus, setAiStatus] = useState("idle");
   const [imageStatus, setImageStatus] = useState("idle");
+  const [speechStatus, setSpeechStatus] = useState("idle");
   const [ttsStatus, setTtsStatus] = useState("idle");
   const [ttsAudioUrl, setTtsAudioUrl] = useState("");
   const [userHeight, setUserHeight] = useState("");
@@ -1670,6 +1694,40 @@ function App() {
     if (firstResult) {
       selectFood(firstResult, true);
     }
+  }
+
+  function startSpeechSearch() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setSpeechStatus("unsupported");
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = speechLanguageCodes[language] || "mn-MN";
+    let recognitionFailed = false;
+    recognition.onstart = () => {
+      setSpeechStatus("listening");
+      searchInputRef.current?.focus();
+    };
+    recognition.onresult = (event) => {
+      let transcript = "";
+      for (let index = event.resultIndex; index < event.results.length; index += 1) {
+        transcript += event.results[index][0].transcript;
+      }
+      setFoodQuery(transcript.trim());
+    };
+    recognition.onerror = () => {
+      recognitionFailed = true;
+      setSpeechStatus("unsupported");
+    };
+    recognition.onend = () => {
+      if (!recognitionFailed) {
+        setSpeechStatus("idle");
+      }
+    };
+    recognition.start();
   }
 
   function focusSearch(mode) {
@@ -1902,8 +1960,22 @@ function App() {
             <option value="component">{t.searchTypeComponent}</option>
           </select>
           <input ref={searchInputRef} value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
+          <button
+            type="button"
+            className={`voiceSearchButton ${speechStatus === "listening" ? "isListening" : ""}`}
+            onClick={startSpeechSearch}
+            aria-label={t.voiceSearch}
+            title={t.voiceSearch}
+          >
+            <Mic size={18} />
+          </button>
           <button type="submit"><Search size={18} /> {t.search}</button>
         </form>
+        {speechStatus !== "idle" && (
+          <p className={`speechStatus ${speechStatus === "unsupported" ? "speechError" : ""}`}>
+            {speechStatus === "listening" ? t.listening : t.speechUnsupported}
+          </p>
+        )}
         {!isLoggedIn && (
           <form className={`loginPanel ${loginStatus === "loading" ? "loadingLogin" : ""}`} onSubmit={handleLogin}>
             <div className="loginCardGlow" aria-hidden="true" />

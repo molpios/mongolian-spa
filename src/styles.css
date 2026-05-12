@@ -237,14 +237,24 @@ h3 {
 
 .searchRow {
   display: grid;
-  grid-template-columns: 180px minmax(220px, 1fr) 132px;
+  grid-template-columns: 180px minmax(220px, 1fr) 52px 132px;
   gap: 10px;
 }
 
-.searchHint {
+.searchHint,
+.speechStatus {
   color: #5d675d;
   font-size: 13px;
   margin: 8px 0 0;
+}
+
+.speechStatus {
+  color: #176b3b;
+  font-weight: 700;
+}
+
+.speechError {
+  color: #9a3b25;
 }
 
 .imageSearchRow {
@@ -541,6 +551,15 @@ h3 {
 .ttsButton:hover,
 .mapFocusHeader button:hover {
   transform: translateY(-1px);
+}
+
+.voiceSearchButton {
+  padding: 0;
+}
+
+.voiceSearchButton.isListening {
+  animation: micPulse 1s ease-in-out infinite;
+  background: linear-gradient(135deg, #0f7a3d, #68d987);
 }
 
 .fdcShell {
@@ -1547,6 +1566,17 @@ h3 {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes micPulse {
+  0%,
+  100% {
+    box-shadow: 0 12px 24px rgb(36 126 69 / 0.22);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgb(52 168 83 / 0.16), 0 16px 30px rgb(36 126 69 / 0.28);
   }
 }
 
