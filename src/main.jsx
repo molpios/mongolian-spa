@@ -1426,9 +1426,9 @@ function GuideVisual({ type }) {
 }
 
 const loadingMarks = [
-  { src: "/mazaalai-loader.svg", label: "Mazaalai AI" },
-  { src: "/muls-loader.svg", label: "Mongolian University of Life Sciences" },
-  { src: "/mongolia-flag-loader.svg", label: "Mongolia" }
+  { src: "/mazaalai-loader.png", label: "Mazaalai AI" },
+  { src: mulsLogoUrl, label: "Mongolian University of Life Sciences" },
+  { src: "https://icons.iconarchive.com/icons/custom-icon-design/all-country-flag/256/Mongolia-Flag-icon.png", label: "Mongolia" }
 ];
 
 function LoadingSplash() {
