@@ -22,7 +22,7 @@ const translations = {
   en: {
     official: "An official nutrition data prototype for Mongolia administrative foods",
     builtBySchool: "Created by the School of Agriculture",
-    agency: "Nutrition Data Center of Mongolia",
+    agency: "Mazaalai AI-powered Nutrition Data Center of Mongolia",
     footerBuilt: "Created at the Mongolian University of Life Sciences.",
     footerExecutor: "Implemented by MoSo LLC",
     title: "FoodData Mongolia",
@@ -134,7 +134,7 @@ const translations = {
   mn: {
     official: "Монголын засаг захиргааны хүнсний шим тэжээлийн өгөгдлийн туршилтын систем",
     builtBySchool: "Хөдөө аж ахуйн сургууль бүтээв",
-    agency: "Монголын шим тэжээлийн өгөгдлийн төв",
+    agency: "Mazaalai хиймэл оюунд суурилсан Монголын шим тэжээлийн өгөгдлийн төв",
     footerBuilt: "Хөдөө аж ахуйн их сургуульд бүтээв.",
     footerExecutor: "Гүйцэтгэсэн MoSo ХХК",
     title: "FoodData Mongolia",
@@ -246,7 +246,7 @@ const translations = {
   ko: {
     official: "몽골 행정구역 식품 영양 데이터 프로토타입",
     builtBySchool: "농업대학 제작",
-    agency: "몽골 영양 데이터 센터",
+    agency: "Mazaalai AI 기반 몽골 영양 데이터 센터",
     footerBuilt: "몽골 생명과학대학교에서 제작되었습니다.",
     footerExecutor: "MoSo LLC 구현",
     title: "FoodData Mongolia",
@@ -358,7 +358,7 @@ const translations = {
   zh: {
     official: "蒙古行政区食品营养数据原型",
     builtBySchool: "农业学院制作",
-    agency: "蒙古营养数据中心",
+    agency: "基于 Mazaalai AI 的蒙古营养数据中心",
     footerBuilt: "由蒙古生命科学大学制作。",
     footerExecutor: "MoSo LLC 执行",
     title: "FoodData Mongolia",
@@ -470,7 +470,7 @@ const translations = {
   ru: {
     official: "Прототип данных о питании продуктов административных единиц Монголии",
     builtBySchool: "Создано Школой сельского хозяйства",
-    agency: "Монгольский центр данных о питании",
+    agency: "Монгольский центр данных о питании на базе Mazaalai AI",
     footerBuilt: "Создано в Монгольском университете наук о жизни.",
     footerExecutor: "Исполнитель: MoSo LLC",
     title: "FoodData Mongolia",
