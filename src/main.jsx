@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Activity,
@@ -9,6 +9,7 @@ import {
   LoaderCircle,
   MapPin,
   MessageCircle,
+  CircleCheck,
   Search,
   Smartphone,
   TableProperties,
@@ -176,9 +177,9 @@ const translations = {
     phonePlaceholder: "Утасны дугаар",
     loginButton: "Утсаар баталгаажуулах",
     loginChecking: "SMS илгээхийг хүлээж байна...",
-    loginSuccess: "Утас баталгаажлаа. Нэмэлт боломжууд нээгдсэн.",
+    loginSuccess: "Tany huselt amjilltai batalgaajilaa. Mazaalai hiimel  oyund suurilsan Mongoliin food data systemd  tavtai moril. Hogjuulsen: Adiyasuren",
     loginSuccessTitle: "Амжилттай",
-    loginSuccessCaption: "Таны дугаар амжилттай баталгаажлаа. Нэмэлт боломжууд идэвхжлээ.",
+    loginSuccessCaption: "Tany huselt amjilltai batalgaajilaa. Mazaalai hiimel  oyund suurilsan Mongoliin food data systemd  tavtai moril. Hogjuulsen: Adiyasuren",
     loginFailed: "Баталгаажуулалт амжилтгүй эсвэл хугацаа дууссан.",
     openSms: "SMS app нээх",
     systemMessage: "Системийн заавар",
@@ -1005,7 +1006,11 @@ const specificFoodImages = {
 const youtubeVideos = {
   Buuz: "XzzkGPDD_yw",
   Khuushuur: "2QpCDx4AAYU",
+  Bansh: "aJdl1va1nhE",
+  "Banshtai tsai": "aJdl1va1nhE",
   Tsuivan: "Ojoys4W2KK0",
+  "Guriltai shul": "MLa426l8vgM",
+  Boortsog: "5S3IgsvVJBQ",
   "Suutei tsai": "5MxUhIFxZWk",
   Aaruul: "uiiYJ3AXbAo"
 };
@@ -1726,12 +1731,21 @@ function App() {
           </form>
         )}
         {isLoggedIn && (
-          <div className="imageSearchRow">
-            <label className="imageSearchButton">
-              <input type="file" accept="image/*" onChange={handleImageSearch} />
-              {imageStatus === "loading" ? t.imageSearching : t.imageSearch}
-            </label>
-            <span>{t.imageSearchHint}</span>
+          <div className="verifiedTools">
+            <div className="verifiedNotice">
+              <CircleCheck size={22} />
+              <div>
+                <strong>{t.loginSuccessTitle}</strong>
+                <span>{t.loginSuccess}</span>
+              </div>
+            </div>
+            <div className="imageSearchRow">
+              <label className="imageSearchButton">
+                <input type="file" accept="image/*" onChange={handleImageSearch} />
+                {imageStatus === "loading" ? t.imageSearching : t.imageSearch}
+              </label>
+              <span>{t.imageSearchHint}</span>
+            </div>
           </div>
         )}
         <p className="searchHint">{foodQuery ? t.searchHint(visibleFoods.length) : t.searchHintDefault}</p>
