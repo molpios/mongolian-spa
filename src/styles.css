@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
+
 :root {
-  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-family: "Lora", Georgia, "Times New Roman", serif;
   color: #22312b;
   background: #eef3ef;
   --green-900: #153d2b;
@@ -71,11 +73,29 @@ select:focus-visible {
 }
 
 .govBanner {
+  align-items: center;
   background: #10251a;
   border-bottom: 1px solid rgb(255 255 255 / 0.1);
   color: #cbe9d3;
+  display: flex;
+  flex-wrap: wrap;
   font-size: 13px;
+  gap: 8px 16px;
+  justify-content: space-between;
   padding: 8px 40px;
+}
+
+.govBanner strong {
+  align-items: center;
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 999px;
+  color: #f0fff4;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 700;
+  gap: 6px;
+  padding: 5px 10px;
 }
 
 .fdcHeader {
@@ -125,12 +145,13 @@ select:focus-visible {
 
 .agency {
   display: block;
-  font-size: 28px;
-  font-weight: 800;
+  font-size: 30px;
+  font-weight: 700;
   letter-spacing: 0;
-  line-height: 1.15;
+  line-height: 1.22;
   max-width: 680px;
   opacity: 0.96;
+  text-wrap: balance;
 }
 
 .fdcHeader h1,
@@ -1607,6 +1628,34 @@ h3 {
   padding-left: 22px;
 }
 
+.siteFooter {
+  align-items: center;
+  background: #10251a;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  color: #cbe9d3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  justify-content: center;
+  padding: 18px 40px;
+  text-align: center;
+}
+
+.siteFooter a {
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 7px 12px;
+  text-decoration: none;
+}
+
+.siteFooter a:hover {
+  background: rgb(255 255 255 / 0.16);
+  transform: translateY(-1px);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -1691,7 +1740,7 @@ h3 {
   }
 
   .agency {
-    font-size: 24px;
+    font-size: 25px;
   }
 
   .fdcHeader nav {
@@ -1770,7 +1819,8 @@ h3 {
   .govBanner,
   .fdcHeader,
   .fdcShell,
-  .aboutSection {
+  .aboutSection,
+  .siteFooter {
     padding-left: 14px;
     padding-right: 14px;
   }
@@ -1846,7 +1896,7 @@ h3 {
   }
 
   .agency {
-    font-size: 20px;
+    font-size: 21px;
   }
 
   .brandLockup {

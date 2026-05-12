@@ -21,7 +21,10 @@ import "./styles.css";
 const translations = {
   en: {
     official: "An official nutrition data prototype for Mongolia administrative foods",
-    agency: "Mongolian Nutrition Data Center",
+    builtBySchool: "Created by the School of Agriculture",
+    agency: "Nutrition Data Center of Mongolia",
+    footerBuilt: "Created at the Mongolian University of Life Sciences.",
+    footerExecutor: "Implemented by MoSo LLC",
     title: "FoodData Mongolia",
     subtitle: "Search regional foods, view nutrient profiles, and filter by aimag, soum, or Ulaanbaatar district.",
     navFood: "Food Search",
@@ -127,7 +130,10 @@ const translations = {
   },
   mn: {
     official: "Монголын засаг захиргааны хүнсний шим тэжээлийн өгөгдлийн туршилтын систем",
-    agency: "Монголын Шим Тэжээлийн Өгөгдлийн Төв",
+    builtBySchool: "Хөдөө аж ахуйн сургууль бүтээв",
+    agency: "Монголын шим тэжээлийн өгөгдлийн төв",
+    footerBuilt: "Хөдөө аж ахуйн их сургуульд бүтээв.",
+    footerExecutor: "Гүйцэтгэсэн MoSo ХХК",
     title: "FoodData Mongolia",
     subtitle: "Орон нутгийн хүнс хайх, шим тэжээлийг харах, аймаг, сум, Улаанбаатарын дүүргээр шүүх.",
     navFood: "Хүнс хайх",
@@ -233,7 +239,10 @@ const translations = {
   },
   ko: {
     official: "몽골 행정구역 식품 영양 데이터 프로토타입",
+    builtBySchool: "농업대학 제작",
     agency: "몽골 영양 데이터 센터",
+    footerBuilt: "몽골 생명과학대학교에서 제작되었습니다.",
+    footerExecutor: "MoSo LLC 구현",
     title: "FoodData Mongolia",
     subtitle: "지역 식품을 검색하고 영양 성분을 확인하며 아이막, 솜, 울란바토르 구별로 필터링합니다.",
     navFood: "식품 검색",
@@ -339,7 +348,10 @@ const translations = {
   },
   zh: {
     official: "蒙古行政区食品营养数据原型",
+    builtBySchool: "农业学院制作",
     agency: "蒙古营养数据中心",
+    footerBuilt: "由蒙古生命科学大学制作。",
+    footerExecutor: "MoSo LLC 执行",
     title: "FoodData Mongolia",
     subtitle: "搜索地区食品，查看营养信息，并按省、苏木或乌兰巴托区筛选。",
     navFood: "食品搜索",
@@ -445,7 +457,10 @@ const translations = {
   },
   ru: {
     official: "Прототип данных о питании продуктов административных единиц Монголии",
+    builtBySchool: "Создано Школой сельского хозяйства",
     agency: "Монгольский центр данных о питании",
+    footerBuilt: "Создано в Монгольском университете наук о жизни.",
+    footerExecutor: "Исполнитель: MoSo LLC",
     title: "FoodData Mongolia",
     subtitle: "Ищите региональные продукты, смотрите нутриенты и фильтруйте по аймаку, суму или району Улан-Батора.",
     navFood: "Поиск продуктов",
@@ -1928,7 +1943,10 @@ function App() {
 
   return (
     <main>
-      <div className="govBanner">{t.official}</div>
+      <div className="govBanner">
+        <span>{t.official}</span>
+        <strong><span aria-hidden="true">🇲🇳</span> {t.builtBySchool}</strong>
+      </div>
       <header className="fdcHeader">
         <div className="brandLockup">
           <img className="brandLogo" src={mulsLogoUrl} alt="MULS logo" />
@@ -2295,6 +2313,11 @@ function App() {
           <p><strong>Бидний зорилго:</strong> Технологийн дэвшлийг ашиглан Монгол хүний эрүүл мэнд, хүнсний аюулгүй байдлыг хангах, салбарын мэргэжилтнүүдийг үнэн зөв мэдээллээр хангах явдал юм.</p>
         </div>
       </section>}
+
+      <footer className="siteFooter">
+        <span>{t.footerBuilt}</span>
+        <a href="https://modulesoft.mn" target="_blank" rel="noreferrer">{t.footerExecutor}</a>
+      </footer>
     </main>
   );
 }
