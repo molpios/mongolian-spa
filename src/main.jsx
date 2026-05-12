@@ -1518,6 +1518,7 @@ function App() {
   const [loginSession, setLoginSession] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [foodOnlyMode, setFoodOnlyMode] = useState(false);
+  const [centerView, setCenterView] = useState("details");
   const [countrySvg, setCountrySvg] = useState("");
   const searchInputRef = useRef(null);
   const dataTypeRef = useRef(null);
@@ -1604,7 +1605,16 @@ function App() {
     const regionName = match ? regionBySvgId[match[1]] : null;
     if (regionName) {
       setSelected(regionName);
+      setCenterView("details");
     }
+  }
+
+  function showRegionMap() {
+    setFoodOnlyMode(false);
+    setCenterView("map");
+    window.requestAnimationFrame(() => {
+      detailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
   function selectFood(food, focusPage = true) {
@@ -1614,6 +1624,7 @@ function App() {
     }
     setSelectedFoodName(food.name);
     setFoodOnlyMode(focusPage);
+    setCenterView("details");
     setActiveTab("nutrients");
     setAiText("");
     setAiStatus("idle");
@@ -2052,7 +2063,7 @@ function App() {
             <h3>{t.regionMap}</h3>
             <div className="mapFocusHeader">
               <span>{t.aimagFocus}: {selected}</span>
-              <button type="button" onClick={() => setSelected("Ulaanbaatar")}>{t.showAllRegions}</button>
+              <button type="button" onClick={showRegionMap}>{t.showAllRegions}</button>
             </div>
             <div
               className="countrySvgMap compactMap focusMode"
@@ -2090,7 +2101,26 @@ function App() {
           </section>
         </aside>}
 
-        <section className="foodDetails" ref={detailsRef}>
+        <section className={`foodDetails ${centerView === "map" ? "mapDetails" : ""}`} ref={detailsRef}>
+          {centerView === "map" ? (
+            <div className="mapOverviewPanel">
+              <div className="mapOverviewHeader">
+                <div>
+                  <p className="dataBadge">{t.regionMap}</p>
+                  <h2>{t.showAllRegions}</h2>
+                  <p className="metaLine">{t.aimagFocus}: {selected}</p>
+                </div>
+                <button type="button" onClick={() => setCenterView("details")}>{t.foodDetails}</button>
+              </div>
+              <div
+                className="countrySvgMap fullMap"
+                aria-label="Large interactive Mongolia SVG map"
+                onClick={handleMapClick}
+                dangerouslySetInnerHTML={{ __html: renderedCountrySvg }}
+              />
+            </div>
+          ) : (
+          <>
           <div className="breadcrumb">{t.breadcrumb(selected)}</div>
           <div className="detailTop">
             <FoodPhoto food={selectedCatalogFood} className="foodHeroImage" label={t.imageUnverified} />
@@ -2244,6 +2274,8 @@ function App() {
                 {filteredSubdivisions.map((item) => <span key={item}>{item}</span>)}
               </div>
             </div>
+          )}
+          </>
           )}
         </section>
 

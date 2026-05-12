@@ -733,6 +733,53 @@ h3 {
   opacity: 1 !important;
 }
 
+.mapDetails {
+  background:
+    radial-gradient(circle at 50% 0%, rgb(217 249 157 / 0.16), transparent 34%),
+    linear-gradient(180deg, #ffffff, #f4fbf5);
+}
+
+.mapOverviewPanel {
+  padding: 22px;
+}
+
+.mapOverviewHeader {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.mapOverviewHeader h2 {
+  color: #173e25;
+  font-size: 30px;
+  margin: 0 0 6px;
+}
+
+.mapOverviewHeader button {
+  background: linear-gradient(135deg, #145f35, #34a853);
+  border: 1px solid rgb(29 79 49 / 0.75);
+  border-radius: 999px;
+  box-shadow: 0 12px 24px rgb(36 126 69 / 0.18);
+  color: #ffffff;
+  font-weight: 800;
+  min-height: 42px;
+  padding: 0 14px;
+}
+
+.fullMap {
+  border: 1px solid #c9dfca;
+  border-radius: 22px;
+  min-height: 520px;
+  padding: 20px;
+}
+
+.fullMap svg {
+  margin: 0 auto;
+  max-height: 620px;
+}
+
 .mapFocusHeader {
   align-items: center;
   display: flex;
@@ -1873,6 +1920,15 @@ h3 {
 
   .countrySvgMap {
     min-height: 220px;
+  }
+
+  .mapOverviewHeader {
+    flex-direction: column;
+  }
+
+  .fullMap {
+    min-height: 300px;
+    padding: 12px;
   }
 
   .videoSection iframe,
