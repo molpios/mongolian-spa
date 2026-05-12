@@ -125,12 +125,12 @@ select:focus-visible {
 
 .agency {
   display: block;
-  font-size: 13px;
+  font-size: 28px;
   font-weight: 800;
-  letter-spacing: 0.06em;
-  margin-bottom: 6px;
-  opacity: 0.9;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 1.15;
+  max-width: 680px;
+  opacity: 0.96;
 }
 
 .fdcHeader h1,
@@ -1690,6 +1690,10 @@ h3 {
     line-height: 1.12;
   }
 
+  .agency {
+    font-size: 24px;
+  }
+
   .fdcHeader nav {
     max-width: none;
     width: 100%;
@@ -1839,6 +1843,10 @@ h3 {
 
   .fdcHeader h1 {
     font-size: 25px;
+  }
+
+  .agency {
+    font-size: 20px;
   }
 
   .brandLockup {

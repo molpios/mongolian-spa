@@ -21,7 +21,7 @@ import "./styles.css";
 const translations = {
   en: {
     official: "An official nutrition data prototype for Mongolia administrative foods",
-    agency: "Mongolia Nutrition Data Center",
+    agency: "Mongolian Nutrition Data Center",
     title: "FoodData Mongolia",
     subtitle: "Search regional foods, view nutrient profiles, and filter by aimag, soum, or Ulaanbaatar district.",
     navFood: "Food Search",
@@ -1934,8 +1934,6 @@ function App() {
           <img className="brandLogo" src={mulsLogoUrl} alt="MULS logo" />
           <div>
             <span className="agency">{t.agency}</span>
-            <h1>{t.title}</h1>
-            <p>{t.subtitle}</p>
           </div>
         </div>
         <nav>
