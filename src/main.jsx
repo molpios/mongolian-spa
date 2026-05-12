@@ -32,6 +32,7 @@ const translations = {
     navDocs: "Data Type Documentation",
     navDownload: "Download Data",
     navAbout: "About Us",
+    navGuide: "Site Guide",
     searchTypeFood: "Food Search",
     searchTypeComponent: "Component Search",
     searchPlaceholder: "Search foods, e.g. airag, buuz, camel milk",
@@ -141,6 +142,7 @@ const translations = {
     navDocs: "Өгөгдлийн төрөл",
     navDownload: "Өгөгдөл татах",
     navAbout: "Бидний тухай",
+    navGuide: "Сайт ашиглах заавар",
     searchTypeFood: "Хүнс хайх",
     searchTypeComponent: "Бүрэлдэхүүн хайх",
     searchPlaceholder: "Хоол хайх: airag, buuz, camel milk гэх мэт",
@@ -250,6 +252,7 @@ const translations = {
     navDocs: "데이터 유형 문서",
     navDownload: "데이터 다운로드",
     navAbout: "소개",
+    navGuide: "사이트 이용 안내",
     searchTypeFood: "식품 검색",
     searchTypeComponent: "성분 검색",
     searchPlaceholder: "식품 검색: airag, buuz, camel milk",
@@ -359,6 +362,7 @@ const translations = {
     navDocs: "数据类型文档",
     navDownload: "下载数据",
     navAbout: "关于我们",
+    navGuide: "网站使用指南",
     searchTypeFood: "食品搜索",
     searchTypeComponent: "成分搜索",
     searchPlaceholder: "搜索食品，例如 airag、buuz、camel milk",
@@ -468,6 +472,7 @@ const translations = {
     navDocs: "Типы данных",
     navDownload: "Скачать данные",
     navAbout: "О нас",
+    navGuide: "Как пользоваться сайтом",
     searchTypeFood: "Поиск продуктов",
     searchTypeComponent: "Поиск компонентов",
     searchPlaceholder: "Искать: airag, buuz, camel milk",
@@ -1346,6 +1351,80 @@ function FoodPhoto({ food, className, label }) {
   return <img className={className} src={image} alt={foodLabel(food, "en")} loading="lazy" onError={() => setFailed(true)} />;
 }
 
+function GuideVisual({ type }) {
+  if (type === "search") {
+    return (
+      <div className="guideVisual guideSearchVisual" aria-hidden="true">
+        <div className="guideSelect">Хүнс хайх</div>
+        <div className="guideInput">Бууз</div>
+        <div className="guideMic"><Mic size={17} /></div>
+        <div className="guideSearchBtn"><Search size={17} /></div>
+      </div>
+    );
+  }
+  if (type === "map") {
+    return (
+      <div className="guideVisual guideMapVisual" aria-hidden="true">
+        <div className="guideMapShape">
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+        <div className="guideMapLegend">
+          <strong>Бүс сонгох</strong>
+          <small>Аймаг дээр дарна</small>
+        </div>
+      </div>
+    );
+  }
+  if (type === "profile") {
+    return (
+      <div className="guideVisual guideProfileVisual" aria-hidden="true">
+        <div className="guideFoodImage" />
+        <div className="guideProfileLines">
+          <span />
+          <span />
+          <span />
+        </div>
+        <div className="guideTabs">
+          <b />
+          <b />
+          <b />
+        </div>
+      </div>
+    );
+  }
+  if (type === "fit") {
+    return (
+      <div className="guideVisual guideFitVisual" aria-hidden="true">
+        <div className="guideMetric">Өндөр 170</div>
+        <div className="guideMetric">Жин 65</div>
+        <div className="guideFitGood">Танд тохирч байна</div>
+      </div>
+    );
+  }
+  if (type === "tools") {
+    return (
+      <div className="guideVisual guideToolsVisual" aria-hidden="true">
+        <div><Download size={18} /> Татах</div>
+        <div><Info size={18} /> Эшлэх</div>
+        <div><MessageCircle size={18} /> AI</div>
+      </div>
+    );
+  }
+  return (
+    <div className="guideVisual guideLanguageVisual" aria-hidden="true">
+      <span>Монгол</span>
+      <span>English</span>
+      <span>한국어</span>
+      <span>中文</span>
+      <span>Русский</span>
+    </div>
+  );
+}
+
 function foodsForRegion(regionName) {
   return mongolianFoodCatalog.filter((food) => food.regions.includes("national") || food.regions.includes(regionName));
 }
@@ -1524,6 +1603,7 @@ function App() {
   const searchInputRef = useRef(null);
   const dataTypeRef = useRef(null);
   const detailsRef = useRef(null);
+  const recognitionRef = useRef(null);
   const t = translations[language];
   const stats = nutritionFor(selected);
   const subdivisions = provinceSoums[selected];
@@ -1727,40 +1807,57 @@ function App() {
 
   function startSpeechSearch() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
+    const isLocalHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    if (!SpeechRecognition || (!window.isSecureContext && !isLocalHost)) {
       setSpeechStatus("unsupported");
       return;
     }
+
+    if (speechStatus === "listening" && recognitionRef.current) {
+      recognitionRef.current.stop();
+      setSpeechStatus("idle");
+      return;
+    }
+
+    recognitionRef.current?.abort?.();
     const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition;
     recognition.continuous = false;
     recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
     recognition.lang = speechLanguageCodes[language] || "mn-MN";
     let recognitionFailed = false;
-    recognition.onstart = () => {
-      setSpeechStatus("listening");
-      searchInputRef.current?.focus();
-    };
+    setSpeechStatus("listening");
+    recognition.onstart = () => setSpeechStatus("listening");
     recognition.onresult = (event) => {
       let transcript = "";
-      for (let index = event.resultIndex; index < event.results.length; index += 1) {
+      for (let index = 0; index < event.results.length; index += 1) {
         transcript += event.results[index][0].transcript;
       }
       const nextTranscript = transcript.trim();
-      setFoodQuery(nextTranscript);
       if (nextTranscript) {
-        setSpeechStatus("idle");
+        setFoodQuery(nextTranscript);
       }
     };
     recognition.onerror = () => {
       recognitionFailed = true;
       setSpeechStatus("unsupported");
+      recognitionRef.current = null;
     };
     recognition.onend = () => {
+      if (recognitionRef.current === recognition) {
+        recognitionRef.current = null;
+      }
       if (!recognitionFailed) {
         setSpeechStatus("idle");
       }
     };
-    recognition.start();
+    try {
+      recognition.start();
+    } catch {
+      recognitionRef.current = null;
+      setSpeechStatus("unsupported");
+    }
   }
 
   function focusSearch(mode) {
@@ -1783,6 +1880,13 @@ function App() {
 
   function showAbout() {
     setActivePage("about");
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  function showGuide() {
+    setActivePage("guide");
     window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -1974,6 +2078,7 @@ function App() {
           <button type="button" onClick={showDataTypes}>{t.navDocs}</button>
           <button type="button" onClick={downloadCatalogData}>{t.navDownload}</button>
           <button type="button" onClick={showAbout}>{t.navAbout}</button>
+          <button type="button" onClick={showGuide}>{t.navGuide}</button>
           <label className="languageSelect">
             <span>{t.language}</span>
             <select value={language} onChange={(event) => setLanguage(event.target.value)} aria-label="Language">
@@ -2369,6 +2474,69 @@ function App() {
           <p><strong>Бидний зорилго:</strong> Технологийн дэвшлийг ашиглан Монгол хүний эрүүл мэнд, хүнсний аюулгүй байдлыг хангах, салбарын мэргэжилтнүүдийг үнэн зөв мэдээллээр хангах явдал юм.</p>
         </div>
       </section>}
+
+      {activePage === "guide" && (
+        <section className="guidePage">
+          <div className="guideHero">
+            <div>
+              <p className="dataBadge">Mazaalai guide</p>
+              <h2>Сайт ашиглах заавар</h2>
+              <p>Энэ системээр хоол хайх, бүс сонгох, шим тэжээлийн хүснэгт харах, өөрийн өндөр жинд тохирох эсэхийг шалгах, AI тайлбар авах, өгөгдөл татах боломжтой.</p>
+            </div>
+            <button type="button" onClick={() => focusSearch("food")}>{t.navFood}</button>
+          </div>
+
+          <div className="guideGrid">
+            <article className="guideCard">
+              <GuideVisual type="search" />
+              <h3>1. Хүнс хайх</h3>
+              <p>Search хэсэгт хоолны нэрээ бичнэ. Жишээ нь “Бууз”, “Цуйван”, “Аарц”, “Төмс” гэж бичээд хайх товч дарна. Илэрцээс хоол сонговол дэлгэрэнгүй хуудас нээгдэнэ.</p>
+            </article>
+
+            <article className="guideCard">
+              <GuideVisual type="search" />
+              <h3>2. Дуугаар хайх</h3>
+              <p>Search input доторх mic icon дээр дараад хоолны нэрээ хэлнэ. “Сонсож байна...” гэж харагдах үед ярьсан текст input-д орж ирнэ. Chrome browser дээр хамгийн тогтвортой ажиллана.</p>
+            </article>
+
+            <article className="guideCard">
+              <GuideVisual type="map" />
+              <h3>3. Бүсийн газрын зураг ашиглах</h3>
+              <p>Зүүн талын газрын зураг дээр аймаг эсвэл Улаанбаатар сонгоно. “Бүх бүсийг харуулах” дээр дарвал том map нээгдэж, аймаг сонгоход тухайн бүсийн хоол, хүнс гарна.</p>
+            </article>
+
+            <article className="guideCard">
+              <GuideVisual type="profile" />
+              <h3>4. Хоолны дэлгэрэнгүй харах</h3>
+              <p>Хоол сонгосны дараа шим тэжээл, дэлгэрэнгүй мэдээлэл, сум/дүүргийн мэдээлэл гэсэн tab-ууд гарна. Шим тэжээлийн хүснэгтээс илчлэг, уураг, өөх тос, нүүрс ус, эрдэс бодисыг харна.</p>
+            </article>
+
+            <article className="guideCard">
+              <GuideVisual type="fit" />
+              <h3>5. Өндөр, жингээр тохирох эсэхийг шалгах</h3>
+              <p>Нэвтэрсний дараа өндөр, жингээ оруулахад тухайн хоол танд тохирч байгаа эсэхийг “Танд тохирч байна”, “Бага порцоор тохирно”, “Тохиромж багатай” гэж шууд харуулна.</p>
+            </article>
+
+            <article className="guideCard">
+              <GuideVisual type="tools" />
+              <h3>6. AI, татах, эшлэх</h3>
+              <p>Mazaalai AI тайлбар нь хоолны соёл, орц, хийх арга, шим тэжээлийн тайлбарыг өгнө. “Татах” товчоор CSV файл авна. “Эшлэх” товчоор citation текст clipboard-д хуулна.</p>
+            </article>
+
+            <article className="guideCard">
+              <GuideVisual type="language" />
+              <h3>7. Хэл солих</h3>
+              <p>Header дээрх хэл сонгох хэсгээс Монгол, English, Korean, Chinese, Russian хэл сонгож болно. Системийн үндсэн цэс, тайлбар, хүснэгтийн нэршил тухайн хэлээр солигдоно.</p>
+            </article>
+
+            <article className="guideCard">
+              <GuideVisual type="profile" />
+              <h3>8. Зургаар хайх ба TTS</h3>
+              <p>Нэвтэрсэн хэрэглэгч хоолны зураг оруулж catalog дотроос ойролцоо хоолыг AI-аар таньж болно. AI тайлбарыг “AI текст унших” товчоор дуу болгон сонсох боломжтой.</p>
+            </article>
+          </div>
+        </section>
+      )}
 
       <footer className="siteFooter">
         <span>{t.footerBuilt}</span>

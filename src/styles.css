@@ -612,10 +612,15 @@ h3 {
   padding: 0;
   position: absolute;
   right: 6px;
+  touch-action: manipulation;
   top: 50%;
   transform: translateY(-50%);
   width: 40px;
   z-index: 2;
+}
+
+.voiceSearchButton svg {
+  pointer-events: none;
 }
 
 .voiceSearchButton:hover {
@@ -1716,6 +1721,228 @@ h3 {
   transform: translateY(-1px);
 }
 
+.guidePage {
+  padding: 28px 40px 42px;
+}
+
+.guideHero,
+.guideCard {
+  background:
+    radial-gradient(circle at 8% 0%, rgb(159 230 179 / 0.24), transparent 30%),
+    linear-gradient(180deg, #ffffff, #f4fbf5);
+  border: 1px solid rgb(205 225 207 / 0.9);
+  border-radius: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.guideHero {
+  align-items: flex-start;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  margin: 0 auto 18px;
+  max-width: 1180px;
+  padding: 28px;
+}
+
+.guideHero h2 {
+  color: var(--ink);
+  font-size: 32px;
+  margin: 0 0 8px;
+}
+
+.guideHero p {
+  color: #52645a;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.guideHero button {
+  background: linear-gradient(135deg, #145f35, #34a853);
+  border: 1px solid rgb(29 79 49 / 0.75);
+  border-radius: 999px;
+  box-shadow: 0 12px 24px rgb(36 126 69 / 0.18);
+  color: #ffffff;
+  font-weight: 800;
+  min-height: 42px;
+  padding: 0 14px;
+}
+
+.guideGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 auto;
+  max-width: 1180px;
+}
+
+.guideCard {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.guideCard h3 {
+  color: #145f35;
+  margin-bottom: 0;
+}
+
+.guideCard p {
+  color: #4f6357;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.guideVisual {
+  background: linear-gradient(135deg, #edf9ef, #f8fdf7);
+  border: 1px solid #c5e3ca;
+  border-radius: 18px;
+  min-height: 150px;
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+}
+
+.guideSearchVisual {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 110px minmax(0, 1fr) 42px 48px;
+}
+
+.guideSelect,
+.guideInput,
+.guideMetric {
+  background: #ffffff;
+  border: 1px solid #bfd5c2;
+  border-radius: 12px;
+  color: #27402c;
+  font-size: 13px;
+  padding: 10px;
+}
+
+.guideMic,
+.guideSearchBtn {
+  align-items: center;
+  background: linear-gradient(135deg, #145f35, #34a853);
+  border-radius: 12px;
+  color: #ffffff;
+  display: flex;
+  height: 42px;
+  justify-content: center;
+}
+
+.guideMapVisual {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 150px;
+}
+
+.guideMapShape {
+  display: grid;
+  gap: 7px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.guideMapShape span {
+  background: #7da783;
+  border: 2px solid #ffffff;
+  border-radius: 42% 58% 48% 52%;
+  min-height: 48px;
+}
+
+.guideMapShape span:nth-child(3) {
+  background: #174f4b;
+}
+
+.guideMapLegend,
+.guideFitGood {
+  background: #ffffff;
+  border: 1px solid #c5e3ca;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.guideMapLegend strong,
+.guideMapLegend small {
+  display: block;
+}
+
+.guideMapLegend small {
+  color: #627064;
+  margin-top: 4px;
+}
+
+.guideProfileVisual {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 120px 1fr;
+}
+
+.guideFoodImage {
+  background: linear-gradient(135deg, #cfe9d4, #7da783);
+  border-radius: 18px;
+  min-height: 92px;
+}
+
+.guideProfileLines {
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+
+.guideProfileLines span,
+.guideTabs b {
+  background: #cfe3d3;
+  border-radius: 999px;
+  display: block;
+  height: 12px;
+}
+
+.guideProfileLines span:nth-child(1) {
+  width: 80%;
+}
+
+.guideProfileLines span:nth-child(2) {
+  width: 58%;
+}
+
+.guideTabs {
+  display: flex;
+  gap: 8px;
+  grid-column: 1 / -1;
+}
+
+.guideTabs b {
+  flex: 1;
+  height: 24px;
+}
+
+.guideFitVisual,
+.guideToolsVisual,
+.guideLanguageVisual {
+  display: grid;
+  gap: 10px;
+}
+
+.guideFitGood {
+  color: #166534;
+  font-weight: 800;
+}
+
+.guideToolsVisual div,
+.guideLanguageVisual span {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #c5e3ca;
+  border-radius: 14px;
+  color: #245d34;
+  display: flex;
+  font-weight: 700;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -1881,6 +2108,7 @@ h3 {
   .fdcShell,
   .regionMapOpenPanel,
   .aboutSection,
+  .guidePage,
   .siteFooter {
     padding-left: 14px;
     padding-right: 14px;
@@ -2008,6 +2236,25 @@ h3 {
 
   .aboutInner h2 {
     font-size: 24px;
+  }
+
+  .guideHero {
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .guideHero h2 {
+    font-size: 24px;
+  }
+
+  .guideGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .guideSearchVisual,
+  .guideMapVisual,
+  .guideProfileVisual {
+    grid-template-columns: 1fr;
   }
 
   .heroCopy h2 {
