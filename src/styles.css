@@ -9,10 +9,13 @@
   --green-500: #47a261;
   --green-100: #eef7f0;
   --green-50: #f7fbf6;
+  --mint: #9fe6b3;
+  --lime: #d9f99d;
+  --ink: #10251a;
   --line: #dce6db;
   --text-muted: #647064;
-  --shadow-sm: 0 8px 18px rgb(35 67 48 / 0.08);
-  --shadow-md: 0 16px 36px rgb(35 67 48 / 0.12);
+  --shadow-sm: 0 10px 24px rgb(23 61 39 / 0.1);
+  --shadow-md: 0 24px 58px rgb(19 60 38 / 0.16);
 }
 
 * {
@@ -27,8 +30,9 @@ body,
 
 body {
   background:
-    radial-gradient(circle at 12% 0%, rgb(72 148 92 / 0.13), transparent 32%),
-    linear-gradient(180deg, #eef3ef 0%, #f8faf6 44%, #eef3ef 100%);
+    radial-gradient(circle at 11% -8%, rgb(159 230 179 / 0.46), transparent 31%),
+    radial-gradient(circle at 88% 6%, rgb(217 249 157 / 0.34), transparent 28%),
+    linear-gradient(180deg, #eaf4ec 0%, #f8fbf5 44%, #eef7f0 100%);
   margin: 0;
   overflow-x: hidden;
 }
@@ -67,20 +71,34 @@ select:focus-visible {
 }
 
 .govBanner {
-  background: #f5faf5;
-  border-bottom: 1px solid #d8e5d7;
-  color: #506058;
+  background: #10251a;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  color: #cbe9d3;
   font-size: 13px;
   padding: 8px 40px;
 }
 
 .fdcHeader {
-  background: linear-gradient(135deg, #245d43, #2f7357);
+  background:
+    linear-gradient(135deg, rgb(11 45 29 / 0.96), rgb(27 104 62 / 0.94)),
+    radial-gradient(circle at 72% 0%, rgb(217 249 157 / 0.28), transparent 36%);
   color: #ffffff;
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  padding: 26px 40px 24px;
+  padding: 30px 40px 34px;
+  position: relative;
+  overflow: hidden;
+}
+
+.fdcHeader::after {
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.2), transparent);
+  content: "";
+  height: 1px;
+  left: 40px;
+  position: absolute;
+  right: 40px;
+  bottom: 0;
 }
 
 .fdcHeader > div:first-child {
@@ -90,8 +108,11 @@ select:focus-visible {
 .agency {
   display: block;
   font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   margin-bottom: 6px;
   opacity: 0.9;
+  text-transform: uppercase;
 }
 
 .fdcHeader h1,
@@ -104,14 +125,15 @@ h3 {
 
 .fdcHeader h1 {
   margin-bottom: 4px;
-  font-size: 36px;
+  font-size: 42px;
   line-height: 1.05;
 }
 
 .fdcHeader p {
   max-width: 680px;
   margin-bottom: 0;
-  color: #dceada;
+  color: #dff6e5;
+  line-height: 1.5;
 }
 
 .fdcHeader nav {
@@ -128,10 +150,11 @@ h3 {
 
 .fdcHeader a {
   color: #ffffff;
-  background: rgb(255 255 255 / 0.1);
-  border: 1px solid rgb(255 255 255 / 0.18);
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.2);
   border-radius: 999px;
-  padding: 8px 10px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12);
+  padding: 9px 12px;
   text-decoration: none;
 }
 
@@ -139,8 +162,8 @@ h3 {
   align-items: center;
   display: flex;
   gap: 8px;
-  background: rgb(255 255 255 / 0.1);
-  border: 1px solid rgb(255 255 255 / 0.18);
+  background: rgb(255 255 255 / 0.14);
+  border: 1px solid rgb(255 255 255 / 0.22);
   border-radius: 999px;
   padding: 5px 6px 5px 10px;
   max-width: 100%;
@@ -162,12 +185,14 @@ h3 {
 }
 
 .searchHero {
-  background: #ffffff;
-  border: 1px solid #dce6db;
-  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.94), rgb(246 252 247 / 0.94));
+  backdrop-filter: blur(14px);
+  border: 1px solid rgb(196 222 202 / 0.85);
+  border-radius: 24px;
   box-shadow: var(--shadow-md);
-  margin: -18px 40px 22px;
-  padding: 22px;
+  margin: -24px 40px 24px;
+  padding: 24px;
   position: relative;
 }
 
@@ -176,8 +201,8 @@ h3 {
 }
 
 .heroCopy h2 {
-  color: #1f4e39;
-  font-size: 24px;
+  color: var(--ink);
+  font-size: 26px;
   margin: 0 0 4px;
 }
 
@@ -206,52 +231,21 @@ h3 {
   margin-top: 12px;
 }
 
-.verifiedTools {
-  display: grid;
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.verifiedNotice {
-  align-items: flex-start;
-  background: linear-gradient(180deg, #f0faf2, #e8f5ec);
-  border: 1px solid #b9d8c0;
-  border-radius: 16px;
-  color: #214c27;
-  display: flex;
-  gap: 10px;
-  line-height: 1.45;
-  padding: 12px 14px;
-}
-
-.verifiedNotice svg {
-  color: #2f7d50;
-  flex: 0 0 auto;
-  margin-top: 1px;
-}
-
-.verifiedNotice strong,
-.verifiedNotice span {
-  display: block;
-}
-
-.verifiedNotice strong {
-  font-size: 14px;
-  margin-bottom: 2px;
-}
-
-.verifiedNotice span {
-  color: #41604b;
-  font-size: 13px;
+.unlockedSearchRow {
+  background: linear-gradient(135deg, #edf9ef, #f8fdf7);
+  border: 1px solid #c5e3ca;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgb(34 98 52 / 0.1);
+  padding: 12px;
 }
 
 .imageSearchButton {
   align-items: center;
-  background: linear-gradient(180deg, #f7fbf6, #eaf5ec);
-  border: 1px solid #c9decf;
+  background: linear-gradient(135deg, #1f7a43, #43b86a);
+  border: 1px solid rgb(23 94 50 / 0.72);
   border-radius: 14px;
-  box-shadow: 0 7px 16px rgb(35 67 48 / 0.07);
-  color: #1f5e31;
+  box-shadow: 0 12px 24px rgb(31 122 67 / 0.22);
+  color: #ffffff;
   cursor: pointer;
   display: inline-flex;
   font-weight: 700;
@@ -260,7 +254,8 @@ h3 {
 }
 
 .imageSearchButton:hover {
-  border-color: #8fb89b;
+  border-color: #78d58c;
+  box-shadow: 0 16px 30px rgb(31 122 67 / 0.27);
   transform: translateY(-1px);
 }
 
@@ -275,11 +270,12 @@ h3 {
 
 .loginPanel {
   background:
-    radial-gradient(circle at 18% 0%, rgb(126 190 134 / 0.34), transparent 34%),
-    linear-gradient(135deg, #143f2c, #1d5b3d 58%, #16422d);
-  border: 1px solid rgb(255 255 255 / 0.16);
+    radial-gradient(circle at 18% 0%, rgb(217 249 157 / 0.26), transparent 34%),
+    radial-gradient(circle at 90% 10%, rgb(92 225 128 / 0.2), transparent 28%),
+    linear-gradient(135deg, #0d2f20, #176239 58%, #0f3d29);
+  border: 1px solid rgb(255 255 255 / 0.2);
   border-radius: 26px;
-  box-shadow: 0 18px 42px rgb(25 68 47 / 0.24);
+  box-shadow: 0 22px 52px rgb(16 71 39 / 0.28);
   color: #ffffff;
   display: grid;
   gap: 16px;
@@ -308,10 +304,9 @@ h3 {
   top: 12px;
 }
 
-.loginIconBadge,
-.successCheck {
+.loginIconBadge {
   align-items: center;
-  background: linear-gradient(135deg, #62b96d, #2e8f4e);
+  background: linear-gradient(135deg, #a7f3b8, #34b864);
   border: 1px solid rgb(255 255 255 / 0.24);
   border-radius: 22px;
   box-shadow: 0 14px 34px rgb(22 82 43 / 0.34);
@@ -341,11 +336,6 @@ h3 {
   font-size: 14px;
   line-height: 1.55;
   max-width: 520px;
-}
-
-.verifiedLogin {
-  grid-template-columns: 1fr;
-  max-width: 420px;
 }
 
 .loginControls {
@@ -479,31 +469,6 @@ h3 {
   color: #7ee08a;
 }
 
-.loginSuccessBox {
-  padding: 8px 6px 4px;
-  text-align: center;
-}
-
-.successCheck {
-  border-radius: 50%;
-  height: 96px;
-  margin: 0 auto 18px;
-  width: 96px;
-}
-
-.loginSuccessBox h3 {
-  color: #ffffff;
-  display: block;
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-
-.loginSuccessBox p {
-  color: #d8ebdd;
-  line-height: 1.55;
-  margin: 0;
-}
-
 .loginError {
   color: #9a3b25 !important;
 }
@@ -516,8 +481,9 @@ h3 {
 .searchRow input,
 .searchRow select,
 .searchBox input {
-  border: 1px solid #c7d4c7;
-  border-radius: 12px;
+  background: #fbfefb;
+  border: 1px solid #bfd5c2;
+  border-radius: 14px;
   min-height: 48px;
   padding: 0 12px;
   outline: none;
@@ -533,10 +499,10 @@ h3 {
 .searchRow button,
 .actionButtons button {
   align-items: center;
-  background: linear-gradient(135deg, var(--green-700), var(--green-600));
+  background: linear-gradient(135deg, #145f35, #34a853);
   border: 1px solid rgb(29 79 49 / 0.75);
-  border-radius: 14px;
-  box-shadow: 0 8px 18px rgb(36 93 52 / 0.16);
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgb(36 126 69 / 0.22);
   color: #ffffff;
   display: inline-flex;
   gap: 8px;
@@ -568,9 +534,9 @@ h3 {
 .filterPanel,
 .foodDetails,
 .summaryPanel {
-  background: #ffffff;
-  border: 1px solid #dce6db;
-  border-radius: 18px;
+  background: rgb(255 255 255 / 0.94);
+  border: 1px solid rgb(205 225 207 / 0.9);
+  border-radius: 22px;
   box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
@@ -612,8 +578,8 @@ h3 {
 }
 
 .compactMap {
-  border: 1px solid #dce6db;
-  border-radius: 14px;
+  border: 1px solid #c9dfca;
+  border-radius: 18px;
   min-height: 190px;
   margin-top: 0;
   padding: 12px;
@@ -621,7 +587,8 @@ h3 {
 
 .countrySvgMap {
   background:
-    linear-gradient(180deg, #fbfdfa, #f4f8f2);
+    radial-gradient(circle at 50% 0%, rgb(217 249 157 / 0.2), transparent 30%),
+    linear-gradient(180deg, #fbfefa, #eef8ef);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8);
   overflow: hidden;
 }
@@ -728,9 +695,9 @@ h3 {
 
 .resultList button {
   align-items: center;
-  background: linear-gradient(180deg, #ffffff, #fbfdfb);
-  border: 1px solid #dce4d8;
-  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, #f5fbf6);
+  border: 1px solid #d3e4d5;
+  border-radius: 18px;
   color: #1f2933;
   display: grid;
   gap: 10px;
@@ -740,8 +707,8 @@ h3 {
 }
 
 .resultList button:hover {
-  border-color: #93b69f;
-  box-shadow: 0 8px 18px rgb(35 67 48 / 0.1);
+  border-color: #74c487;
+  box-shadow: 0 14px 28px rgb(32 104 57 / 0.14);
   transform: translateY(-1px);
 }
 
@@ -783,9 +750,9 @@ h3 {
 }
 
 .resultList .activeResult {
-  background: linear-gradient(180deg, #f2faf3, #eaf5ec);
-  border-color: #2f7357;
-  box-shadow: 0 0 0 3px rgb(47 115 87 / 0.12);
+  background: linear-gradient(180deg, #ecfbef, #ddf6e4);
+  border-color: #28a653;
+  box-shadow: 0 0 0 3px rgb(52 168 83 / 0.14);
 }
 
 .emptySearch {
@@ -808,11 +775,12 @@ h3 {
 }
 
 .filterChips span {
-  background: #f2f7f2;
-  border: 1px solid #dbe6d9;
+  background: #effaf1;
+  border: 1px solid #cce6d0;
   border-radius: 999px;
-  color: #52645a;
+  color: #295b38;
   font-size: 12px;
+  font-weight: 700;
   padding: 7px 9px;
 }
 
@@ -822,9 +790,9 @@ h3 {
 }
 
 .breadcrumb {
-  background: linear-gradient(180deg, #f8fbf7, #f2f7f1);
-  border-bottom: 1px solid #d7dbd2;
-  color: #5f6b5d;
+  background: linear-gradient(180deg, #f5fcf6, #eef8f0);
+  border-bottom: 1px solid #cfdfd0;
+  color: #57705f;
   font-size: 13px;
   padding: 12px 18px;
 }
@@ -844,8 +812,9 @@ h3 {
 .foodHeroImage {
   aspect-ratio: 4 / 3;
   background: #e8ede4;
-  border: 1px solid #d5ded0;
-  border-radius: 16px;
+  border: 1px solid #cfe1d0;
+  border-radius: 20px;
+  box-shadow: 0 16px 30px rgb(28 84 48 / 0.14);
   flex: 0 0 190px;
   max-width: 190px;
   object-fit: cover;
@@ -862,10 +831,10 @@ h3 {
 }
 
 .dataBadge {
-  background: #eaf5ec;
-  border: 1px solid #cfe1d0;
+  background: linear-gradient(135deg, #e4f9e8, #f6fff3);
+  border: 1px solid #bfe1c5;
   border-radius: 999px;
-  color: #214c27;
+  color: #145f35;
   display: inline-block;
   font-size: 13px;
   font-weight: 700;
@@ -898,9 +867,9 @@ h3 {
 }
 
 .tabs {
-  background: #fbfdfb;
-  border-bottom: 1px solid #cbd4c7;
-  border-top: 1px solid #d7dbd2;
+  background: #f7fcf7;
+  border-bottom: 1px solid #c8ddca;
+  border-top: 1px solid #d5e5d6;
   display: flex;
   padding: 0 22px;
 }
@@ -915,12 +884,12 @@ h3 {
 }
 
 .tabs button:hover {
-  background: #eef7f0;
+  background: #edf9ef;
 }
 
 .tabs .activeTab {
-  border-bottom-color: #245d34;
-  color: #1f5e31;
+  border-bottom-color: #34a853;
+  color: #126432;
 }
 
 .tableToolbar {
@@ -955,10 +924,10 @@ h3 {
 }
 
 .aiButton {
-  background: linear-gradient(135deg, #3f7e37, #2b6f43);
-  border: 1px solid #2d5f30;
+  background: linear-gradient(135deg, #176b3b, #39ad5d);
+  border: 1px solid #1c743d;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgb(45 111 67 / 0.15);
+  box-shadow: 0 10px 20px rgb(45 111 67 / 0.18);
   color: #ffffff;
   font-weight: 800;
   min-height: 40px;
@@ -984,8 +953,8 @@ h3 {
 }
 
 .ttsButton {
-  background: linear-gradient(180deg, #ffffff, #edf7ef);
-  border: 1px solid #c9decf;
+  background: linear-gradient(180deg, #ffffff, #edfaef);
+  border: 1px solid #bee0c5;
   border-radius: 12px;
   color: #1f5e31;
   font-weight: 700;
@@ -1007,9 +976,9 @@ h3 {
 }
 
 .personalFitBox {
-  background: linear-gradient(180deg, #ffffff, #f7fbf6);
-  border: 1px solid #dfe8dd;
-  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff, #f3fbf4);
+  border: 1px solid #d0e6d3;
+  border-radius: 16px;
   flex: 1 1 260px;
   box-shadow: 0 8px 18px rgb(35 67 48 / 0.05);
   padding: 12px;
@@ -1070,8 +1039,8 @@ h3 {
 
 .segmented {
   align-self: flex-start;
-  border: 1px solid #aab7a6;
-  border-radius: 14px;
+  border: 1px solid #aacfb2;
+  border-radius: 16px;
   display: inline-flex;
   flex: 0 0 auto;
   overflow: hidden;
@@ -1095,7 +1064,7 @@ h3 {
 }
 
 .segmented .activeSegment {
-  background: #245d34;
+  background: #176b3b;
   color: #ffffff;
 }
 
@@ -1117,8 +1086,8 @@ h3 {
 }
 
 .nutrientTable th {
-  background: #f1f7f1;
-  color: #203c25;
+  background: #ecf9ef;
+  color: #173e25;
 }
 
 .nutrientTable tr:nth-child(even) td {
@@ -1140,8 +1109,8 @@ h3 {
 }
 
 .detailsGrid div {
-  background: linear-gradient(180deg, #ffffff, #f8fbf7);
-  border: 1px solid #d6dcd2;
+  background: linear-gradient(180deg, #ffffff, #f4fbf5);
+  border: 1px solid #d0e3d1;
   border-radius: 16px;
   padding: 14px;
 }
@@ -1151,9 +1120,9 @@ h3 {
 }
 
 .profileBlock {
-  background: linear-gradient(180deg, #ffffff, #f8fbf7);
-  border: 1px solid #dfe8dd;
-  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, #f4fbf5);
+  border: 1px solid #d0e3d1;
+  border-radius: 18px;
   margin-top: 14px;
   padding: 16px;
 }
@@ -1175,8 +1144,8 @@ h3 {
 }
 
 .pillList span {
-  background: #eef7f0;
-  border: 1px solid #cfe1d0;
+  background: #ecfaef;
+  border: 1px solid #c5e3ca;
   border-radius: 999px;
   color: #2b543f;
   padding: 8px 10px;
@@ -1649,8 +1618,7 @@ h3 {
   .fdcHeader p,
   .heroCopy p,
   .imageSearchRow span,
-  .searchHint,
-  .verifiedNotice span {
+  .searchHint {
     font-size: 12px;
   }
 

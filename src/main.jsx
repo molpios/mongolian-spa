@@ -9,7 +9,6 @@ import {
   LoaderCircle,
   MapPin,
   MessageCircle,
-  CircleCheck,
   Search,
   Smartphone,
   TableProperties,
@@ -1731,21 +1730,12 @@ function App() {
           </form>
         )}
         {isLoggedIn && (
-          <div className="verifiedTools">
-            <div className="verifiedNotice">
-              <CircleCheck size={22} />
-              <div>
-                <strong>{t.loginSuccessTitle}</strong>
-                <span>{t.loginSuccess}</span>
-              </div>
-            </div>
-            <div className="imageSearchRow">
-              <label className="imageSearchButton">
-                <input type="file" accept="image/*" onChange={handleImageSearch} />
-                {imageStatus === "loading" ? t.imageSearching : t.imageSearch}
-              </label>
-              <span>{t.imageSearchHint}</span>
-            </div>
+          <div className="imageSearchRow unlockedSearchRow">
+            <label className="imageSearchButton">
+              <input type="file" accept="image/*" onChange={handleImageSearch} />
+              {imageStatus === "loading" ? t.imageSearching : t.imageSearch}
+            </label>
+            <span>{t.imageSearchHint}</span>
           </div>
         )}
         <p className="searchHint">{foodQuery ? t.searchHint(visibleFoods.length) : t.searchHintDefault}</p>
