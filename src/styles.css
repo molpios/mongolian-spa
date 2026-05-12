@@ -186,6 +186,14 @@ select:focus-visible {
   padding: 5px 10px;
 }
 
+.bannerFlag {
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.28);
+  flex: 0 0 auto;
+  height: 18px;
+  width: 18px;
+}
+
 .fdcHeader {
   background:
     linear-gradient(135deg, rgb(11 45 29 / 0.96), rgb(27 104 62 / 0.94)),

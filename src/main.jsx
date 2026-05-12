@@ -1585,6 +1585,29 @@ function BodyMetricIcon({ bmi, height, weight, t }) {
   );
 }
 
+function MongoliaFlagMark() {
+  return (
+    <svg className="bannerFlag" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+      <clipPath id="bannerFlagCircle">
+        <circle cx="18" cy="18" r="17" />
+      </clipPath>
+      <g clipPath="url(#bannerFlagCircle)">
+        <rect width="12" height="36" fill="#c7272f" />
+        <rect x="12" width="12" height="36" fill="#025299" />
+        <rect x="24" width="12" height="36" fill="#c7272f" />
+        <g fill="#fbd100" transform="translate(3.7 8)">
+          <circle cx="4" cy="2" r="1.6" />
+          <path d="M4 5 2.4 8h3.2Z" />
+          <rect x="2.2" y="9" width="3.6" height="6" rx="0.4" />
+          <path d="M1.8 17h4.4L4 19.8Z" />
+          <rect x="0" y="9" width="1.2" height="11" />
+          <rect x="6.8" y="9" width="1.2" height="11" />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
 const loadingMarks = [
   { src: "/mazaalai-loader.png", label: "Mazaalai AI" },
   { src: mulsLogoUrl, label: "Mongolian University of Life Sciences" },
@@ -2266,7 +2289,7 @@ function App() {
       {bootLoading && <LoadingSplash />}
       <div className="govBanner">
         <span>{t.official}</span>
-        <strong><span aria-hidden="true">🇲🇳</span> {t.builtBySchool}</strong>
+        <strong><MongoliaFlagMark /> {t.builtBySchool}</strong>
       </div>
       <header className="fdcHeader">
         <div className="brandLockup">
