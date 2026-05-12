@@ -1441,7 +1441,7 @@ function LoadingSplash() {
           </span>
         ))}
       </div>
-      <p>Loading...</p>
+      <p>Ачаалж байна</p>
     </div>
   );
 }

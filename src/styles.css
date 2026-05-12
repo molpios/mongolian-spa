@@ -75,9 +75,9 @@ select:focus-visible {
 .loaderSplash {
   align-content: center;
   background:
-    radial-gradient(circle at 50% 48%, rgb(24 135 78 / 0.18), transparent 28%),
-    #000000;
-  color: #ffffff;
+    radial-gradient(circle at 50% 48%, rgb(24 135 78 / 0.1), transparent 30%),
+    #ffffff;
+  color: #163623;
   display: grid;
   gap: 22px;
   inset: 0;
@@ -130,7 +130,7 @@ select:focus-visible {
 }
 
 .loaderSplash p {
-  color: #dff6e5;
+  color: #163623;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0;
