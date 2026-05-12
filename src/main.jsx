@@ -74,6 +74,10 @@ const translations = {
     weightKg: "Weight (kg)",
     personalFit: "Personal fit",
     personalFitHint: "Optional: add height and weight before asking Mazaalai AI.",
+    fitGoodTitle: "Suitable for you",
+    fitCautionTitle: "Suitable in a small portion",
+    fitNotTitle: "Use caution with this food",
+    fitMissing: "Enter height and weight to see whether this food fits you.",
     loginTitle: "Login for advanced tools",
     loginHint: "Login unlocks Mazaalai AI, BMI guidance, image search, and text-to-speech.",
     phonePlaceholder: "Phone number",
@@ -173,6 +177,10 @@ const translations = {
     weightKg: "Жин (кг)",
     personalFit: "Танд тохирох эсэх",
     personalFitHint: "Заавал биш: Mazaalai AI асуухаас өмнө өндөр, жингээ оруулна.",
+    fitGoodTitle: "Танд тохирч байна",
+    fitCautionTitle: "Бага порцоор тохирно",
+    fitNotTitle: "Тохиромж багатай",
+    fitMissing: "Өндөр, жингээ оруулбал энэ хоол танд тохирох эсэхийг харуулна.",
     loginTitle: "Нэмэлт боломж нээх",
     loginHint: "Login хийснээр Mazaalai AI, биеийн жингийн индекс, зургаар хайх, TTS уншуулах эрх нээгдэнэ.",
     phonePlaceholder: "Утасны дугаар",
@@ -272,6 +280,10 @@ const translations = {
     weightKg: "몸무게 (kg)",
     personalFit: "개인 적합성",
     personalFitHint: "선택 사항: Mazaalai AI에 묻기 전에 키와 몸무게를 입력하세요.",
+    fitGoodTitle: "잘 맞습니다",
+    fitCautionTitle: "소량이면 적합합니다",
+    fitNotTitle: "주의가 필요합니다",
+    fitMissing: "키와 몸무게를 입력하면 이 음식의 적합성을 볼 수 있습니다.",
     loginTitle: "고급 도구 로그인",
     loginHint: "로그인하면 Mazaalai AI, BMI 안내, 이미지 검색, TTS를 사용할 수 있습니다.",
     phonePlaceholder: "전화번호",
@@ -371,6 +383,10 @@ const translations = {
     weightKg: "体重 (kg)",
     personalFit: "个人适配",
     personalFitHint: "可选：询问 Mazaalai AI 前输入身高和体重。",
+    fitGoodTitle: "适合你",
+    fitCautionTitle: "少量食用较合适",
+    fitNotTitle: "需要谨慎食用",
+    fitMissing: "输入身高和体重后可查看该食物是否适合你。",
     loginTitle: "登录使用高级工具",
     loginHint: "登录后可使用 Mazaalai AI、BMI 建议、图片搜索和语音朗读。",
     phonePlaceholder: "手机号",
@@ -470,6 +486,10 @@ const translations = {
     weightKg: "Вес (кг)",
     personalFit: "Персональная оценка",
     personalFitHint: "Необязательно: укажите рост и вес перед запросом к Mazaalai AI.",
+    fitGoodTitle: "Вам подходит",
+    fitCautionTitle: "Подходит небольшой порцией",
+    fitNotTitle: "Лучше употреблять осторожно",
+    fitMissing: "Введите рост и вес, чтобы увидеть персональную оценку.",
     loginTitle: "Вход для расширенных функций",
     loginHint: "После входа доступны Mazaalai AI, BMI, поиск по фото и озвучивание текста.",
     phonePlaceholder: "Номер телефона",
@@ -1365,6 +1385,77 @@ function nutritionFor(name) {
   };
 }
 
+function personalFitAssessment(food, bmi, rows, language, t) {
+  if (!bmi) {
+    return {
+      level: "empty",
+      title: t.fitMissing,
+      detail: t.personalFitHint
+    };
+  }
+
+  const nutrientAmount = (name) => Number(rows.find((row) => row.name === name)?.amount || 0);
+  const calories = nutrientAmount("Energy");
+  const fat = nutrientAmount("Total lipid (fat)");
+  const sodium = nutrientAmount("Sodium, Na");
+  const protein = nutrientAmount("Protein");
+  const heavierCategories = ["Fried pastry", "Fried bread", "Ceremonial pastry", "Meat dish", "Mutton", "Roasted meat", "Horse meat sausage"];
+  const lighterCategories = ["Vegetable", "Fruit", "Fruit drink", "Milk tea", "Dairy"];
+  const isHeavier = heavierCategories.includes(food.category);
+  const isLighter = lighterCategories.includes(food.category) || food.type === "Vegetable";
+  const highLoad = calories >= 360 || fat >= 22 || sodium >= 520 || isHeavier;
+
+  const text = {
+    mn: {
+      under: `BMI ${bmi}. Илчлэг, уураг нөхөхөд дэмжлэгтэй байж болно. Порцоо тогтмол хооллолттой уялдуулна уу.`,
+      good: `BMI ${bmi}. Энэ хоолны илчлэг, найрлага таны одоогийн үзүүлэлтэд ерөнхийдөө тохирч байна.`,
+      caution: `BMI ${bmi}. Илчлэг, өөх тос эсвэл давс өндөр байж болзошгүй тул бага порцоор хэрэглэвэл зохимжтой.`,
+      notIdeal: `BMI ${bmi}. Энэ хоол илчлэг/өөх тос/давс ихтэй ангилалд орж болзошгүй тул өдөр тутам их хэмжээгээр хэрэглэхэд тохиромж багатай.`
+    },
+    en: {
+      under: `BMI ${bmi}. This can help add energy and protein; match the portion with regular meals.`,
+      good: `BMI ${bmi}. This food generally fits your current height and weight profile.`,
+      caution: `BMI ${bmi}. Calories, fat, or sodium may be high, so a smaller portion is more suitable.`,
+      notIdeal: `BMI ${bmi}. This may be calorie/fat/sodium heavy, so it is not ideal as a large everyday portion.`
+    },
+    ko: {
+      under: `BMI ${bmi}. 에너지와 단백질 보충에 도움이 될 수 있으나 식사량과 맞춰 드세요.`,
+      good: `BMI ${bmi}. 현재 키와 몸무게 기준으로 전반적으로 적합합니다.`,
+      caution: `BMI ${bmi}. 열량, 지방 또는 나트륨이 높을 수 있어 소량이 더 적합합니다.`,
+      notIdeal: `BMI ${bmi}. 열량/지방/나트륨 부담이 클 수 있어 매일 많은 양은 권장되지 않습니다.`
+    },
+    zh: {
+      under: `BMI ${bmi}。可帮助补充能量和蛋白质，请结合日常餐量食用。`,
+      good: `BMI ${bmi}。按当前身高体重看，该食物总体较适合。`,
+      caution: `BMI ${bmi}。热量、脂肪或钠可能偏高，建议少量食用。`,
+      notIdeal: `BMI ${bmi}。可能热量/脂肪/钠负担较高，不适合日常大量食用。`
+    },
+    ru: {
+      under: `BMI ${bmi}. Может помочь восполнить энергию и белок; подбирайте порцию к обычному рациону.`,
+      good: `BMI ${bmi}. В целом подходит для вашего текущего роста и веса.`,
+      caution: `BMI ${bmi}. Калорийность, жир или натрий могут быть высокими, лучше небольшая порция.`,
+      notIdeal: `BMI ${bmi}. Может быть тяжелым по калориям/жирам/натрию, не подходит для больших ежедневных порций.`
+    }
+  }[language] || {};
+
+  if (bmi < 18.5) {
+    return { level: "good", title: t.fitGoodTitle, detail: text.under };
+  }
+  if (bmi < 25) {
+    return highLoad
+      ? { level: "caution", title: t.fitCautionTitle, detail: text.caution }
+      : { level: "good", title: t.fitGoodTitle, detail: text.good };
+  }
+  if (bmi < 30) {
+    return highLoad && !isLighter
+      ? { level: "caution", title: t.fitCautionTitle, detail: text.caution }
+      : { level: "good", title: t.fitGoodTitle, detail: text.good };
+  }
+  return highLoad && protein < 18
+    ? { level: "not", title: t.fitNotTitle, detail: text.notIdeal }
+    : { level: "caution", title: t.fitCautionTitle, detail: text.caution };
+}
+
 function App() {
   const [language, setLanguage] = useState("mn");
   const [activePage, setActivePage] = useState("food");
@@ -1418,6 +1509,7 @@ function App() {
   const weightNumber = Number(userWeight);
   const hasPersonalMetrics = heightNumber > 0 && weightNumber > 0;
   const bmi = hasPersonalMetrics ? Number((weightNumber / ((heightNumber / 100) ** 2)).toFixed(1)) : null;
+  const fitAssessment = personalFitAssessment(selectedCatalogFood, bmi, rows, language, t);
   const searchedFoods = mongolianFoodCatalog.filter((food) => {
     const needle = normalizeSearch(foodQuery);
     if (!needle) {
@@ -1946,7 +2038,10 @@ function App() {
                         <input type="number" min="1" value={userHeight} onChange={(event) => setUserHeight(event.target.value)} placeholder={t.heightCm} />
                         <input type="number" min="1" value={userWeight} onChange={(event) => setUserWeight(event.target.value)} placeholder={t.weightKg} />
                       </div>
-                      {bmi && <span>BMI: {bmi}</span>}
+                      <div className={`fitAssessment fit-${fitAssessment.level}`}>
+                        <strong>{fitAssessment.title}</strong>
+                        <span>{fitAssessment.detail}</span>
+                      </div>
                     </div>
                     <div className="aiActions">
                       <button className="aiButton" onClick={requestAiFacts} disabled={aiStatus === "loading"}>

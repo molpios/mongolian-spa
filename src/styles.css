@@ -1038,6 +1038,55 @@ h3 {
   padding: 0 10px;
 }
 
+.fitAssessment {
+  border: 1px solid #d4e2d2;
+  border-radius: 14px;
+  display: grid;
+  gap: 4px;
+  line-height: 1.45;
+  padding: 10px;
+}
+
+.fitAssessment strong {
+  font-size: 14px;
+}
+
+.fitAssessment span {
+  color: #4f6357;
+  font-size: 12px;
+}
+
+.fit-empty {
+  background: #f7faf5;
+}
+
+.fit-good {
+  background: linear-gradient(180deg, #edfbef, #ddf7e4);
+  border-color: #a9dab4;
+}
+
+.fit-good strong {
+  color: #166534;
+}
+
+.fit-caution {
+  background: linear-gradient(180deg, #fff9e8, #fff2c9);
+  border-color: #ecd07a;
+}
+
+.fit-caution strong {
+  color: #76520a;
+}
+
+.fit-not {
+  background: linear-gradient(180deg, #fff0ec, #ffe0d8);
+  border-color: #eda38f;
+}
+
+.fit-not strong {
+  color: #8b2d19;
+}
+
 .aiPanel {
   background: linear-gradient(180deg, #f8fcf7, #eef7f0);
   border: 1px solid #cbdcc0;
