@@ -237,8 +237,13 @@ h3 {
 
 .searchRow {
   display: grid;
-  grid-template-columns: 180px minmax(220px, 1fr) 52px 132px;
+  grid-template-columns: 180px minmax(220px, 1fr) 132px;
   gap: 10px;
+}
+
+.searchInputWrap {
+  min-width: 0;
+  position: relative;
 }
 
 .searchHint,
@@ -523,6 +528,11 @@ h3 {
   outline: none;
 }
 
+.searchInputWrap input {
+  padding-right: 58px;
+  width: 100%;
+}
+
 .searchRow input:focus,
 .searchRow select:focus,
 .searchBox input:focus {
@@ -554,7 +564,16 @@ h3 {
 }
 
 .voiceSearchButton {
+  border-radius: 12px;
+  box-shadow: none;
+  height: 38px;
+  min-height: 38px;
   padding: 0;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 42px;
+  z-index: 2;
 }
 
 .voiceSearchButton.isListening {

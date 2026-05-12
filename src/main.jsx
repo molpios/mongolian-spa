@@ -1959,16 +1959,18 @@ function App() {
             <option value="food">{t.searchTypeFood}</option>
             <option value="component">{t.searchTypeComponent}</option>
           </select>
-          <input ref={searchInputRef} value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
-          <button
-            type="button"
-            className={`voiceSearchButton ${speechStatus === "listening" ? "isListening" : ""}`}
-            onClick={startSpeechSearch}
-            aria-label={t.voiceSearch}
-            title={t.voiceSearch}
-          >
-            <Mic size={18} />
-          </button>
+          <div className="searchInputWrap">
+            <input ref={searchInputRef} value={foodQuery} onChange={(event) => setFoodQuery(event.target.value)} placeholder={t.searchPlaceholder} />
+            <button
+              type="button"
+              className={`voiceSearchButton ${speechStatus === "listening" ? "isListening" : ""}`}
+              onClick={startSpeechSearch}
+              aria-label={t.voiceSearch}
+              title={t.voiceSearch}
+            >
+              <Mic size={18} />
+            </button>
+          </div>
           <button type="submit"><Search size={18} /> {t.search}</button>
         </form>
         {speechStatus !== "idle" && (
